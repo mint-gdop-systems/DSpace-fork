@@ -282,6 +282,9 @@
             <!--Uncommment to display the SAMPLE step as your first step -->
             <!--<step id="sample"/> -->
 
+            !-- This step enables preview of potential duplicates for the in-progress item -->
+            <step id="duplicates"/>
+
             <step id="collection"/>
             <!-- To include the 'Show Identifiers' step, uncomment the line below. Make sure
                  that identifiers.cfg and identifier-service.xml are properly configured. -->
