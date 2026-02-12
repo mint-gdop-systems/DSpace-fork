@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<dspace-dc-types>
+
+  <dspace-header>
+    <title>Custom CRVS Types Registry</title>    
+  </dspace-header>
+
+  <dc-schema>
+    <name>crvs</name>
+    <namespace>https://example.com/</namespace>
+  </dc-schema>
+
+  <dc-type>
+    <schema>crvs</schema>
+    <element>identifier</element>
+    <qualifier>houseNumber</qualifier>
+    <scope_note></scope_note>
+  </dc-type>
+
+  <dc-type>
+    <schema>crvs</schema>
+    <element>identifier</element>
+    <qualifier>houseFamilyKey</qualifier>
+    <scope_note>Unique composite ID: House Number plus Family Head Names.</scope_note>
+  </dc-type>
+
+  <dc-type>
+    <schema>crvs</schema>
+    <element>head</element>
+    <qualifier>husband</qualifier>
+    <scope_note>Full name of the husband/head of household.</scope_note>
+  </dc-type>
+
+  <dc-type>
+    <schema>crvs</schema>
+    <element>head</element>
+    <qualifier>wife</qualifier>
+    <scope_note>Full name of the wife.</scope_note>
+  </dc-type>
+
+  <dc-type>
+    <schema>crvs</schema>
+    <element>family</element>
+    <qualifier>member</qualifier>
+    <scope_note>Full names of any additional family members.</scope_note>
+  </dc-type>
+
+  <dc-type>
+    <schema>crvs</schema>
+    <element>date</element>
+    <qualifier>registration</qualifier>
+    <scope_note>The date the family was originally registered at the Woreda level.</scope_note>
+  </dc-type>
+
+  <dc-type>
+    <schema>crvs</schema>
+    <element>family</element>
+    <qualifier>count</qualifier>
+    <scope_note>Total count of family members.</scope_note>
+  </dc-type>
+
+</dspace-dc-types>
