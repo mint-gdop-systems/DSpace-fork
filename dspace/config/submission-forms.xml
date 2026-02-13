@@ -35,6 +35,30 @@
                     <required>You must enter a name for this file</required>
                 </field>
             </row>
+             <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>documentType</dc-element>
+                    <dc-qualifier></dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>DOcument Type</label>
+                    <input-type value-pairs-name="document_types">dropdown</input-type>
+                    <hint>Select the document type
+                    </hint>
+                    <required>You must choose a document type.</required>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>document</dc-element>
+                    <dc-qualifier>status</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Status</label>
+                    <input-type value-pairs-name="active_status_types">dropdown</input-type>
+                    <required>false</required>
+                </field>
+            </row>
             <row>
                 <field>
                     <dc-schema>dc</dc-schema>
@@ -51,6 +75,19 @@
         <!-- Form which defines the first page/section of the "traditional" DSpace submission process,
              often used when depositing normal Items (i.e. Items which are not Entities). -->
         <form name="traditionalpageone">
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>identifier</dc-element>
+                    <dc-qualifier>houseType</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>House Type</label>
+                    <input-type value-pairs-name="house_types">dropdown</input-type>
+                    <hint>Select the house type.
+                    </hint>
+                    <required>You must choose a type.</required>
+                </field>
+            </row>
             <row>
                 <field>
                     <dc-schema>crvs</dc-schema>
@@ -1887,6 +1924,63 @@
             <pair>
                 <displayed-value>Is a Funding Organization</displayed-value>
                 <stored-value>FundingOrganization</stored-value>
+            </pair>
+        </value-pairs>
+
+        <value-pairs value-pairs-name="house_types" dc-term="type">
+            <pair>
+                <displayed-value>Private House</displayed-value>
+                <stored-value>Private House</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Kebele Owned</displayed-value>
+                <stored-value>Kebele Owned</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Military Camp</displayed-value>
+                <stored-value>Military Camp</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Religious Organization</displayed-value>
+                <stored-value>Religious Organization</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Commercial</displayed-value>
+                <stored-value>Commercial</stored-value>
+            </pair>
+        </value-pairs>
+
+        <value-pairs value-pairs-name="active_status_types" dc-term="type">
+            <pair>
+                <displayed-value>Active</displayed-value>
+                <stored-value>Active</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Inactive</displayed-value>
+                <stored-value>Inactive</stored-value>
+            </pair>
+        </value-pairs>
+
+        <value-pairs value-pairs-name="document_types" dc-term="type">
+            <pair>
+                <displayed-value>Birth Certificate</displayed-value>
+                <stored-value>Birth Certificate</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Death Certificate</displayed-value>
+                <stored-value>Death Certificate</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Marriage Certificate</displayed-value>
+                <stored-value>Marriage Certificate</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Divorce Certificate</displayed-value>
+                <stored-value>Divorce Certificate</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Not-married Certificate</displayed-value>
+                <stored-value>Not-married Certificate</stored-value>
             </pair>
         </value-pairs>
 

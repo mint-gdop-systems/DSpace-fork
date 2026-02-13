@@ -13,6 +13,13 @@
   <dc-type>
     <schema>crvs</schema>
     <element>identifier</element>
+    <qualifier>houseType</qualifier>
+    <scope_note></scope_note>
+  </dc-type>
+
+  <dc-type>
+    <schema>crvs</schema>
+    <element>identifier</element>
     <qualifier>houseNumber</qualifier>
     <scope_note></scope_note>
   </dc-type>
@@ -57,6 +64,20 @@
     <element>family</element>
     <qualifier>count</qualifier>
     <scope_note>Total count of family members.</scope_note>
+  </dc-type>
+
+  <dc-type>
+    <schema>crvs</schema>
+    <element>documentType</element>
+    <qualifier></qualifier>
+    <scope_note></scope_note>
+  </dc-type>
+
+  <dc-type>
+    <schema>crvs</schema>
+    <element>document</element>
+    <qualifier>status</qualifier>
+    <scope_note></scope_note>
   </dc-type>
 
 </dspace-dc-types>
