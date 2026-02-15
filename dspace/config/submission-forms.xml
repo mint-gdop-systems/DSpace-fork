@@ -41,7 +41,7 @@
                     <dc-element>documentType</dc-element>
                     <dc-qualifier></dc-qualifier>
                     <repeatable>false</repeatable>
-                    <label>DOcument Type</label>
+                    <label>Document Type</label>
                     <input-type value-pairs-name="document_types">dropdown</input-type>
                     <hint>Select the document type
                     </hint>
@@ -96,7 +96,7 @@
                     <repeatable>false</repeatable>
                     <label>House Identifier</label>
                     <input-type>onebox</input-type>
-                    <hint>House Number + Family Head Name.</hint>
+                    <hint></hint>
                     <required>You must enter a house identifier.</required>
                 </field>
             </row>
@@ -1963,6 +1963,10 @@
 
         <value-pairs value-pairs-name="document_types" dc-term="type">
             <pair>
+                <displayed-value>ID Card</displayed-value>
+                <stored-value>ID Card</stored-value>
+            </pair>
+            <pair>
                 <displayed-value>Birth Certificate</displayed-value>
                 <stored-value>Birth Certificate</stored-value>
             </pair>
@@ -1981,6 +1985,18 @@
             <pair>
                 <displayed-value>Not-married Certificate</displayed-value>
                 <stored-value>Not-married Certificate</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Adoption Decree</displayed-value>
+                <stored-value>Adoption Decree</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Supporting Document</displayed-value>
+                <stored-value>Supporting Document</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Other</displayed-value>
+                <stored-value>Other</stored-value>
             </pair>
         </value-pairs>
 
