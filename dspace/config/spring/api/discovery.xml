@@ -194,6 +194,11 @@
         <!--Which sidebar facets are to be displayed-->
         <property name="sidebarFacets">
             <list>
+                <ref bean="searchFilterHouseType" />
+                <ref bean="searchFilterHouseNumber" />
+                <ref bean="searchFilterHusbandName" />
+                <ref bean="searchFilterWifeName" />
+                <ref bean="searchFilterRegistration" />
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
@@ -208,6 +213,11 @@
         <!--The search filters which can be used on the discovery search page-->
         <property name="searchFilters">
             <list>
+                <ref bean="searchFilterHouseType" />
+                <ref bean="searchFilterHouseNumber" />
+                <ref bean="searchFilterHusbandName" />
+                <ref bean="searchFilterWifeName" />
+                <ref bean="searchFilterRegistration" />
                 <ref bean="searchFilterTitle" />
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
@@ -231,6 +241,10 @@
             <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
                 <property name="sortFields">
                     <list>
+                        <ref bean="sortDateRegistration" />
+                        <ref bean="sortHouseNumber" />
+                        <ref bean="sortDateRegistrationAsc" />
+                        <ref bean="sortHouseNumberDesc" />
                         <ref bean="sortScore" />
                         <ref bean="sortTitle" />
                         <ref bean="sortDateIssued" />
@@ -809,6 +823,11 @@
         <!--Which sidebar facets are to be displayed -->
         <property name="sidebarFacets">
             <list>
+                <ref bean="searchFilterHouseType" />
+                <ref bean="searchFilterHouseNumber" />
+                <ref bean="searchFilterHusbandName" />
+                <ref bean="searchFilterWifeName" />
+                <ref bean="searchFilterRegistration" />
                 <ref bean="searchFilterObjectNamedType" />
                 <ref bean="searchFilterType" />
                 <ref bean="searchFilterIssued" />
@@ -817,6 +836,11 @@
         <!--The search filters which can be used on the discovery search page -->
         <property name="searchFilters">
             <list>
+                <ref bean="searchFilterHouseType" />
+                <ref bean="searchFilterHouseNumber" />
+                <ref bean="searchFilterHusbandName" />
+                <ref bean="searchFilterWifeName" />
+                <ref bean="searchFilterRegistration" />
                 <ref bean="searchFilterObjectNamedType" />
                 <ref bean="searchFilterType" />
                 <ref bean="searchFilterIssued" />
@@ -829,6 +853,10 @@
                 <property name="defaultSortField" ref="sortLastModified" />
                 <property name="sortFields">
                     <list>
+                        <ref bean="sortDateRegistration" />
+                        <ref bean="sortHouseNumber" />
+                        <ref bean="sortDateRegistrationAsc" />
+                        <ref bean="sortHouseNumberDesc" />
                         <ref bean="sortLastModified" />
                         <ref bean="sortScore" />
                         <ref bean="sortTitle" />
@@ -960,6 +988,11 @@
         <!--Which sidebar facets are to be displayed -->
         <property name="sidebarFacets">
             <list>
+                <ref bean="searchFilterHouseType" />
+                <ref bean="searchFilterHouseNumber" />
+                <ref bean="searchFilterHusbandName" />
+                <ref bean="searchFilterWifeName" />
+                <ref bean="searchFilterRegistration" />
                 <ref bean="searchFilterObjectNamedType" />
                 <ref bean="searchFilterType" />
                 <ref bean="searchFilterIssued" />
@@ -969,6 +1002,11 @@
         <!--The search filters which can be used on the discovery search page -->
         <property name="searchFilters">
             <list>
+                <ref bean="searchFilterHouseType" />
+                <ref bean="searchFilterHouseNumber" />
+                <ref bean="searchFilterHusbandName" />
+                <ref bean="searchFilterWifeName" />
+                <ref bean="searchFilterRegistration" />
                 <ref bean="searchFilterObjectNamedType" />
                 <ref bean="searchFilterType" />
                 <ref bean="searchFilterIssued" />
@@ -980,6 +1018,10 @@
             <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
                 <property name="sortFields">
                     <list>
+                        <ref bean="sortDateRegistration" />
+                        <ref bean="sortHouseNumber" />
+                        <ref bean="sortDateRegistrationAsc" />
+                        <ref bean="sortHouseNumberDesc" />
                         <ref bean="sortLastModified" />
                         <ref bean="sortScore" />
                         <ref bean="sortTitle" />
@@ -2531,6 +2573,66 @@
 
     <!--Search filter configuration beans-->
 
+    <bean id="searchFilterHouseType" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="houseType"/>
+        <property name="metadataFields">
+            <list>
+                <value>crvs.identifier.houseType</value>
+            </list>
+        </property>
+        <property name="isOpenByDefault" value="true"/>
+        <property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="searchFilterHouseNumber" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="houseNumber"/>
+        <property name="metadataFields">
+            <list>
+                <value>crvs.identifier.houseNumber</value>
+            </list>
+        </property>
+        <property name="isOpenByDefault" value="true"/>
+        <property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="searchFilterHusbandName" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="husband"/>
+        <property name="metadataFields">
+            <list>
+                <value>crvs.head.husband</value>
+            </list>
+        </property>
+        <property name="isOpenByDefault" value="true"/>
+        <property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="searchFilterWifeName" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="wife"/>
+        <property name="metadataFields">
+            <list>
+                <value>crvs.head.wife</value>
+            </list>
+        </property>
+        <property name="isOpenByDefault" value="true"/>
+        <property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="searchFilterRegistration" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="registration"/>
+        <property name="metadataFields">
+            <list>
+                <value>crvs.date.registration</value>
+            </list>
+        </property>
+        <property name="type" value="date"/>
+        <property name="facetLimit" value="5"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+        <property name="sortOrderFilterPage" value="COUNT"/>
+        <property name="isOpenByDefault" value="true"/>
+        <property name="pageSize" value="10"/>
+        <property name="exposeMinAndMaxValue" value="true"/>
+    </bean>
+
     <bean id="searchFilterDiscoverable" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="discoverable"/>
         <property name="type" value="standard"/>
@@ -3385,6 +3487,28 @@
     </bean>
 
     <!--Sort properties-->
+    <bean id="sortDateRegistration" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
+        <property name="metadataField" value="crvs.date.registration"/>
+        <property name="type" value="date"/>
+        <property name="defaultSortOrder" value="desc"/>
+    </bean>
+
+    <bean id="sortHouseNumber" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
+        <property name="metadataField" value="crvs.identifier.houseNumber"/>
+        <property name="defaultSortOrder" value="asc"/>
+    </bean>
+
+    <bean id="sortDateRegistrationAsc" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
+        <property name="metadataField" value="crvs.date.registration"/>
+        <property name="type" value="date"/>
+        <property name="defaultSortOrder" value="asc"/>
+    </bean>
+
+    <bean id="sortHouseNumberDesc" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
+        <property name="metadataField" value="crvs.identifier.houseNumber"/>
+        <property name="defaultSortOrder" value="desc"/>
+    </bean>
+
     <bean id="sortScore" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
         <property name="defaultSortOrder" value="desc"/>
     </bean>
