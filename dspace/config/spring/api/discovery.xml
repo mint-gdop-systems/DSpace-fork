@@ -202,6 +202,7 @@
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
+                <ref bean="searchFilterIdentifier" />
                 <ref bean="searchFilterContentInOriginalBundle"/>
                 <!-- <ref bean="searchFilterHasGeospatialMetadata"/> -->
                 <ref bean="searchFilterEntityType"/>
@@ -222,6 +223,7 @@
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
+                <ref bean="searchFilterIdentifier" />
                 <ref bean="searchFilterContentInOriginalBundle"/>
                 <ref bean="searchFilterFileNameInOriginalBundle" />
                 <ref bean="searchFilterFileDescriptionInOriginalBundle" />

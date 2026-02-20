@@ -1308,6 +1308,10 @@
     <form-value-pairs>
         <value-pairs value-pairs-name="common_identifiers" dc-term="identifier">
             <pair>
+                <displayed-value>File Number</displayed-value>
+                <stored-value>filenumber</stored-value>
+            </pair>
+            <pair>
                 <displayed-value>ISSN</displayed-value>
                 <stored-value>issn</stored-value>
             </pair>
@@ -1315,7 +1319,7 @@
                 <displayed-value>Other</displayed-value>
                 <stored-value>other</stored-value>
             </pair>
-            <pair>
+            <!-- <pair>
                 <displayed-value>ISMN</displayed-value>
                 <stored-value>ismn</stored-value>
             </pair>
@@ -1330,7 +1334,7 @@
             <pair>
                 <displayed-value>ISBN</displayed-value>
                 <stored-value>isbn</stored-value>
-            </pair>
+            </pair> -->
         </value-pairs>
 
         <value-pairs value-pairs-name="common_types" dc-term="type">

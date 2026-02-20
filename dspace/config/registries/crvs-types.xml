@@ -32,6 +32,13 @@
   </dc-type>
 
   <dc-type>
+    <schema>dc</schema>
+    <element>identifier</element>
+    <qualifier>filenumber</qualifier>
+    <scope_note></scope_note>
+  </dc-type>
+
+  <dc-type>
     <schema>crvs</schema>
     <element>head</element>
     <qualifier>husband</qualifier>
