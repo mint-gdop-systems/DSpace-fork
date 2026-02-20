@@ -1929,24 +1929,64 @@
 
         <value-pairs value-pairs-name="house_types" dc-term="type">
             <pair>
-                <displayed-value>Private House</displayed-value>
-                <stored-value>Private House</stored-value>
+                <displayed-value>የግል መኖሪያ ቤት</displayed-value>
+                <stored-value>የግል መኖሪያ ቤት</stored-value>
             </pair>
             <pair>
-                <displayed-value>Kebele Owned</displayed-value>
-                <stored-value>Kebele Owned</stored-value>
+                <displayed-value>የፌደራል መኖሪያ ቤት</displayed-value>
+                <stored-value>የፌደራል መኖሪያ ቤት</stored-value>
             </pair>
             <pair>
-                <displayed-value>Military Camp</displayed-value>
-                <stored-value>Military Camp</stored-value>
+                <displayed-value>የከተማ አስተዳደሩ መኖሪያ ቤት</displayed-value>
+                <stored-value>የከተማ አስተዳደሩ መኖሪያ ቤት</stored-value>
             </pair>
             <pair>
-                <displayed-value>Religious Organization</displayed-value>
-                <stored-value>Religious Organization</stored-value>
+                <displayed-value>የንግድ እና የመኖሪያ ቤት</displayed-value>
+                <stored-value>የንግድ እና የመኖሪያ ቤት</stored-value>
             </pair>
             <pair>
-                <displayed-value>Commercial</displayed-value>
-                <stored-value>Commercial</stored-value>
+                <displayed-value>የመካለከያ ሰራዊት ካምፕ</displayed-value>
+                <stored-value>የመካለከያ ሰራዊት ካምፕ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>የፌደራል ፖሊስ ካምፕ</displayed-value>
+                <stored-value>የፌደራል ፖሊስ ካምፕ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>አዲስ አበባ ፖሊስ ካምፕ</displayed-value>
+                <stored-value>አዲስ አበባ ፖሊስ ካምፕ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>የኦሮሚያ ፖሊስ ካምፕ</displayed-value>
+                <stored-value>የኦሮሚያ ፖሊስ ካምፕ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>መጠሊያ</displayed-value>
+                <stored-value>መጠሊያ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>በትምህርት ቤት የተከፈተ ፋይል</displayed-value>
+                <stored-value>በትምህርት ቤት የተከፈተ ፋይል</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>በወረዳው ህንጻ ላይ የተከፈተ ፋይል</displayed-value>
+                <stored-value>በወረዳው ህንጻ ላይ የተከፈተ ፋይል</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>በሀይማኖት ተቋማት የተከፈተ ፋይል</displayed-value>
+                <stored-value>በሀይማኖት ተቋማት የተከፈተ ፋይል</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>በአረጋውያን እንክብካቤ መኖሪያ ቤት የተከፈተ ፋይል</displayed-value>
+                <stored-value>በአረጋውያን እንክብካቤ መኖሪያ ቤት የተከፈተ ፋይል</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>በህፃናት እንክብለካቤ መኖሪያ ቤት የተከፈተ ፋይል</displayed-value>
+                <stored-value>በህፃናት እንክብለካቤ መኖሪያ ቤት የተከፈተ ፋይል</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ሌሎች</displayed-value>
+                <stored-value>ሌሎች</stored-value>
             </pair>
         </value-pairs>
 
