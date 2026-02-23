@@ -63,6 +63,8 @@
         <name-map collection-entity-type="Journal" submission-name="Journal"/>
         <name-map collection-entity-type="JournalVolume" submission-name="JournalVolume"/>
         <name-map collection-entity-type="JournalIssue" submission-name="JournalIssue"/>
+        <name-map collection-entity-type="House" submission-name="House" />
+        <name-map collection-entity-type="VitalEvent" submission-name="VitalEvent" />
 
         <!-- Example of configuration using a community handle to map an Item Submission Process.
 
@@ -108,6 +110,21 @@
 
         <!-- The following set of DescribeStep <step-definition>s all point to forms (of the same name) which are
              defined in submission-forms.xml -->
+        <step-definition id="birth" mandatory="true">
+            <heading>submission.sections.submit.progressbar.birth</heading>
+            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+            <type>submission-form</type>
+        </step-definition>  
+        <step-definition id="marriageAndDivorce" mandatory="true">
+            <heading>submit.progressbar.marriage</heading>
+            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+            <type>submission-form</type>
+        </step-definition>  
+        <step-definition id="death" mandatory="true">
+            <heading>submit.progressbar.death</heading>
+            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+            <type>submission-form</type>
+        </step-definition>   
         <step-definition id="traditionalpageone" mandatory="true">
             <heading>submit.progressbar.describe.stepone</heading>
             <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
@@ -317,6 +334,23 @@
 
             <!--Step will be to Sign off on the required DSpace License agreement -->
             <!-- <step id="license"/> -->
+        </submission-process>
+
+        <submission-process name="House">
+            <step id="duplicates"/>
+            <step id="collection"/>
+            <step id="traditionalpageone"/>
+            <step id="traditionalpagetwo"/>
+            <step id="upload"/>
+        </submission-process>
+
+        <submission-process name="VitalEvent">
+            <step id="duplicates"/>
+            <step id="collection"/>
+            <step id="birth"/>
+            <step id="marriageAndDivorce"/>
+            <step id="death"/>
+            <step id="upload"/>
         </submission-process>
 
         <!--

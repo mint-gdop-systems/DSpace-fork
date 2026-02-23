@@ -87,4 +87,112 @@
     <scope_note></scope_note>
   </dc-type>
 
+  <dc-type>
+    <schema>crvs</schema>
+    <element>birth</element>
+    <qualifier>childName</qualifier>
+  </dc-type>
+
+  <dc-type>
+      <schema>crvs</schema>
+      <element>birth</element>
+      <qualifier>gender</qualifier>
+  </dc-type>
+
+  <dc-type>
+      <schema>crvs</schema>
+      <element>birth</element>
+      <qualifier>dateOfBirth</qualifier>
+  </dc-type>
+
+  <dc-type>
+      <schema>crvs</schema>
+      <element>birth</element>
+      <qualifier>motherName</qualifier>
+  </dc-type>
+
+  <dc-type>
+      <schema>crvs</schema>
+      <element>birth</element>
+      <qualifier>registeredDate</qualifier>
+  </dc-type>
+
+  <dc-type>
+      <schema>crvs</schema>
+      <element>birth</element>
+      <qualifier>certificateIssuedDate</qualifier>
+  </dc-type>
+
+  <dc-type>
+      <schema>crvs</schema>
+      <element>marriage</element>
+      <qualifier>husbandName</qualifier>
+  </dc-type>
+
+  <dc-type>
+      <schema>crvs</schema>
+      <element>marriage</element>
+      <qualifier>wifeName</qualifier>
+  </dc-type>
+
+  <dc-type>
+      <schema>crvs</schema>
+      <element>marriage</element>
+      <qualifier>date</qualifier>
+  </dc-type>
+
+  <dc-type>
+      <schema>crvs</schema>
+      <element>divorce</element>
+      <qualifier>date</qualifier>
+  </dc-type>
+
+  <dc-type>
+      <schema>crvs</schema>
+      <element>divorce</element>
+      <qualifier>courtApprovalDate</qualifier>
+  </dc-type>
+
+  <dc-type>
+      <schema>crvs</schema>
+      <element>divorce</element>
+      <qualifier>courtCaseNumber</qualifier>
+  </dc-type>
+
+  <dc-type>
+      <schema>crvs</schema>
+      <element>death</element>
+      <qualifier>personName</qualifier>
+  </dc-type>
+
+  <dc-type>
+      <schema>crvs</schema>
+      <element>death</element>
+      <qualifier>dateOfBirth</qualifier>
+  </dc-type>
+
+  <dc-type>
+      <schema>crvs</schema>
+      <element>death</element>
+      <qualifier>nationality</qualifier>
+  </dc-type>
+
+  <dc-type>
+      <schema>crvs</schema>
+      <element>death</element>
+      <qualifier>motherName</qualifier>
+  </dc-type>
+
+  <dc-type>
+      <schema>crvs</schema>
+      <element>death</element>
+      <qualifier>reason</qualifier>
+  </dc-type>
+
+  <dc-type>
+      <schema>crvs</schema>
+      <element>death</element>
+      <qualifier>certificateIssuedDate</qualifier>
+  </dc-type>
+
 </dspace-dc-types>

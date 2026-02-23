@@ -202,6 +202,209 @@
             </row>
         </form>
 
+        <form name="birth">
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>birth</dc-element>
+                    <dc-qualifier>childName</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Child Name</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>birth</dc-element>
+                    <dc-qualifier>gender</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Gender</label>
+                    <input-type value-pairs-name="gender_types">dropdown</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>birth</dc-element>
+                    <dc-qualifier>dateOfBirth</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Date of Birth</label>
+                    <input-type>date</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>birth</dc-element>
+                    <dc-qualifier>motherName</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Mother Full Name</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>birth</dc-element>
+                    <dc-qualifier>registeredDate</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Birth Registered Date</label>
+                    <input-type>date</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>birth</dc-element>
+                    <dc-qualifier>certificateIssuedDate</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Certificate Issued Date</label>
+                    <input-type>date</input-type>
+                </field>
+            </row>
+        </form>
+
+        <form name="marriageAndDivorce">
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>marriage</dc-element>
+                    <dc-qualifier>husbandName</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Husband Name</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>marriage</dc-element>
+                    <dc-qualifier>wifeName</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Wife Name</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>marriage</dc-element>
+                    <dc-qualifier>date</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Marriage Date</label>
+                    <input-type>date</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>divorce</dc-element>
+                    <dc-qualifier>date</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Divorce Date</label>
+                    <input-type>date</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>divorce</dc-element>
+                    <dc-qualifier>courtApprovalDate</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Court Approval Date</label>
+                    <input-type>date</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>divorce</dc-element>
+                    <dc-qualifier>courtCaseNumber</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Court Case Number</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+        </form>
+
+        <form name="death">
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>death</dc-element>
+                    <dc-qualifier>personName</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Full Name</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>death</dc-element>
+                    <dc-qualifier>dateOfBirth</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Date of Birth</label>
+                    <input-type>date</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>death</dc-element>
+                    <dc-qualifier>nationality</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Nationality</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>death</dc-element>
+                    <dc-qualifier>motherName</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Mother Name</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>death</dc-element>
+                    <dc-qualifier>reason</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Cause of Death</label>
+                    <input-type>textarea</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>death</dc-element>
+                    <dc-qualifier>certificateIssuedDate</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Certificate Issued Date</label>
+                    <input-type>date</input-type>
+                </field>
+            </row>
+        </form>
 
         <!-- Form which defines the *first* metadata page/section for depositing Publication Entities.
              Since Publication Entities are very similar to normal Items, this is nearly identical to the
@@ -2041,6 +2244,17 @@
             <pair>
                 <displayed-value>Other</displayed-value>
                 <stored-value>Other</stored-value>
+            </pair>
+        </value-pairs>
+
+        <value-pairs value-pairs-name="gender_types">
+            <pair>
+                <displayed-value>Male</displayed-value>
+                <stored-value>male</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Female</displayed-value>
+                <stored-value>female</stored-value>
             </pair>
         </value-pairs>
 
