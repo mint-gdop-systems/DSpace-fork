@@ -111,7 +111,7 @@
         <!-- The following set of DescribeStep <step-definition>s all point to forms (of the same name) which are
              defined in submission-forms.xml -->
         <step-definition id="birth" mandatory="true">
-            <heading>submission.sections.submit.progressbar.birth</heading>
+            <heading>submit.progressbar.birth</heading>
             <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
             <type>submission-form</type>
         </step-definition>  
