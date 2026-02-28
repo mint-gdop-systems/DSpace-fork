@@ -35,7 +35,7 @@
                     <required>You must enter a name for this file</required>
                 </field>
             </row>
-             <row>
+            <row>
                 <field>
                     <dc-schema>crvs</dc-schema>
                     <dc-element>documentType</dc-element>
@@ -404,6 +404,103 @@
                     <input-type>date</input-type>
                 </field>
             </row>
+        </form>
+
+        <form name="letter">
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>title</dc-element>
+                    <dc-qualifier></dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Letter Subject</label>
+                    <input-type>onebox</input-type>
+                    <required>You must enter the subject.</required>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>type</dc-element>
+                    <dc-qualifier></dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Letter Type</label>
+                    <input-type value-pairs-name="letter_types">dropdown</input-type>
+                    <required>You must select the letter type.</required>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>company</dc-schema>
+                    <dc-element>referenceNumber</dc-element>
+                    <dc-qualifier></dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Reference Number</label>
+                    <input-type>onebox</input-type>
+                    <required>You must enter the reference number.</required>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>date</dc-element>
+                    <dc-qualifier>created</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Date Created</label>
+                    <input-type>date</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>creator</dc-element>
+                    <dc-qualifier></dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Organization</label>
+                    <input-type>onebox</input-type>
+                    <required>You must enter the organization.</required>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>company</dc-schema>
+                    <dc-element>department</dc-element>
+                    <dc-qualifier></dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Department</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>company</dc-schema>
+                    <dc-element>recipientName</dc-element>
+                    <dc-qualifier></dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Recipient Name</label>
+                    <input-type>onebox</input-type>
+                    <required>You must enter recipient name.</required>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>company</dc-schema>
+                    <dc-element>signatoryName</dc-element>
+                    <dc-qualifier></dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Signatory Name</label>
+                    <input-type>onebox</input-type>
+                    <required>You must enter signatory name.</required>
+                </field>
+            </row>
+
         </form>
 
         <!-- Form which defines the *first* metadata page/section for depositing Publication Entities.
@@ -2257,6 +2354,26 @@
                 <stored-value>female</stored-value>
             </pair>
         </value-pairs>
+
+        <value-pairs value-pairs-name="letter_types">
+            <pair>
+                <displayed-value>Incoming</displayed-value>
+                <stored-value>Incoming</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Outgoing</displayed-value>
+                <stored-value>Outgoing</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Memo</displayed-value>
+                <stored-value>Memo</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Internal</displayed-value>
+                <stored-value>Internal</stored-value>
+            </pair>
+        </value-pairs>
+
 
     </form-value-pairs>
 

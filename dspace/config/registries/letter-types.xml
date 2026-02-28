@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<dspace-dc-types>
+
+    <dspace-header>
+        <title>Custom Letter Types Registry</title>    
+    </dspace-header>
+
+    <dc-schema>
+        <name>company</name>
+        <namespace>https://example.com/letter</namespace>
+    </dc-schema>
+
+    <dc-type>
+        <schema>company</schema>
+        <element>department</element>
+        <qualifier></qualifier>
+    </dc-type>
+
+    <dc-type>
+        <schema>company</schema>
+        <element>recipientName</element>
+        <qualifier></qualifier>
+    </dc-type>
+
+    <dc-type>
+        <schema>company</schema>
+        <element>signatoryName</element>
+        <qualifier></qualifier>
+    </dc-type>
+
+    <dc-type>
+        <schema>company</schema>
+        <element>signatoryPosition</element>
+        <qualifier></qualifier>
+    </dc-type>
+
+    <dc-type>
+        <schema>company</schema>
+        <element>referenceNumber</element>
+        <qualifier></qualifier>
+    </dc-type>
+
+</dspace-dc-types>

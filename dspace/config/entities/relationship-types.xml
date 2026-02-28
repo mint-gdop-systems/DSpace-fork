@@ -17,4 +17,17 @@
             <min>0</min>
         </rightCardinality>
     </type>
+
+    <type>
+        <leftType>Letter</leftType>
+        <rightType></rightType>
+        <leftwardType></leftwardType>
+        <rightwardType></rightwardType>
+        <leftCardinality>
+            <min>0</min>
+        </leftCardinality>
+        <rightCardinality>
+            <min>0</min>
+        </rightCardinality>
+    </type>
 </relationships>
