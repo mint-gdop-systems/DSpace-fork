@@ -1,0 +1,9 @@
+#set($subject = 'DSpace Object Deletion Notification')
+A DSpace object has been deleted.
+
+Object Type: ${params[0]}
+Object ID: ${params[1]}
+Deleted by: ${params[2]}
+
+--
+The DSpace Team

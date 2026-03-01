@@ -38,8 +38,10 @@ import org.dspace.utils.DSpace;
 
 /**
  * Batch process for deleting DSpace objects (Item, Collection, Community).
- * This class orchestrates the deletion process, delegating the actual deletion logic
- * to a strategy registry that selects the appropriate strategy for each DSpaceObject type.
+ * This class orchestrates the deletion process, delegating the actual deletion
+ * logic
+ * to a strategy registry that selects the appropriate strategy for each
+ * DSpaceObject type.
  *
  * @author Mykhaylo Boychuk (mykhaylo.boychuk@4science.com)
  */
@@ -107,15 +109,16 @@ public class DSpaceObjectDeletionProcess
         var info = "Performing deletion of DSpaceObject (and all child objects) for type=%s and uuid=%s";
         handler.logInfo(String.format(info, Constants.typeText[dso.getType()], dso.getID().toString()));
         getStrategy(dso).delete(this.context, dso, this.copyVirtualMetadata);
+        this.context.complete();
         handler.logInfo("Deletion completed!");
     }
 
     private DSpaceObjectDeletionStrategy getStrategy(DSpaceObject dso) {
         var error = "No strategy for type:" + dso.getType();
         return deletionStrategies.stream()
-                                 .filter(s -> s.supports(dso))
-                                 .findFirst()
-                                 .orElseThrow(() -> new IllegalArgumentException(error));
+                .filter(s -> s.supports(dso))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(error));
     }
 
     private void assignCurrentUserInContext() throws SQLException {
@@ -130,7 +133,7 @@ public class DSpaceObjectDeletionProcess
     /**
      * Resolves the identifier (Item, Collection, or Community).
      *
-     * @param identifier   The UUID or handle of the DSpace object.
+     * @param identifier The UUID or handle of the DSpace object.
      * @return An Optional containing the DSpaceObject if found.
      * @throws SQLException If database error occurs.
      */
