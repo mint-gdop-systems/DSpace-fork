@@ -20,6 +20,13 @@
   <dc-type>
     <schema>crvs</schema>
     <element>identifier</element>
+    <qualifier>otherHouseType</qualifier>
+    <scope_note>a way to specify in text input if the selected house type is “other”</scope_note>
+  </dc-type>
+
+  <dc-type>
+    <schema>crvs</schema>
+    <element>identifier</element>
     <qualifier>houseNumber</qualifier>
     <scope_note></scope_note>
   </dc-type>

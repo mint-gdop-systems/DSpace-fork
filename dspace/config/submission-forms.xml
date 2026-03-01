@@ -92,6 +92,17 @@
                 <field>
                     <dc-schema>crvs</dc-schema>
                     <dc-element>identifier</dc-element>
+                    <dc-qualifier>otherHouseType</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Other House Type (optional)</label>
+                    <input-type>onebox</input-type>
+                    <hint>Enter the house type if it is not listed in the dropdown.</hint>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>identifier</dc-element>
                     <dc-qualifier>houseFamilyKey</dc-qualifier>
                     <repeatable>false</repeatable>
                     <label>House Identifier</label>
