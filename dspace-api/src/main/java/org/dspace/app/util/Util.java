@@ -1,10 +1,10 @@
 /**
- * The contents of this file are subject to the license and copyright
- * detailed in the LICENSE and NOTICE files at the root of the source
- * tree and available online at
- *
- * http://www.dspace.org/license/
- */
+* The contents of this file are subject to the license and copyright
+* detailed in the LICENSE and NOTICE files at the root of the source
+* tree and available online at
+*
+* http://www.dspace.org/license/
+*/
 package org.dspace.app.util;
 
 import java.io.IOException;
@@ -27,11 +27,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.dspace.content.Collection;
 import org.dspace.content.Item;
+import org.dspace.content.MetadataField;
 import org.dspace.content.MetadataValue;
 import org.dspace.core.Constants;
 import org.dspace.core.I18nUtil;
 import org.dspace.core.Utils;
-
 
 /**
  * Miscellaneous utility methods
@@ -46,9 +46,11 @@ public class Util {
     private static final Logger log = org.apache.logging.log4j.LogManager.getLogger();
 
     /**
-     * Default constructor. Must be protected as org.dspace.xmlworkflow.WorkflowUtils extends it
+     * Default constructor. Must be protected as
+     * org.dspace.xmlworkflow.WorkflowUtils extends it
      */
-    protected Util() { }
+    protected Util() {
+    }
 
     /**
      * Utility method to convert spaces in a string to HTML non-break space
@@ -56,7 +58,7 @@ public class Util {
      *
      * @param s string to change spaces in
      * @return the string passed in with spaces converted to HTML non-break
-     * spaces
+     *         spaces
      */
     public static String nonBreakSpace(String s) {
         StringBuilder newString = new StringBuilder();
@@ -92,7 +94,7 @@ public class Util {
      * @throws java.io.UnsupportedEncodingException if encoding error
      */
     public static String encodeBitstreamName(String stringIn, String encoding)
-        throws java.io.UnsupportedEncodingException {
+            throws java.io.UnsupportedEncodingException {
         // FIXME: This should be moved elsewhere, as it is used outside the UI
         if (stringIn == null) {
             return "";
@@ -100,45 +102,45 @@ public class Util {
 
         StringBuilder out = new StringBuilder();
 
-        final String[] pctEncoding = {"%00", "%01", "%02", "%03", "%04",
-            "%05", "%06", "%07", "%08", "%09", "%0a", "%0b", "%0c", "%0d",
-            "%0e", "%0f", "%10", "%11", "%12", "%13", "%14", "%15", "%16",
-            "%17", "%18", "%19", "%1a", "%1b", "%1c", "%1d", "%1e", "%1f",
-            "%20", "%21", "%22", "%23", "%24", "%25", "%26", "%27", "%28",
-            "%29", "%2a", "%2b", "%2c", "%2d", "%2e", "%2f", "%30", "%31",
-            "%32", "%33", "%34", "%35", "%36", "%37", "%38", "%39", "%3a",
-            "%3b", "%3c", "%3d", "%3e", "%3f", "%40", "%41", "%42", "%43",
-            "%44", "%45", "%46", "%47", "%48", "%49", "%4a", "%4b", "%4c",
-            "%4d", "%4e", "%4f", "%50", "%51", "%52", "%53", "%54", "%55",
-            "%56", "%57", "%58", "%59", "%5a", "%5b", "%5c", "%5d", "%5e",
-            "%5f", "%60", "%61", "%62", "%63", "%64", "%65", "%66", "%67",
-            "%68", "%69", "%6a", "%6b", "%6c", "%6d", "%6e", "%6f", "%70",
-            "%71", "%72", "%73", "%74", "%75", "%76", "%77", "%78", "%79",
-            "%7a", "%7b", "%7c", "%7d", "%7e", "%7f", "%80", "%81", "%82",
-            "%83", "%84", "%85", "%86", "%87", "%88", "%89", "%8a", "%8b",
-            "%8c", "%8d", "%8e", "%8f", "%90", "%91", "%92", "%93", "%94",
-            "%95", "%96", "%97", "%98", "%99", "%9a", "%9b", "%9c", "%9d",
-            "%9e", "%9f", "%a0", "%a1", "%a2", "%a3", "%a4", "%a5", "%a6",
-            "%a7", "%a8", "%a9", "%aa", "%ab", "%ac", "%ad", "%ae", "%af",
-            "%b0", "%b1", "%b2", "%b3", "%b4", "%b5", "%b6", "%b7", "%b8",
-            "%b9", "%ba", "%bb", "%bc", "%bd", "%be", "%bf", "%c0", "%c1",
-            "%c2", "%c3", "%c4", "%c5", "%c6", "%c7", "%c8", "%c9", "%ca",
-            "%cb", "%cc", "%cd", "%ce", "%cf", "%d0", "%d1", "%d2", "%d3",
-            "%d4", "%d5", "%d6", "%d7", "%d8", "%d9", "%da", "%db", "%dc",
-            "%dd", "%de", "%df", "%e0", "%e1", "%e2", "%e3", "%e4", "%e5",
-            "%e6", "%e7", "%e8", "%e9", "%ea", "%eb", "%ec", "%ed", "%ee",
-            "%ef", "%f0", "%f1", "%f2", "%f3", "%f4", "%f5", "%f6", "%f7",
-            "%f8", "%f9", "%fa", "%fb", "%fc", "%fd", "%fe", "%ff"};
+        final String[] pctEncoding = { "%00", "%01", "%02", "%03", "%04",
+                "%05", "%06", "%07", "%08", "%09", "%0a", "%0b", "%0c", "%0d",
+                "%0e", "%0f", "%10", "%11", "%12", "%13", "%14", "%15", "%16",
+                "%17", "%18", "%19", "%1a", "%1b", "%1c", "%1d", "%1e", "%1f",
+                "%20", "%21", "%22", "%23", "%24", "%25", "%26", "%27", "%28",
+                "%29", "%2a", "%2b", "%2c", "%2d", "%2e", "%2f", "%30", "%31",
+                "%32", "%33", "%34", "%35", "%36", "%37", "%38", "%39", "%3a",
+                "%3b", "%3c", "%3d", "%3e", "%3f", "%40", "%41", "%42", "%43",
+                "%44", "%45", "%46", "%47", "%48", "%49", "%4a", "%4b", "%4c",
+                "%4d", "%4e", "%4f", "%50", "%51", "%52", "%53", "%54", "%55",
+                "%56", "%57", "%58", "%59", "%5a", "%5b", "%5c", "%5d", "%5e",
+                "%5f", "%60", "%61", "%62", "%63", "%64", "%65", "%66", "%67",
+                "%68", "%69", "%6a", "%6b", "%6c", "%6d", "%6e", "%6f", "%70",
+                "%71", "%72", "%73", "%74", "%75", "%76", "%77", "%78", "%79",
+                "%7a", "%7b", "%7c", "%7d", "%7e", "%7f", "%80", "%81", "%82",
+                "%83", "%84", "%85", "%86", "%87", "%88", "%89", "%8a", "%8b",
+                "%8c", "%8d", "%8e", "%8f", "%90", "%91", "%92", "%93", "%94",
+                "%95", "%96", "%97", "%98", "%99", "%9a", "%9b", "%9c", "%9d",
+                "%9e", "%9f", "%a0", "%a1", "%a2", "%a3", "%a4", "%a5", "%a6",
+                "%a7", "%a8", "%a9", "%aa", "%ab", "%ac", "%ad", "%ae", "%af",
+                "%b0", "%b1", "%b2", "%b3", "%b4", "%b5", "%b6", "%b7", "%b8",
+                "%b9", "%ba", "%bb", "%bc", "%bd", "%be", "%bf", "%c0", "%c1",
+                "%c2", "%c3", "%c4", "%c5", "%c6", "%c7", "%c8", "%c9", "%ca",
+                "%cb", "%cc", "%cd", "%ce", "%cf", "%d0", "%d1", "%d2", "%d3",
+                "%d4", "%d5", "%d6", "%d7", "%d8", "%d9", "%da", "%db", "%dc",
+                "%dd", "%de", "%df", "%e0", "%e1", "%e2", "%e3", "%e4", "%e5",
+                "%e6", "%e7", "%e8", "%e9", "%ea", "%eb", "%ec", "%ed", "%ee",
+                "%ef", "%f0", "%f1", "%f2", "%f3", "%f4", "%f5", "%f6", "%f7",
+                "%f8", "%f9", "%fa", "%fb", "%fc", "%fd", "%fe", "%ff" };
 
         byte[] bytes = stringIn.getBytes(encoding);
 
         for (int i = 0; i < bytes.length; i++) {
             // Any unreserved char or "/" goes through unencoded
             if ((bytes[i] >= 'A' && bytes[i] <= 'Z')
-                || (bytes[i] >= 'a' && bytes[i] <= 'z')
-                || (bytes[i] >= '0' && bytes[i] <= '9') || bytes[i] == '-'
-                || bytes[i] == '.' || bytes[i] == '_' || bytes[i] == '~'
-                || bytes[i] == '/') {
+                    || (bytes[i] >= 'a' && bytes[i] <= 'z')
+                    || (bytes[i] >= '0' && bytes[i] <= '9') || bytes[i] == '-'
+                    || bytes[i] == '.' || bytes[i] == '_' || bytes[i] == '~'
+                    || bytes[i] == '/') {
                 out.append((char) bytes[i]);
             } else if (bytes[i] >= 0) {
                 // encode other chars (byte code < 128)
@@ -239,7 +241,7 @@ public class Util {
             // at least log this error to make debugging easier
             // do not silently return null only.
             log.warn("Unable to recognize UUID from String \""
-                         + val + "\". Will return null.", e);
+                    + val + "\". Will return null.", e);
             // Problem with parameter
             return null;
         }
@@ -255,7 +257,7 @@ public class Util {
      * @return list of UUID or null
      */
     public static List<UUID> getUUIDParameters(HttpServletRequest request,
-                                               String param) {
+            String param) {
         String[] request_values = request.getParameterValues(param);
 
         if (request_values == null) {
@@ -276,7 +278,6 @@ public class Util {
         return return_values;
     }
 
-
     /**
      * Obtain an array of int parameters from the given request as an int. null
      * is returned if parameter doesn't exist. <code>-1</code> is returned in
@@ -287,7 +288,7 @@ public class Util {
      * @return array of integers or null
      */
     public static int[] getIntParameters(HttpServletRequest request,
-                                         String param) {
+            String param) {
         String[] request_values = request.getParameterValues(param);
 
         if (request_values == null) {
@@ -318,9 +319,9 @@ public class Util {
      * @return the integer value of the parameter, or -1
      */
     public static boolean getBoolParameter(HttpServletRequest request,
-                                           String param) {
+            String param) {
         return ((request.getParameter(param) != null) && request.getParameter(
-            param).equals("true"));
+                param).equals("true"));
     }
 
     /**
@@ -350,7 +351,8 @@ public class Util {
     /**
      * Gets Maven version string of the source that built this instance.
      *
-     * @return string containing version, e.g. "1.5.2"; ends in "-SNAPSHOT" for development versions.
+     * @return string containing version, e.g. "1.5.2"; ends in "-SNAPSHOT" for
+     *         development versions.
      */
     public static String getSourceVersion() {
         if (sourceVersion == null) {
@@ -398,9 +400,9 @@ public class Util {
      */
 
     public static List<String> getControlledVocabulariesDisplayValueLocalized(
-        Item item, List<MetadataValue> values, String schema, String element,
-        String qualifier, Locale locale) throws SQLException,
-        DCInputsReaderException {
+            Item item, List<MetadataValue> values, String schema, String element,
+            String qualifier, Locale locale) throws SQLException,
+            DCInputsReaderException {
         List<String> toReturn = new ArrayList<>();
         DCInput myInputs = null;
         boolean myInputsFound = false;
@@ -433,8 +435,8 @@ public class Util {
                         for (int i = 0; i < inputs.length; i++) {
                             for (int j = 0; j < inputs[i].length; j++) {
                                 String inputField = Utils
-                                    .standardize(inputs[i][j].getSchema(), inputs[i][j].getElement(),
-                                                 inputs[i][j].getQualifier(), ".");
+                                        .standardize(inputs[i][j].getSchema(), inputs[i][j].getElement(),
+                                                inputs[i][j].getQualifier(), ".");
                                 if (currentField.equals(inputField)) {
                                     myInputs = inputs[i][j];
                                     myInputsFound = true;
@@ -471,9 +473,9 @@ public class Util {
     /**
      * Split a list in an array of i sub-lists uniformly sized.
      *
-     * @param <T> type of objects in the list.
+     * @param <T>     type of objects in the list.
      * @param idsList the list to split
-     * @param i the number of sublists to return
+     * @param i       the number of sublists to return
      *
      * @return an array of sub-lists of fixed size
      */
@@ -490,7 +492,7 @@ public class Util {
     }
 
     public static List<String> differenceInSubmissionFields(Collection fromCollection, Collection toCollection)
-        throws DCInputsReaderException {
+            throws DCInputsReaderException {
         DCInputsReader reader = new DCInputsReader();
         List<DCInputSet> from = reader.getInputsByCollection(fromCollection);
         List<DCInputSet> to = reader.getInputsByCollection(toCollection);
@@ -513,5 +515,28 @@ public class Util {
         }
 
         return ListUtils.removeAll(fromFieldName, toFieldName);
+    }
+
+    public static ArrayList<String> convertMetadataValuesToStrings(List<MetadataValue> metadataValues) {
+        ArrayList<String> resultStrings = new ArrayList<>();
+
+        for (MetadataValue mv : metadataValues) {
+            MetadataField mf = mv.getMetadataField();
+            String schema = mf.getMetadataSchema().getName();
+            String element = mf.getElement();
+            String qualifier = mf.getQualifier();
+            String value = mv.getValue();
+
+            StringBuilder metadataFieldString = new StringBuilder();
+            metadataFieldString.append(schema).append(".").append(element);
+
+            if (qualifier != null && !qualifier.isEmpty()) {
+                metadataFieldString.append(".").append(qualifier);
+            }
+
+            resultStrings.add(metadataFieldString.toString() + ": " + value);
+        }
+
+        return resultStrings;
     }
 }

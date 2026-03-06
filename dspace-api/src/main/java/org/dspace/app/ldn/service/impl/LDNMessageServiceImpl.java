@@ -51,7 +51,6 @@ import org.dspace.handle.service.HandleService;
 import org.dspace.services.ConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 /**
  * Implementation of {@link LDNMessageService}
  *
@@ -132,7 +131,7 @@ public class LDNMessageServiceImpl implements LDNMessageService {
             ldnMessage.setMessage(message);
         } catch (JsonProcessingException e) {
             log.error("Notification json can't be correctly processed " +
-                "and stored inside the LDN Message Entity" + ldnMessage);
+                    "and stored inside the LDN Message Entity" + ldnMessage);
             log.error(e);
         }
         ldnMessage.setType(StringUtils.joinWith(",", notification.getType()));
@@ -148,7 +147,8 @@ public class LDNMessageServiceImpl implements LDNMessageService {
         if (notificationTypeArrayList.size() > 1) {
             ldnMessage.setCoarNotifyType(notificationTypeArrayList.get(1));
         } else {
-            // The Notification's Type array does not include the CoarNotifyType information, e.g. ack notifications
+            // The Notification's Type array does not include the CoarNotifyType
+            // information, e.g. ack notifications
             // Attempt to find it via the inReplyTo if present
             if (ldnMessage.getInReplyTo() != null) {
                 ldnMessage.setCoarNotifyType(ldnMessage.getInReplyTo().getCoarNotifyType());
@@ -204,9 +204,10 @@ public class LDNMessageServiceImpl implements LDNMessageService {
 
     @Override
     public void update(Context context, LDNMessageEntity ldnMessage) throws SQLException {
-        // move the queue_status from UNTRUSTED to QUEUED if origin is a known NotifyService
+        // move the queue_status from UNTRUSTED to QUEUED if origin is a known
+        // NotifyService
         if (ldnMessage.getOrigin() != null &&
-            LDNMessageEntity.QUEUE_STATUS_UNTRUSTED.compareTo(ldnMessage.getQueueStatus()) == 0) {
+                LDNMessageEntity.QUEUE_STATUS_UNTRUSTED.compareTo(ldnMessage.getQueueStatus()) == 0) {
             ldnMessage.setQueueStatus(LDNMessageEntity.QUEUE_STATUS_QUEUED);
         }
         ldnMessageDao.save(context, ldnMessage);
@@ -214,9 +215,9 @@ public class LDNMessageServiceImpl implements LDNMessageService {
         ArrayList<String> identifiersList = new ArrayList<String>();
         identifiersList.add(ldnMessage.getID());
         context.addEvent(
-            new Event(Event.MODIFY, Constants.LDN_MESSAGE,
-                notificationUUID,
-                IndexableLDNNotification.TYPE, DetailType.DSO_TYPE, identifiersList));
+                new Event(Event.MODIFY, Constants.LDN_MESSAGE,
+                        notificationUUID,
+                        IndexableLDNNotification.TYPE, DetailType.DSO_TYPE, identifiersList));
     }
 
     private DSpaceObject findDspaceObjectByUrl(Context context, String url) throws SQLException {
@@ -285,7 +286,7 @@ public class LDNMessageServiceImpl implements LDNMessageService {
                 if (processor == null || isServiceDisabled) {
                     log.warn("No processor found for LDN message " + msg);
                     Integer status = isServiceDisabled ? LDNMessageEntity.QUEUE_STATUS_UNTRUSTED
-                        : LDNMessageEntity.QUEUE_STATUS_UNMAPPED_ACTION;
+                            : LDNMessageEntity.QUEUE_STATUS_UNMAPPED_ACTION;
                     msg.setQueueStatus(status);
                     msg.setQueueAttempts(msg.getQueueAttempts() + 1);
                     update(context, msg);
@@ -364,7 +365,7 @@ public class LDNMessageServiceImpl implements LDNMessageService {
         NotifyRequestStatus result = new NotifyRequestStatus();
         result.setItemUuid(item.getID());
         List<LDNMessageEntity> msgs = ldnMessageDao.findAllMessagesByItem(
-            context, item, "Offer");
+                context, item, "Offer");
         if (msgs != null && !msgs.isEmpty()) {
             for (LDNMessageEntity msg : msgs) {
                 RequestStatus offer = new RequestStatus();
@@ -376,7 +377,7 @@ public class LDNMessageServiceImpl implements LDNMessageService {
                 offer.setServiceUrl(nse == null ? "" : nse.getUrl());
                 offer.setOfferType(LDNUtils.getNotifyType(msg.getCoarNotifyType()));
                 List<LDNMessageEntity> acks = ldnMessageDao.findAllRelatedMessagesByItem(
-                    context, msg, item, "Accept", "Reject", "TentativeReject", "TentativeAccept",
+                        context, msg, item, "Accept", "Reject", "TentativeReject", "TentativeAccept",
                         "Announce");
                 if (acks == null || acks.isEmpty()) {
                     offer.setStatus(NotifyRequestStatusEnum.REQUESTED);
@@ -389,14 +390,14 @@ public class LDNMessageServiceImpl implements LDNMessageService {
                         .findAny().isPresent()) {
                     offer.setStatus(NotifyRequestStatusEnum.REJECTED);
                 } else if (acks.stream()
-                    .filter(c -> (c.getActivityStreamType().equalsIgnoreCase("TentativeAccept") ||
-                        c.getActivityStreamType().equalsIgnoreCase("Accept")))
-                    .findAny().isPresent()) {
+                        .filter(c -> (c.getActivityStreamType().equalsIgnoreCase("TentativeAccept") ||
+                                c.getActivityStreamType().equalsIgnoreCase("Accept")))
+                        .findAny().isPresent()) {
                     offer.setStatus(NotifyRequestStatusEnum.ACCEPTED);
                 }
                 if (acks.stream().filter(
-                    c -> c.getActivityStreamType().equalsIgnoreCase("Announce"))
-                    .findAny().isEmpty()) {
+                        c -> c.getActivityStreamType().equalsIgnoreCase("Announce"))
+                        .findAny().isEmpty()) {
                     result.addRequestStatus(offer);
                 }
             }
@@ -412,16 +413,23 @@ public class LDNMessageServiceImpl implements LDNMessageService {
 
         if (msgs != null && !msgs.isEmpty()) {
             for (LDNMessageEntity msg : msgs) {
-                // Review and Endorsement are the only patterns supporting resubmissions at present
+                // Review and Endorsement are the only patterns supporting resubmissions at
+                // present
                 if (msg.getCoarNotifyType().contains("EndorsementAction")
                         || msg.getCoarNotifyType().contains("ReviewAction")) {
-                    // Only provide the resubmissionReplyTo UUID if the pattern supports resubmission
-                    // Add an extra check to ensure that this is a resubmission: current notification service
-                    // matches the service associated with a previous tentativeReject response. This is to avoid a
-                    // case where a previous version of the item received a tentativeReject from one service
-                    // and the author decides to submit the version to a different service, instead of a resubmission
+                    // Only provide the resubmissionReplyTo UUID if the pattern supports
+                    // resubmission
+                    // Add an extra check to ensure that this is a resubmission: current
+                    // notification service
+                    // matches the service associated with a previous tentativeReject response. This
+                    // is to avoid a
+                    // case where a previous version of the item received a tentativeReject from one
+                    // service
+                    // and the author decides to submit the version to a different service, instead
+                    // of a resubmission
                     if (msg.getOrigin() != null && msg.getOrigin().getID().equals(service.getID())) {
-                        // Return the first ID found that will be used in the inReplyTo for a resubmission notification
+                        // Return the first ID found that will be used in the inReplyTo for a
+                        // resubmission notification
                         return msg.getID();
                     }
                 }

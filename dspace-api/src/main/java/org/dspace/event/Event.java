@@ -20,11 +20,15 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.logging.log4j.Logger;
+import org.dspace.app.util.Util;
 import org.dspace.content.DSpaceObject;
+import org.dspace.content.MetadataValue;
 import org.dspace.content.factory.ContentServiceFactory;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.event.factory.EventServiceFactory;
+
+import com.lowagie.text.Meta;
 
 /**
  * An Event object represents a single action that changed one object in the
@@ -46,9 +50,10 @@ import org.dspace.event.factory.EventServiceFactory;
  * to which an ADD adds a member.</li>
  * <li>Object -- optional, when present it is the other object effected by an
  * action, e.g. the Item ADDed to a Collection by an ADD.</li>
- * <li>detail -- a textual summary of what changed.  Content and its
+ * <li>detail -- a textual summary of what changed. Content and its
  * significance varies by the combination of action and subject type.</li>
- * <li> - timestamp -- exact millisecond timestamp at which event was logged.</li>
+ * <li>- timestamp -- exact millisecond timestamp at which event was
+ * logged.</li>
  * </ul>
  */
 public class Event implements Serializable {
@@ -81,8 +86,8 @@ public class Event implements Serializable {
     public static final int EVENT_MASK = 1; // mask of event type
 
     // XXX NOTE: keep this up to date with any changes to event (action) types.
-    protected static final String[] eventTypeText = {"CREATE", "MODIFY",
-        "MODIFY_METADATA", "ADD", "REMOVE", "DELETE", "INSTALL"};
+    protected static final String[] eventTypeText = { "CREATE", "MODIFY",
+            "MODIFY_METADATA", "ADD", "REMOVE", "DELETE", "INSTALL" };
 
     /** XXX NOTE: These constants must be kept synchronized * */
     /**
@@ -109,7 +114,7 @@ public class Event implements Serializable {
     protected static final int LDN_MESSAGE = 1 << Constants.LDN_MESSAGE; // 8
 
     protected static final int ALL_OBJECTS_MASK = BITSTREAM | BUNDLE | ITEM
-        | COLLECTION | COMMUNITY | SITE | GROUP | EPERSON | LDN_MESSAGE;
+            | COLLECTION | COMMUNITY | SITE | GROUP | EPERSON | LDN_MESSAGE;
 
     protected static Map<Integer, Integer> objTypeToMask = new HashMap<Integer, Integer>();
 
@@ -203,6 +208,11 @@ public class Event implements Serializable {
     private ArrayList<String> identifiers;
 
     /**
+     * Contains all metadata of DSpaceObject
+     */
+    private List<MetadataValue> metadataValues;
+
+    /**
      * unique key to bind together events from one context's transaction
      */
     private String transactionID;
@@ -213,7 +223,7 @@ public class Event implements Serializable {
      */
     private int currentUser = -1;
 
-    /** copy of context's "extraLogInfo" field.  Used only for */
+    /** copy of context's "extraLogInfo" field. Used only for */
     /**
      * marshalling for asynch event messages.
      */
@@ -226,36 +236,62 @@ public class Event implements Serializable {
      */
     private static Logger log = org.apache.logging.log4j.LogManager.getLogger(Event.class);
 
-
     /**
      * Constructor.
      *
      * You should consider to use
      * {@link Event#Event(int, int, UUID, Object, DetailType)}.
      *
-     * @param eventType   action type, e.g. Event.ADD.
-     * @param subjectType DSpace Object Type of subject e.g. Constants.ITEM.
-     * @param subjectID   database ID of subject instance.
-     * @param detailObject  detail object information that depends on context.
-     * @param detailType  detail type information that depends on context.
+     * @param eventType    action type, e.g. Event.ADD.
+     * @param subjectType  DSpace Object Type of subject e.g. Constants.ITEM.
+     * @param subjectID    database ID of subject instance.
+     * @param detailObject detail object information that depends on context.
+     * @param detailType   detail type information that depends on context.
+     * @param identifiers  array containing all identifiers of the dso or an empty
+     *                     array
      */
-    public Event(int eventType, int subjectType, UUID subjectID, Object detailObject, DetailType detailType) {
+    public Event(int eventType, int subjectType, UUID subjectID, Object detailObject, DetailType detailType,
+            List<MetadataValue> metadataValues) {
         this(eventType, subjectType, subjectID, detailObject, detailType,
-                new ArrayList<String>());
+                new ArrayList<String>(), metadataValues);
     }
 
     /**
      * Constructor.
      *
-     * @param eventType   action type, e.g. Event.ADD.
-     * @param subjectType DSpace Object Type of subject e.g. Constants.ITEM.
-     * @param subjectID   database ID of subject instance.
-     * @param detailObject  detail object information that depends on context.
-     * @param detailType  detail type information that depends on context.
-     * @param identifiers array containing all identifiers of the dso or an empty array
+     * @param eventType      action type, e.g. Event.ADD.
+     * @param subjectType    DSpace Object Type of subject e.g. Constants.ITEM.
+     * @param subjectID      database ID of subject instance.
+     * @param detailObject   detail object information that depends on context.
+     * @param detailType     detail type information that depends on context.
+     * @param identifiers    array containing all identifiers of the dso or an empty
+     *                       array
+     * @param metadataValues list of metadata values of the dso
      */
     public Event(int eventType, int subjectType, UUID subjectID, Object detailObject,
-                 DetailType detailType, ArrayList<String> identifiers) {
+            DetailType detailType, ArrayList<String> identifiers, List<MetadataValue> metadataValues) {
+        this.eventType = eventType;
+        this.subjectType = coreTypeToMask(subjectType);
+        this.subjectID = subjectID;
+        timeStamp = Instant.now().toEpochMilli();
+        this.detailList.add(new EventDetail(detailType, detailObject));
+        this.identifiers = (ArrayList<String>) identifiers.clone();
+        this.metadataValues = metadataValues;
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param eventType    action type, e.g. Event.ADD.
+     * @param subjectType  DSpace Object Type of subject e.g. Constants.ITEM.
+     * @param subjectID    database ID of subject instance.
+     * @param detailObject detail object information that depends on context.
+     * @param detailType   detail type information that depends on context.
+     * @param identifiers  array containing all identifiers of the dso or an empty
+     *                     array
+     */
+    public Event(int eventType, int subjectType, UUID subjectID, Object detailObject,
+            DetailType detailType, ArrayList<String> identifiers) {
         this.eventType = eventType;
         this.subjectType = coreTypeToMask(subjectType);
         this.subjectID = subjectID;
@@ -270,16 +306,16 @@ public class Event implements Serializable {
      * You should consider to use
      * {@link Event#Event(int, int, UUID, int, UUID, Object, DetailType)} instead.
      *
-     * @param eventType   action type, e.g. Event.ADD.
-     * @param subjectType DSpace Object Type of subject e.g. Constants.ITEM.
-     * @param subjectID   database ID of subject instance.
-     * @param objectType  DSpace Object Type of object e.g. Constants.BUNDLE.
-     * @param objectID    database ID of object instance.
-     * @param detailObject  detail object information that depends on context.
-     * @param detailType  detail type information that depends on context.
+     * @param eventType    action type, e.g. Event.ADD.
+     * @param subjectType  DSpace Object Type of subject e.g. Constants.ITEM.
+     * @param subjectID    database ID of subject instance.
+     * @param objectType   DSpace Object Type of object e.g. Constants.BUNDLE.
+     * @param objectID     database ID of object instance.
+     * @param detailObject detail object information that depends on context.
+     * @param detailType   detail type information that depends on context.
      */
     public Event(int eventType, int subjectType, UUID subjectID, int objectType,
-                 UUID objectID, Object detailObject, DetailType detailType) {
+            UUID objectID, Object detailObject, DetailType detailType) {
         this(eventType, subjectType, subjectID, objectType, objectID, detailObject, detailType,
                 new ArrayList<String>());
     }
@@ -287,17 +323,18 @@ public class Event implements Serializable {
     /**
      * Constructor.
      *
-     * @param eventType   action type, e.g. Event.ADD.
-     * @param subjectType DSpace Object Type of subject e.g. Constants.ITEM.
-     * @param subjectID   database ID of subject instance.
-     * @param objectType  DSpace Object Type of object e.g. Constants.BUNDLE.
-     * @param objectID    database ID of object instance.
-     * @param detailType  detail type information that depends on context.
-     * @param detailObject  detail object information that depends on context.
-     * @param identifiers array containing all identifiers of the dso or an empty array
+     * @param eventType    action type, e.g. Event.ADD.
+     * @param subjectType  DSpace Object Type of subject e.g. Constants.ITEM.
+     * @param subjectID    database ID of subject instance.
+     * @param objectType   DSpace Object Type of object e.g. Constants.BUNDLE.
+     * @param objectID     database ID of object instance.
+     * @param detailType   detail type information that depends on context.
+     * @param detailObject detail object information that depends on context.
+     * @param identifiers  array containing all identifiers of the dso or an empty
+     *                     array
      */
     public Event(int eventType, int subjectType, UUID subjectID, int objectType,
-                 UUID objectID, Object detailObject, DetailType detailType, ArrayList<String> identifiers) {
+            UUID objectID, Object detailObject, DetailType detailType, ArrayList<String> identifiers) {
         this.eventType = eventType;
         this.subjectType = coreTypeToMask(subjectType);
         this.subjectID = subjectID;
@@ -311,16 +348,19 @@ public class Event implements Serializable {
     /**
      * Constructor.
      *
-     * @param eventType   action type, e.g. Event.ADD.
-     * @param subjectType DSpace Object Type of subject e.g. Constants.ITEM.
-     * @param subjectID   database ID of subject instance.
-     * @param objectType  DSpace Object Type of object e.g. Constants.BUNDLE.
-     * @param objectID    database ID of object instance.
-     * @param detailList  array containing all detail of dso modification.
-     * @param identifiers array containing all identifiers of the dso or an empty array
+     * @param eventType      action type, e.g. Event.ADD.
+     * @param subjectType    DSpace Object Type of subject e.g. Constants.ITEM.
+     * @param subjectID      database ID of subject instance.
+     * @param objectType     DSpace Object Type of object e.g. Constants.BUNDLE.
+     * @param objectID       database ID of object instance.
+     * @param detailList     array containing all detail of dso modification.
+     * @param identifiers    array containing all identifiers of the dso or an empty
+     *                       array
+     * @param metadataValues list of metadata values of the dso
      */
     public Event(int eventType, int subjectType, UUID subjectID, int objectType,
-                 UUID objectID, ArrayList<EventDetail> detailList, ArrayList<String> identifiers) {
+            UUID objectID, ArrayList<EventDetail> detailList, ArrayList<String> identifiers,
+            List<MetadataValue> metadataValues) {
         this.eventType = eventType;
         this.subjectType = coreTypeToMask(subjectType);
         this.subjectID = subjectID;
@@ -329,6 +369,7 @@ public class Event implements Serializable {
         timeStamp = Instant.now().toEpochMilli();
         this.detailList = (ArrayList<EventDetail>) detailList.clone();
         this.identifiers = (ArrayList<String>) identifiers.clone();
+        this.metadataValues = metadataValues;
     }
 
     /**
@@ -356,7 +397,8 @@ public class Event implements Serializable {
      * @param subjectType DSpace Object Type of subject e.g. Constants.ITEM.
      * @param subjectID   database ID of subject instance.
      * @param detail      detail information that depends on context.
-     * @param identifiers array containing all identifiers of the dso or an empty array
+     * @param identifiers array containing all identifiers of the dso or an empty
+     *                    array
      */
     @Deprecated
     public Event(int eventType, int subjectType, UUID subjectID, Object detail, ArrayList<String> identifiers) {
@@ -384,9 +426,9 @@ public class Event implements Serializable {
      */
     @Deprecated
     public Event(int eventType, int subjectType, UUID subjectID, int objectType,
-                 UUID objectID, Object detail) {
+            UUID objectID, Object detail) {
         this(eventType, subjectType, subjectID, objectType, objectID, detail,
-             new ArrayList<String>());
+                new ArrayList<String>());
     }
 
     /**
@@ -399,11 +441,12 @@ public class Event implements Serializable {
      * @param objectType  DSpace Object Type of object e.g. Constants.BUNDLE.
      * @param objectID    database ID of object instance.
      * @param detail      detail information that depends on context.
-     * @param identifiers array containing all identifiers of the dso or an empty array
+     * @param identifiers array containing all identifiers of the dso or an empty
+     *                    array
      */
     @Deprecated
     public Event(int eventType, int subjectType, UUID subjectID, int objectType,
-                 UUID objectID, Object detail, ArrayList<String> identifiers) {
+            UUID objectID, Object detail, ArrayList<String> identifiers) {
         this(eventType, subjectType, subjectID,
                 objectType, objectID,
                 detail, DetailType.INFO,
@@ -422,11 +465,11 @@ public class Event implements Serializable {
         if (other instanceof Event) {
             Event otherEvent = (Event) other;
             return (Objects.equals(this.detailList, otherEvent.detailList))
-                && this.eventType == otherEvent.eventType
-                && this.subjectType == otherEvent.subjectType
-                && this.subjectID.equals(otherEvent.subjectID)
-                && this.objectType == otherEvent.objectType
-                && this.objectID.equals(otherEvent.objectID);
+                    && this.eventType == otherEvent.eventType
+                    && this.subjectType == otherEvent.subjectType
+                    && this.subjectID.equals(otherEvent.subjectID)
+                    && this.objectType == otherEvent.objectType
+                    && this.objectID.equals(otherEvent.objectID);
         }
 
         return false;
@@ -435,12 +478,12 @@ public class Event implements Serializable {
     @Override
     public int hashCode() {
         return new HashCodeBuilder().append(this.detailList)
-                                    .append(eventType)
-                                    .append(subjectType)
-                                    .append(subjectID)
-                                    .append(objectType)
-                                    .append(objectID)
-                                    .toHashCode();
+                .append(eventType)
+                .append(subjectType)
+                .append(subjectID)
+                .append(objectType)
+                .append(objectID)
+                .toHashCode();
     }
 
     /**
@@ -477,7 +520,8 @@ public class Event implements Serializable {
      *
      * @param context The relevant DSpace Context.
      * @return DSpaceObject or null if none can be found or no object was set.
-     * @throws SQLException An exception that provides information on a database access error or other errors.
+     * @throws SQLException An exception that provides information on a database
+     *                      access error or other errors.
      */
     public DSpaceObject getObject(Context context) throws SQLException {
         int type = getObjectType();
@@ -495,11 +539,12 @@ public class Event implements Serializable {
      *
      * @param context The relevant DSpace Context.
      * @return DSpaceObject or null if none can be found.
-     * @throws SQLException An exception that provides information on a database access error or other errors.
+     * @throws SQLException An exception that provides information on a database
+     *                      access error or other errors.
      */
     public DSpaceObject getSubject(Context context) throws SQLException {
         return ContentServiceFactory.getInstance().getDSpaceObjectService(getSubjectType())
-                                    .find(context, getSubjectID());
+                .find(context, getSubjectID());
     }
 
     /**
@@ -525,7 +570,7 @@ public class Event implements Serializable {
 
     /**
      * @return type number (e.g. Constants.ITEM) of object of this event, or -1
-     * if none was set.
+     *         if none was set.
      */
     public int getObjectType() {
         return maskTypeToCore(objectType);
@@ -577,7 +622,7 @@ public class Event implements Serializable {
 
     /**
      * @return event-type (i.e. action) this event, one of the masks like
-     * Event.ADD defined above.
+     *         Event.ADD defined above.
      */
     public int getEventType() {
         return eventType;
@@ -587,7 +632,7 @@ public class Event implements Serializable {
      * Get the text name of event (action) type.
      *
      * @return event-type (i.e. action) this event as a String, e.g. for
-     * logging.
+     *         logging.
      */
     public String getEventTypeAsString() {
         int i = log2(eventType);
@@ -623,7 +668,7 @@ public class Event implements Serializable {
 
     /**
      * @return timestamp at which event occurred, as a count of milliseconds
-     * since the epoch (standard Java format).
+     *         since the epoch (standard Java format).
      */
     public long getTimeStamp() {
         return timeStamp;
@@ -631,7 +676,7 @@ public class Event implements Serializable {
 
     /**
      * @return hashcode identifier of name of Dispatcher which first dispatched
-     * this event. (Needed by asynch dispatch code.)
+     *         this event. (Needed by asynch dispatch code.)
      */
     public int getDispatcher() {
         return dispatcher;
@@ -647,8 +692,8 @@ public class Event implements Serializable {
     }
 
     /**
-    * @return list of detail element of the event.
-    */
+     * @return list of detail element of the event.
+     */
     public ArrayList<EventDetail> getDetailList() {
         return detailList;
     }
@@ -659,6 +704,13 @@ public class Event implements Serializable {
     public List<String> getIdentifiers() {
         // don't return a reference to our private array, clone it.
         return (List<String>) identifiers.clone();
+    }
+
+    /**
+     * @return list of metadata values for the event's subject.
+     */
+    public List<String> getMetadataValues() {
+        return Util.convertMetadataValuesToStrings(metadataValues);
     }
 
     /**
@@ -698,7 +750,7 @@ public class Event implements Serializable {
      *
      * @param filters list of filter masks; each one is an Array of two ints.
      * @return true if this event would be passed through the given filter
-     * list.
+     *         list.
      */
     public boolean pass(List<int[]> filters) {
         boolean result = false;
@@ -711,9 +763,9 @@ public class Event implements Serializable {
 
         if (log.isDebugEnabled()) {
             log.debug("Filtering event: " + "eventType="
-                          + String.valueOf(eventType) + ", subjectType="
-                          + String.valueOf(subjectType) + ", result="
-                          + String.valueOf(result));
+                    + String.valueOf(eventType) + ", subjectType="
+                    + String.valueOf(subjectType) + ", result="
+                    + String.valueOf(result));
         }
 
         return result;
@@ -751,28 +803,30 @@ public class Event implements Serializable {
 
     /**
      * @return Detailed string representation of contents of this event, to
-     * help in logging and debugging.
+     *         help in logging and debugging.
      */
     @Override
     public String toString() {
         return "org.dspace.event.Event(eventType="
-            + this.getEventTypeAsString()
-            + ", SubjectType="
-            + this.getSubjectTypeAsString()
-            + ", SubjectID="
-            + String.valueOf(subjectID)
-            + ", ObjectType="
-            + this.getObjectTypeAsString()
-            + ", ObjectID="
-            + String.valueOf(objectID)
-            + ", TimeStamp="
-            + String.valueOf(timeStamp)
-            + ", dispatcher="
-            + String.valueOf(dispatcher)
-            + ", detailList="
-            + (detailList == null ? "[null]" : "\"" + detailList + "\"")
-            + ", transactionID="
-            + (transactionID == null ? "[null]" : "\"" + transactionID
-            + "\"") + ")";
+                + this.getEventTypeAsString()
+                + ", SubjectType="
+                + this.getSubjectTypeAsString()
+                + ", SubjectID="
+                + String.valueOf(subjectID)
+                + ", ObjectType="
+                + this.getObjectTypeAsString()
+                + ", ObjectID="
+                + String.valueOf(objectID)
+                + ", TimeStamp="
+                + String.valueOf(timeStamp)
+                + ", dispatcher="
+                + String.valueOf(dispatcher)
+                + ", detailList="
+                + (detailList == null ? "[null]" : "\"" + detailList + "\"")
+                + ", transactionID="
+                + (transactionID == null ? "[null]"
+                        : "\"" + transactionID
+                                + "\"")
+                + ")";
     }
 }

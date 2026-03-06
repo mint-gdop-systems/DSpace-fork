@@ -5,5 +5,9 @@ Object Type: ${params[0]}
 Object ID: ${params[1]}
 Deleted by: ${params[2]}
 
+Metadata:
+
+${params[3]}
 --
-The DSpace Team
+
+CRRSA Digital Archive

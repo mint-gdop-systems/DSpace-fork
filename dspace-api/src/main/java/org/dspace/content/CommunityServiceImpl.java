@@ -46,7 +46,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Service implementation for the Community object.
- * This class is responsible for all business logic calls for the Community object and is autowired by spring.
+ * This class is responsible for all business logic calls for the Community
+ * object and is autowired by spring.
  * This class should never be accessed directly.
  *
  * @author kevinvandevelde at atmire.com
@@ -60,7 +61,6 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
 
     @Autowired(required = true)
     protected CommunityDAO communityDAO;
-
 
     @Autowired(required = true)
     protected CollectionService collectionService;
@@ -97,7 +97,7 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
 
     @Override
     public Community create(Community parent, Context context, String handle,
-                            UUID uuid) throws SQLException, AuthorizeException {
+            UUID uuid) throws SQLException, AuthorizeException {
         if (!(authorizeService.isAdmin(context) ||
                 (parent != null && authorizeService.authorizeActionBoolean(context, parent, Constants.ADD)))) {
             throw new AuthorizeException(
@@ -116,7 +116,6 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
             newCommunity.addParentCommunity(parent);
         }
 
-
         // create the default authorization policy for communities
         // of 'anonymous' READ
         Group anonymousGroup = groupService.findByName(context, Group.ANONYMOUS);
@@ -131,13 +130,14 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
             } else {
                 identifierService.register(context, newCommunity, handle);
             }
-        }  catch (IllegalStateException | IdentifierException ex) {
+        } catch (IllegalStateException | IdentifierException ex) {
             throw new IllegalStateException(ex);
         }
 
         context.addEvent(new Event(Event.CREATE, Constants.COMMUNITY, newCommunity.getID(),
                 newCommunity.getHandle(), DetailType.HANDLE,
-                getIdentifiers(context, newCommunity)));
+                getIdentifiers(context, newCommunity),
+                getMetadata(newCommunity, Item.ANY, Item.ANY, Item.ANY, Item.ANY)));
 
         // if creating a top-level Community, simulate an ADD event at the Site.
         if (parent == null) {
@@ -162,10 +162,10 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
     @Override
     public List<Community> findAll(Context context) throws SQLException {
         MetadataField sortField = metadataFieldService.findByElement(context, MetadataSchemaEnum.DC.getName(),
-                                                                     "title", null);
+                "title", null);
         if (sortField == null) {
             throw new IllegalArgumentException(
-                "Required metadata field '" + MetadataSchemaEnum.DC.getName() + ".title' doesn't exist!");
+                    "Required metadata field '" + MetadataSchemaEnum.DC.getName() + ".title' doesn't exist!");
         }
 
         return communityDAO.findAll(context, sortField);
@@ -174,10 +174,10 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
     @Override
     public List<Community> findAll(Context context, Integer limit, Integer offset) throws SQLException {
         MetadataField nameField = metadataFieldService.findByElement(context, MetadataSchemaEnum.DC.getName(),
-                                                                     "title", null);
+                "title", null);
         if (nameField == null) {
             throw new IllegalArgumentException(
-                "Required metadata field '" + MetadataSchemaEnum.DC.getName() + ".title' doesn't exist!");
+                    "Required metadata field '" + MetadataSchemaEnum.DC.getName() + ".title' doesn't exist!");
         }
 
         return communityDAO.findAll(context, nameField, limit, offset);
@@ -187,10 +187,10 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
     public List<Community> findAllTop(Context context) throws SQLException {
         // get all communities that are not children
         MetadataField sortField = metadataFieldService.findByElement(context, MetadataSchemaEnum.DC.getName(),
-                                                                     "title", null);
+                "title", null);
         if (sortField == null) {
             throw new IllegalArgumentException(
-                "Required metadata field '" + MetadataSchemaEnum.DC.getName() + ".title' doesn't exist!");
+                    "Required metadata field '" + MetadataSchemaEnum.DC.getName() + ".title' doesn't exist!");
         }
 
         return communityDAO.findAllNoParent(context, sortField);
@@ -238,7 +238,7 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
         Bitstream oldLogo = community.getLogo();
         if (oldLogo != null) {
             log.info(LogHelper.getHeader(context, "remove_logo",
-                                          "community_id=" + community.getID()));
+                    "community_id=" + community.getID()));
             community.setLogo(null);
             bitstreamService.delete(context, oldLogo);
         }
@@ -254,8 +254,8 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
             authorizeService.addPolicies(context, policies, newLogo);
 
             log.info(LogHelper.getHeader(context, "set_logo",
-                                          "community_id=" + community.getID() + "logo_bitstream_id="
-                                              + newLogo.getID()));
+                    "community_id=" + community.getID() + "logo_bitstream_id="
+                            + newLogo.getID()));
         }
 
         return community.getLogo();
@@ -267,21 +267,22 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
         canEdit(context, community);
 
         log.info(LogHelper.getHeader(context, "update_community",
-                                      "community_id=" + community.getID()));
+                "community_id=" + community.getID()));
 
         super.update(context, community);
 
         communityDAO.save(context, community);
         if (community.isModified()) {
             context.addEvent(new Event(Event.MODIFY, Constants.COMMUNITY, community.getID(), null,
-                                       getIdentifiers(context, community)));
+                    getIdentifiers(context, community)));
             community.clearModified();
         }
         if (community.isMetadataModified()) {
             context.addEvent(
                     new Event(Event.MODIFY_METADATA, Constants.COMMUNITY, community.getID(),
                             community.getMetadataEventDetails(), DetailType.DSO_SUMMARY,
-                            getIdentifiers(context, community)));
+                            getIdentifiers(context, community),
+                            getMetadata(community, Item.ANY, Item.ANY, Item.ANY, Item.ANY)));
             community.clearModified();
         }
         community.clearDetails();
@@ -294,7 +295,8 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
 
         Group admins = community.getAdministrators();
         if (admins == null) {
-            //turn off authorization so that Community Admins can create Sub-Community Admins
+            // turn off authorization so that Community Admins can create Sub-Community
+            // Admins
             context.turnOffAuthorisationSystem();
             admins = groupService.create(context);
             context.restoreAuthSystemState();
@@ -308,13 +310,14 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
         // register this as the admin group
         community.setAdmins(admins);
         context.addEvent(new Event(Event.MODIFY, Constants.COMMUNITY, community.getID(),
-                                             null, getIdentifiers(context, community)));
+                null, getIdentifiers(context, community)));
         return admins;
     }
 
     @Override
     public void removeAdministrators(Context context, Community community) throws SQLException, AuthorizeException {
-        // Check authorisation - Must be an Admin of the parent community (or system admin) to delete Admin group
+        // Check authorisation - Must be an Admin of the parent community (or system
+        // admin) to delete Admin group
         AuthorizeUtil.authorizeRemoveAdminGroup(context, community);
 
         // just return if there is no administrative group.
@@ -325,7 +328,7 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
         // Remove the link to the community table.
         community.setAdmins(null);
         context.addEvent(new Event(Event.MODIFY, Constants.COMMUNITY, community.getID(),
-                                             null, getIdentifiers(context, community)));
+                null, getIdentifiers(context, community)));
     }
 
     @Override
@@ -365,7 +368,6 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
         return collectionList;
     }
 
-
     /**
      * Internal method to process subcommunities recursively
      *
@@ -385,20 +387,20 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
 
     @Override
     public void addCollection(Context context, Community community, Collection collection)
-        throws SQLException, AuthorizeException {
+            throws SQLException, AuthorizeException {
         // Check authorisation
         authorizeService.authorizeAction(context, community, Constants.ADD);
 
         log.info(LogHelper.getHeader(context, "add_collection",
-                                      "community_id=" + community.getID() + ",collection_id=" + collection.getID()));
+                "community_id=" + community.getID() + ",collection_id=" + collection.getID()));
 
         if (!community.getCollections().contains(collection)) {
             community.addCollection(collection);
             collection.addCommunity(community);
         }
         context.addEvent(
-            new Event(Event.ADD, Constants.COMMUNITY, community.getID(), Constants.COLLECTION, collection.getID(),
-                community.getHandle(), DetailType.HANDLE, getIdentifiers(context, community)));
+                new Event(Event.ADD, Constants.COMMUNITY, community.getID(), Constants.COLLECTION, collection.getID(),
+                        community.getHandle(), DetailType.HANDLE, getIdentifiers(context, community)));
     }
 
     @Override
@@ -406,7 +408,6 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
             throws SQLException, AuthorizeException {
         return createSubcommunity(context, parentCommunity, null);
     }
-
 
     @Override
     public Community createSubcommunity(Context context, Community parentCommunity, String handle)
@@ -416,7 +417,7 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
 
     @Override
     public Community createSubcommunity(Context context, Community parentCommunity, String handle,
-                                        UUID uuid) throws SQLException, AuthorizeException {
+            UUID uuid) throws SQLException, AuthorizeException {
         // Check authorisation
         authorizeService.authorizeAction(context, parentCommunity, Constants.ADD);
 
@@ -430,13 +431,13 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
 
     @Override
     public void addSubcommunity(Context context, Community parentCommunity, Community childCommunity)
-        throws SQLException, AuthorizeException {
+            throws SQLException, AuthorizeException {
         // Check authorisation
         authorizeService.authorizeAction(context, parentCommunity, Constants.ADD);
 
         log.info(LogHelper.getHeader(context, "add_subcommunity",
-                                      "parent_comm_id=" + parentCommunity.getID() + ",child_comm_id=" + childCommunity
-                                          .getID()));
+                "parent_comm_id=" + parentCommunity.getID() + ",child_comm_id=" + childCommunity
+                        .getID()));
 
         if (!parentCommunity.getSubcommunities().contains(childCommunity)) {
             parentCommunity.addSubCommunity(childCommunity);
@@ -449,7 +450,7 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
 
     @Override
     public void removeCollection(Context context, Community community, Collection collection)
-        throws SQLException, AuthorizeException, IOException {
+            throws SQLException, AuthorizeException, IOException {
         // Check authorisation
         authorizeService.authorizeAction(context, community, Constants.REMOVE);
 
@@ -465,17 +466,17 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
         }
 
         log.info(LogHelper.getHeader(context, "remove_collection",
-                                      "community_id=" + community.getID() + ",collection_id=" + collection.getID()));
+                "community_id=" + community.getID() + ",collection_id=" + collection.getID()));
 
         // Remove any mappings
         context.addEvent(new Event(Event.REMOVE, Constants.COMMUNITY, community.getID(),
-            Constants.COLLECTION, removedId, removedHandle, DetailType.HANDLE,
-            removedIdentifiers));
+                Constants.COLLECTION, removedId, removedHandle, DetailType.HANDLE,
+                removedIdentifiers));
     }
 
     @Override
     public void removeSubcommunity(Context context, Community parentCommunity, Community childCommunity)
-        throws SQLException, AuthorizeException, IOException {
+            throws SQLException, AuthorizeException, IOException {
         // Check authorisation
         authorizeService.authorizeAction(context, parentCommunity, Constants.REMOVE);
 
@@ -486,12 +487,12 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
         rawDelete(context, childCommunity);
 
         log.info(LogHelper.getHeader(context, "remove_subcommunity",
-                                      "parent_comm_id=" + parentCommunity.getID() + ",child_comm_id=" + childCommunity
-                                          .getID()));
+                "parent_comm_id=" + parentCommunity.getID() + ",child_comm_id=" + childCommunity
+                        .getID()));
 
         context.addEvent(
-            new Event(Event.REMOVE, Constants.COMMUNITY, parentCommunity.getID(), Constants.COMMUNITY, removedId,
-                removedHandle, DetailType.HANDLE, removedIdentifiers));
+                new Event(Event.REMOVE, Constants.COMMUNITY, parentCommunity.getID(), Constants.COMMUNITY, removedId,
+                        removedHandle, DetailType.HANDLE, removedIdentifiers));
     }
 
     @Override
@@ -509,7 +510,6 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
         ArrayList<String> removedIdentifiers = getIdentifiers(context, community);
         String removedHandle = community.getHandle();
         UUID removedId = community.getID();
-
 
         // If not a top-level community, have parent remove me; this
         // will call rawDelete() before removing the linkage
@@ -552,13 +552,13 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
      * @throws IOException        if IO error
      */
     protected void rawDelete(Context context, Community community)
-        throws SQLException, AuthorizeException, IOException {
+            throws SQLException, AuthorizeException, IOException {
         log.info(LogHelper.getHeader(context, "delete_community",
-                                      "community_id=" + community.getID()));
+                "community_id=" + community.getID()));
 
         context.addEvent(new Event(Event.DELETE, Constants.COMMUNITY, community.getID(),
-            community.getHandle(), DetailType.HANDLE,
-            getIdentifiers(context, community)));
+                community.getHandle(), DetailType.HANDLE,
+                getIdentifiers(context, community), getMetadata(community, Item.ANY, Item.ANY, Item.ANY, Item.ANY)));
 
         subscribeService.deleteByDspaceObject(context, community);
 
@@ -621,12 +621,12 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
 
         for (Community parent : parents) {
             if (authorizeService.authorizeActionBoolean(context, parent,
-                                                        Constants.WRITE)) {
+                    Constants.WRITE)) {
                 return;
             }
 
             if (authorizeService.authorizeActionBoolean(context, parent,
-                                                        Constants.ADD)) {
+                    Constants.ADD)) {
                 return;
             }
         }
@@ -663,7 +663,7 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
                 if (AuthorizeConfiguration.canCommunityAdminPerformSubelementDeletion()) {
                     adminObject = getParentObject(context, community);
                     if (adminObject == null) {
-                        //top-level community, has to be admin of the current community
+                        // top-level community, has to be admin of the current community
                         adminObject = community;
                     }
                 }
@@ -680,7 +680,6 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
         return adminObject;
     }
 
-
     @Override
     public DSpaceObject getParentObject(Context context, Community community) throws SQLException {
         List<Community> parentCommunities = community.getParentCommunities();
@@ -693,9 +692,9 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
 
     @Override
     public void updateLastModified(Context context, Community community) {
-        //Also fire a modified event since the community HAS been modified
+        // Also fire a modified event since the community HAS been modified
         context.addEvent(new Event(Event.MODIFY, Constants.COMMUNITY,
-                                   community.getID(), null, getIdentifiers(context, community)));
+                community.getID(), null, getIdentifiers(context, community)));
 
     }
 
@@ -726,9 +725,9 @@ public class CommunityServiceImpl extends DSpaceObjectServiceImpl<Community> imp
     /**
      * Returns total community archived items
      *
-     * @param context         DSpace context
-     * @param community       Community
-     * @return                total community archived items
+     * @param context   DSpace context
+     * @param community Community
+     * @return total community archived items
      */
     @Override
     public int countArchivedItems(Context context, Community community) {

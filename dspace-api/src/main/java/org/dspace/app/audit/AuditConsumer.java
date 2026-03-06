@@ -102,9 +102,22 @@ public class AuditConsumer implements Consumer {
             EPerson currentUser = ctx.getCurrentUser();
             String deleter = (currentUser != null) ? currentUser.getEmail() : "Anonymous";
 
+            // Build metadata string
+            StringBuilder metadataBlock = new StringBuilder();
+            List<String> metadata = event.getMetadataValues();
+
+            if (metadata != null && !metadata.isEmpty()) {
+                for (String md : metadata) {
+                    metadataBlock.append(md).append("\n");
+                }
+            } else {
+                metadataBlock.append("No metadata available");
+            }
+
             email.addArgument(type);
             email.addArgument(id != null ? id.toString() : "unknown");
             email.addArgument(deleter);
+            email.addArgument(metadataBlock.toString());
 
             email.send();
             log.info("Deletion notification sent to {}", adminEmail);

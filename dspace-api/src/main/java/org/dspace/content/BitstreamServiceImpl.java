@@ -44,7 +44,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Service implementation for the Bitstream object.
- * This class is responsible for all business logic calls for the Bitstream object and is autowired by spring.
+ * This class is responsible for all business logic calls for the Bitstream
+ * object and is autowired by spring.
  * This class should never be accessed directly.
  *
  * @author kevinvandevelde at atmire.com
@@ -54,15 +55,12 @@ public class BitstreamServiceImpl extends DSpaceObjectServiceImpl<Bitstream> imp
     /**
      * log4j logger
      */
-    private static final Logger log
-            = org.apache.logging.log4j.LogManager.getLogger();
-
+    private static final Logger log = org.apache.logging.log4j.LogManager.getLogger();
 
     @Autowired(required = true)
     protected BitstreamDAO bitstreamDAO;
     @Autowired(required = true)
     protected ItemService itemService;
-
 
     @Autowired(required = true)
     protected AuthorizeService authorizeService;
@@ -86,7 +84,7 @@ public class BitstreamServiceImpl extends DSpaceObjectServiceImpl<Bitstream> imp
         if (bitstream == null) {
             if (log.isDebugEnabled()) {
                 log.debug(LogHelper.getHeader(context, "find_bitstream",
-                                               "not_found,bitstream_id=" + id));
+                        "not_found,bitstream_id=" + id));
             }
 
             return null;
@@ -95,7 +93,7 @@ public class BitstreamServiceImpl extends DSpaceObjectServiceImpl<Bitstream> imp
         // not null, return Bitstream
         if (log.isDebugEnabled()) {
             log.debug(LogHelper.getHeader(context, "find_bitstream",
-                                           "bitstream_id=" + id));
+                    "bitstream_id=" + id));
         }
 
         return bitstream;
@@ -133,23 +131,24 @@ public class BitstreamServiceImpl extends DSpaceObjectServiceImpl<Bitstream> imp
         UUID bitstreamID = bitstreamStorageService.store(context, bitstreamDAO.create(context, new Bitstream()), is);
 
         log.info(LogHelper.getHeader(context, "create_bitstream",
-                                      "bitstream_id=" + bitstreamID));
+                "bitstream_id=" + bitstreamID));
 
         // Set the format to "unknown"
         Bitstream bitstream = find(context, bitstreamID);
         setFormat(context, bitstream, null);
 
         context.addEvent(
-            new Event(Event.CREATE, Constants.BITSTREAM, bitstreamID,
-                bitstream.getChecksum(), DetailType.BITSTREAM_CHECKSUM,
-                getIdentifiers(context, bitstream)));
+                new Event(Event.CREATE, Constants.BITSTREAM, bitstreamID,
+                        bitstream.getChecksum(), DetailType.BITSTREAM_CHECKSUM,
+                        getIdentifiers(context, bitstream),
+                        getMetadata(bitstream, Item.ANY, Item.ANY, Item.ANY, Item.ANY)));
 
         return bitstream;
     }
 
     @Override
     public Bitstream create(Context context, Bundle bundle, InputStream is)
-        throws IOException, SQLException, AuthorizeException {
+            throws IOException, SQLException, AuthorizeException {
         // Check authorisation
         authorizeService.authorizeAction(context, bundle, Constants.ADD);
 
@@ -157,14 +156,14 @@ public class BitstreamServiceImpl extends DSpaceObjectServiceImpl<Bitstream> imp
         bundleService.addBitstream(context, bundle, b);
         UUID itemUUID = getItem(b).stream().findFirst().map(Item::getID).orElse(null);
         context.addEvent(
-            new Event(Event.CREATE, Constants.BITSTREAM, b.getID(), Constants.ITEM, itemUUID,
-                b.getChecksum(), DetailType.BITSTREAM_CHECKSUM, getIdentifiers(context, b)));
+                new Event(Event.CREATE, Constants.BITSTREAM, b.getID(), Constants.ITEM, itemUUID,
+                        b.getChecksum(), DetailType.BITSTREAM_CHECKSUM, getIdentifiers(context, b)));
         return b;
     }
 
     @Override
     public Bitstream register(Context context, Bundle bundle, int assetstore, String bitstreamPath)
-        throws IOException, SQLException, AuthorizeException {
+            throws IOException, SQLException, AuthorizeException {
         // check authorisation
         authorizeService.authorizeAction(context, bundle, Constants.ADD);
 
@@ -175,10 +174,10 @@ public class BitstreamServiceImpl extends DSpaceObjectServiceImpl<Bitstream> imp
     }
 
     /**
-     * Register a new bitstream, with a new ID.  The checksum and file size
-     * are calculated.  This method is not public, and does not check
+     * Register a new bitstream, with a new ID. The checksum and file size
+     * are calculated. This method is not public, and does not check
      * authorisation; other methods such as Bundle.createBitstream() will
-     * check authorisation.  The newly created bitstream has the "unknown"
+     * check authorisation. The newly created bitstream has the "unknown"
      * format.
      *
      * @param context       DSpace context object
@@ -191,23 +190,23 @@ public class BitstreamServiceImpl extends DSpaceObjectServiceImpl<Bitstream> imp
      */
     @Override
     public Bitstream register(Context context,
-                              int assetstore, String bitstreamPath)
-        throws IOException, SQLException, AuthorizeException {
+            int assetstore, String bitstreamPath)
+            throws IOException, SQLException, AuthorizeException {
         // Store the bits
         Bitstream bitstream = bitstreamDAO.create(context, new Bitstream());
         bitstreamStorageService.register(
-            context, bitstream, assetstore, bitstreamPath);
+                context, bitstream, assetstore, bitstreamPath);
 
         log.info(LogHelper.getHeader(context,
-                                      "create_bitstream",
-                                      "bitstream_id=" + bitstream.getID()));
+                "create_bitstream",
+                "bitstream_id=" + bitstream.getID()));
 
         // Set the format to "unknown"
         setFormat(context, bitstream, null);
 
         context.addEvent(new Event(Event.CREATE, Constants.BITSTREAM,
                 bitstream.getID(), bitstream.getChecksum(), DetailType.BITSTREAM_CHECKSUM,
-                getIdentifiers(context, bitstream)));
+                getIdentifiers(context, bitstream), getMetadata(bitstream, Item.ANY, Item.ANY, Item.ANY, Item.ANY)));
 
         return bitstream;
     }
@@ -257,11 +256,11 @@ public class BitstreamServiceImpl extends DSpaceObjectServiceImpl<Bitstream> imp
         authorizeService.authorizeAction(context, bitstream, Constants.WRITE);
 
         log.info(LogHelper.getHeader(context, "update_bitstream",
-                                      "bitstream_id=" + bitstream.getID()));
+                "bitstream_id=" + bitstream.getID()));
         super.update(context, bitstream);
         if (bitstream.isModified()) {
             context.addEvent(new Event(Event.MODIFY, Constants.BITSTREAM, bitstream.getID(), null,
-                                       getIdentifiers(context, bitstream)));
+                    getIdentifiers(context, bitstream)));
             bitstream.setModified();
         }
         if (bitstream.isMetadataModified()) {
@@ -286,7 +285,7 @@ public class BitstreamServiceImpl extends DSpaceObjectServiceImpl<Bitstream> imp
         // Check authorisation
         authorizeService.authorizeAction(context, bitstream, Constants.DELETE);
         log.info(LogHelper.getHeader(context, "delete_bitstream",
-                                      "bitstream_id=" + bitstream.getID()));
+                "bitstream_id=" + bitstream.getID()));
 
         ArrayList<EventDetail> detailList = new ArrayList<>();
         detailList.add(new EventDetail(DetailType.BITSTREAM_SEQUENCE_ID, String.valueOf(bitstream.getSequenceID())));
@@ -295,27 +294,31 @@ public class BitstreamServiceImpl extends DSpaceObjectServiceImpl<Bitstream> imp
         UUID itemUUID = getItem(bitstream).stream().findFirst().map(Item::getID).orElse(null);
 
         context.addEvent(new Event(Event.DELETE, Constants.BITSTREAM, bitstream.getID(), Constants.ITEM, itemUUID,
-            detailList, getIdentifiers(context, bitstream)));
+                detailList, getIdentifiers(context, bitstream),
+                getMetadata(bitstream, Item.ANY, Item.ANY, Item.ANY, Item.ANY)));
 
         // Remove bitstream itself
         bitstream.setDeleted(true);
         update(context, bitstream);
 
-        //Remove our bitstream from all our bundles
+        // Remove our bitstream from all our bundles
         final List<Bundle> bundles = bitstream.getBundles();
         for (Bundle bundle : bundles) {
             authorizeService.authorizeAction(context, bundle, Constants.REMOVE);
-            //We also need to remove the bitstream id when it's set as bundle's primary bitstream
+            // We also need to remove the bitstream id when it's set as bundle's primary
+            // bitstream
             if (bitstream.equals(bundle.getPrimaryBitstream())) {
                 bundle.unsetPrimaryBitstreamID();
             }
             bundle.removeBitstream(bitstream);
         }
 
-        //Remove all bundles from the bitstream object, clearing the connection in 2 ways
+        // Remove all bundles from the bitstream object, clearing the connection in 2
+        // ways
         bundles.clear();
 
-        // Remove any RequestItem entities associated with this bitstream ensuring there are no requests referencing
+        // Remove any RequestItem entities associated with this bitstream ensuring there
+        // are no requests referencing
         // a deleted bitstream
         List<RequestItem> requestItems = requestItemService.findAll(context);
         for (RequestItem requestItem : requestItems) {
@@ -324,7 +327,8 @@ public class BitstreamServiceImpl extends DSpaceObjectServiceImpl<Bitstream> imp
             }
         }
 
-        // Remove policies only after the bitstream has been updated (otherwise the current user has not WRITE rights)
+        // Remove policies only after the bitstream has been updated (otherwise the
+        // current user has not WRITE rights)
         authorizeService.removeAllPolicies(context, bitstream);
     }
 
@@ -335,7 +339,7 @@ public class BitstreamServiceImpl extends DSpaceObjectServiceImpl<Bitstream> imp
 
     @Override
     public InputStream retrieve(Context context, Bitstream bitstream)
-        throws IOException, SQLException, AuthorizeException {
+            throws IOException, SQLException, AuthorizeException {
         // Maybe should return AuthorizeException??
         authorizeService.authorizeAction(context, bitstream, Constants.READ);
 
@@ -368,9 +372,10 @@ public class BitstreamServiceImpl extends DSpaceObjectServiceImpl<Bitstream> imp
 
     @Override
     public void updateLastModified(Context context, Bitstream bitstream) {
-        //Also fire a modified event since the bitstream HAS been modified
+        // Also fire a modified event since the bitstream HAS been modified
         context.addEvent(
-            new Event(Event.MODIFY, Constants.BITSTREAM, bitstream.getID(), null, getIdentifiers(context, bitstream)));
+                new Event(Event.MODIFY, Constants.BITSTREAM, bitstream.getID(), null,
+                        getIdentifiers(context, bitstream)));
     }
 
     @Override
@@ -397,7 +402,6 @@ public class BitstreamServiceImpl extends DSpaceObjectServiceImpl<Bitstream> imp
     public Iterator<Bitstream> getItemBitstreams(Context context, Item item) throws SQLException {
         return bitstreamDAO.findByItem(context, item);
     }
-
 
     @Override
     public Iterator<Bitstream> getCollectionBitstreams(Context context, Collection collection) throws SQLException {
@@ -536,17 +540,16 @@ public class BitstreamServiceImpl extends DSpaceObjectServiceImpl<Bitstream> imp
 
     @Override
     public boolean isInBundle(Bitstream bitstream, java.util.Collection<String> bundleNames) throws SQLException {
-        Set<String> bundles =
-            bitstream.getBundles()
-                     .stream()
-                     .map(Bundle::getName)
-                     .collect(Collectors.toSet());
+        Set<String> bundles = bitstream.getBundles()
+                .stream()
+                .map(Bundle::getName)
+                .collect(Collectors.toSet());
         return bundleNames.stream().anyMatch(bundles::contains);
     }
 
     private Optional<Item> getItem(Bitstream bitstream) throws SQLException {
         return bitstream.getBundles().stream()
-            .flatMap(bundle -> bundle.getItems().stream())
-            .findFirst();
+                .flatMap(bundle -> bundle.getItems().stream())
+                .findFirst();
     }
 }

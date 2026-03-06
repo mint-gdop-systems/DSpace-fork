@@ -123,8 +123,9 @@ public class EPersonServiceImpl extends DSpaceObjectServiceImpl<EPerson> impleme
     }
 
     /**
-     * Create a fake EPerson which can receive email.  Its address will be the
+     * Create a fake EPerson which can receive email. Its address will be the
      * value of "mail.admin", or "postmaster" if all else fails.
+     * 
      * @param c
      * @return
      * @throws SQLException
@@ -171,7 +172,8 @@ public class EPersonServiceImpl extends DSpaceObjectServiceImpl<EPerson> impleme
             return null;
         }
 
-        // All email addresses are stored as lowercase, so ensure that the email address is lowercased for the lookup
+        // All email addresses are stored as lowercase, so ensure that the email address
+        // is lowercased for the lookup
         return ePersonDAO.findByEmail(context, email);
     }
 
@@ -187,7 +189,7 @@ public class EPersonServiceImpl extends DSpaceObjectServiceImpl<EPerson> impleme
     @Override
     public List<EPerson> search(Context context, String query) throws SQLException {
         if (StringUtils.isBlank(query)) {
-            //If we don't have a query, just return everything.
+            // If we don't have a query, just return everything.
             return findAll(context, EPerson.EMAIL);
         }
         return search(context, query, -1, -1);
@@ -198,14 +200,15 @@ public class EPersonServiceImpl extends DSpaceObjectServiceImpl<EPerson> impleme
         List<EPerson> ePersons = new ArrayList<>();
         UUID uuid = UUIDUtils.fromString(query);
         if (uuid == null) {
-            // Search by firstname & lastname (NOTE: email will also be included automatically)
+            // Search by firstname & lastname (NOTE: email will also be included
+            // automatically)
             MetadataField firstNameField = metadataFieldService.findByElement(context, "eperson", "firstname", null);
             MetadataField lastNameField = metadataFieldService.findByElement(context, "eperson", "lastname", null);
             if (StringUtils.isBlank(query)) {
                 query = null;
             }
             ePersons = ePersonDAO.search(context, query, Arrays.asList(firstNameField, lastNameField),
-                                         Arrays.asList(firstNameField, lastNameField), offset, limit);
+                    Arrays.asList(firstNameField, lastNameField), offset, limit);
         } else {
             // Search by UUID
             EPerson person = find(context, uuid);
@@ -221,7 +224,8 @@ public class EPersonServiceImpl extends DSpaceObjectServiceImpl<EPerson> impleme
         int result = 0;
         UUID uuid = UUIDUtils.fromString(query);
         if (uuid == null) {
-            // Count results found by firstname & lastname (email is also included automatically)
+            // Count results found by firstname & lastname (email is also included
+            // automatically)
             MetadataField firstNameField = metadataFieldService.findByElement(context, "eperson", "firstname", null);
             MetadataField lastNameField = metadataFieldService.findByElement(context, "eperson", "lastname", null);
             if (StringUtils.isBlank(query)) {
@@ -240,19 +244,20 @@ public class EPersonServiceImpl extends DSpaceObjectServiceImpl<EPerson> impleme
 
     @Override
     public List<EPerson> searchNonMembers(Context context, String query, Group excludeGroup, int offset, int limit)
-        throws SQLException {
+            throws SQLException {
         List<EPerson> ePersons = new ArrayList<>();
         UUID uuid = UUIDUtils.fromString(query);
         if (uuid == null) {
-            // Search by firstname & lastname (NOTE: email will also be included automatically)
+            // Search by firstname & lastname (NOTE: email will also be included
+            // automatically)
             MetadataField firstNameField = metadataFieldService.findByElement(context, "eperson", "firstname", null);
             MetadataField lastNameField = metadataFieldService.findByElement(context, "eperson", "lastname", null);
             if (StringUtils.isBlank(query)) {
                 query = null;
             }
             ePersons = ePersonDAO.searchNotMember(context, query, Arrays.asList(firstNameField, lastNameField),
-                                                  excludeGroup, Arrays.asList(firstNameField, lastNameField),
-                                                  offset, limit);
+                    excludeGroup, Arrays.asList(firstNameField, lastNameField),
+                    offset, limit);
         } else {
             // Search by UUID
             EPerson person = find(context, uuid);
@@ -270,14 +275,15 @@ public class EPersonServiceImpl extends DSpaceObjectServiceImpl<EPerson> impleme
         int result = 0;
         UUID uuid = UUIDUtils.fromString(query);
         if (uuid == null) {
-            // Count results found by firstname & lastname (email is also included automatically)
+            // Count results found by firstname & lastname (email is also included
+            // automatically)
             MetadataField firstNameField = metadataFieldService.findByElement(context, "eperson", "firstname", null);
             MetadataField lastNameField = metadataFieldService.findByElement(context, "eperson", "lastname", null);
             if (StringUtils.isBlank(query)) {
                 query = null;
             }
             result = ePersonDAO.searchNotMemberCount(context, query, Arrays.asList(firstNameField, lastNameField),
-                                                    excludeGroup);
+                    excludeGroup);
         } else {
             // Search by UUID
             EPerson person = find(context, uuid);
@@ -346,7 +352,7 @@ public class EPersonServiceImpl extends DSpaceObjectServiceImpl<EPerson> impleme
             delete(context, ePerson, true);
         } catch (AuthorizeException ex) {
             log.error("This AuthorizeException: " + ex + " occurred while deleting Eperson with the ID: " +
-                      ePerson.getID());
+                    ePerson.getID());
             throw new AuthorizeException(ex);
         } catch (IOException ex) {
             log.error("This IOException: " + ex + " occurred while deleting Eperson with the ID: " + ePerson.getID());
@@ -368,8 +374,9 @@ public class EPersonServiceImpl extends DSpaceObjectServiceImpl<EPerson> impleme
      * @param context DSpace context
      * @param ePerson The EPerson to delete.
      * @param cascade Whether to delete references on the EPerson (cascade =
-     * true) or to abort the deletion (cascade = false) if the EPerson is
-     * referenced within DSpace.
+     *                true) or to abort the deletion (cascade = false) if the
+     *                EPerson is
+     *                referenced within DSpace.
      *
      * @throws SQLException
      * @throws AuthorizeException
@@ -384,10 +391,12 @@ public class EPersonServiceImpl extends DSpaceObjectServiceImpl<EPerson> impleme
         }
         // Get all workflow-related groups that the current EPerson belongs to
         Set<Group> workFlowGroups = getAllWorkFlowGroups(context, ePerson);
-        for (Group group: workFlowGroups) {
-            // Get total number of unique EPerson objs who are a member of this group (or subgroup)
+        for (Group group : workFlowGroups) {
+            // Get total number of unique EPerson objs who are a member of this group (or
+            // subgroup)
             int totalMembers = groupService.countAllMembers(context, group);
-            // If only one EPerson is a member, then we cannot delete the last member of this group.
+            // If only one EPerson is a member, then we cannot delete the last member of
+            // this group.
             if (totalMembers == 1) {
                 throw new EmptyWorkflowGroupException(ePerson.getID(), group.getID());
             }
@@ -406,7 +415,7 @@ public class EPersonServiceImpl extends DSpaceObjectServiceImpl<EPerson> impleme
                         Iterator<Item> itemIterator = itemService.findBySubmitter(context, ePerson, true);
 
                         VersionHistoryService versionHistoryService = VersionServiceFactory.getInstance()
-                                                                      .getVersionHistoryService();
+                                .getVersionHistoryService();
                         VersioningService versioningService = VersionServiceFactory.getInstance().getVersionService();
 
                         while (itemIterator.hasNext()) {
@@ -415,13 +424,13 @@ public class EPersonServiceImpl extends DSpaceObjectServiceImpl<EPerson> impleme
                             VersionHistory versionHistory = versionHistoryService.findByItem(context, item);
                             if (null != versionHistory) {
                                 for (Version version : versioningService.getVersionsByHistory(context,
-                                                                                              versionHistory)) {
+                                        versionHistory)) {
                                     version.setePerson(null);
                                     versionDAO.save(context, version);
                                 }
                             }
                             WorkspaceItemService workspaceItemService = ContentServiceFactory.getInstance()
-                                                                        .getWorkspaceItemService();
+                                    .getWorkspaceItemService();
                             WorkspaceItem wsi = workspaceItemService.findByItem(context, item);
 
                             if (null != wsi) {
@@ -435,13 +444,13 @@ public class EPersonServiceImpl extends DSpaceObjectServiceImpl<EPerson> impleme
                             }
                         }
                     } else if (Strings.CS.equals(tableName, "cwf_claimtask")) {
-                         // Unclaim all XmlWorkflow tasks
+                        // Unclaim all XmlWorkflow tasks
                         ClaimedTaskService claimedTaskService = XmlWorkflowServiceFactory
-                                                                .getInstance().getClaimedTaskService();
+                                .getInstance().getClaimedTaskService();
                         XmlWorkflowService xmlWorkflowService = XmlWorkflowServiceFactory
-                                                                .getInstance().getXmlWorkflowService();
+                                .getInstance().getXmlWorkflowService();
                         WorkflowRequirementsService workflowRequirementsService = XmlWorkflowServiceFactory
-                                                                       .getInstance().getWorkflowRequirementsService();
+                                .getInstance().getWorkflowRequirementsService();
 
                         List<ClaimedTask> claimedTasks = claimedTaskService.findByEperson(context, ePerson);
 
@@ -450,12 +459,12 @@ public class EPersonServiceImpl extends DSpaceObjectServiceImpl<EPerson> impleme
 
                             try {
                                 workflowRequirementsService.removeClaimedUser(context, task.getWorkflowItem(),
-                                                                              ePerson, task.getStepID());
+                                        ePerson, task.getStepID());
                             } catch (WorkflowConfigurationException ex) {
                                 log.error("This WorkflowConfigurationException: " + ex +
-                                          " occurred while deleting Eperson with the ID: " + ePerson.getID());
+                                        " occurred while deleting Eperson with the ID: " + ePerson.getID());
                                 throw new AuthorizeException(new EPersonDeletionException(Collections
-                                                                                          .singletonList(tableName)));
+                                        .singletonList(tableName)));
                             }
                         }
                     } else if (Strings.CS.equals(tableName, "resourcepolicy")) {
@@ -466,7 +475,7 @@ public class EPersonServiceImpl extends DSpaceObjectServiceImpl<EPerson> impleme
                         poolTaskService.deleteByEperson(context, ePerson);
                     } else if (Strings.CS.equals(tableName, "cwf_workflowitemrole")) {
                         WorkflowItemRoleService workflowItemRoleService = XmlWorkflowServiceFactory.getInstance()
-                                                                          .getWorkflowItemRoleService();
+                                .getWorkflowItemRoleService();
                         workflowItemRoleService.deleteByEPerson(context, ePerson);
                     } else {
                         log.warn("EPerson is referenced in table '" + tableName
@@ -481,10 +490,10 @@ public class EPersonServiceImpl extends DSpaceObjectServiceImpl<EPerson> impleme
         }
         context.addEvent(new Event(Event.DELETE, Constants.EPERSON, ePerson.getID(),
                 ePerson.getEmail(), DetailType.EPERSON_EMAIL,
-                getIdentifiers(context, ePerson)));
+                getIdentifiers(context, ePerson), getMetadata(ePerson, Item.ANY, Item.ANY, Item.ANY, Item.ANY)));
 
         // XXX FIXME: This sidesteps the object model code so it won't
-        // generate  REMOVE events on the affected Groups.
+        // generate REMOVE events on the affected Groups.
         // Remove any group memberships first
         // Remove any group memberships first
         Iterator<Group> groups = ePerson.getGroups().iterator();
@@ -515,7 +524,7 @@ public class EPersonServiceImpl extends DSpaceObjectServiceImpl<EPerson> impleme
         Set<Group> workFlowGroups = new HashSet<>();
 
         Set<Group> groups = groupService.allMemberGroupsSet(context, ePerson);
-        for (Group group: groups) {
+        for (Group group : groups) {
             List<CollectionRole> collectionRoles = collectionRoleService.findByGroup(context, group);
             if (!collectionRoles.isEmpty()) {
                 workFlowGroups.add(group);
@@ -577,7 +586,8 @@ public class EPersonServiceImpl extends DSpaceObjectServiceImpl<EPerson> impleme
         }
         boolean answer = myHash.matches(attempt);
 
-        // If using the old unsalted hash, and this password is correct, update to a new hash
+        // If using the old unsalted hash, and this password is correct, update to a new
+        // hash
         if (answer && (null == ePerson.getDigestAlgorithm())) {
             log.info("Upgrading password hash for EPerson " + ePerson.getID());
             setPassword(ePerson, attempt);
@@ -600,7 +610,7 @@ public class EPersonServiceImpl extends DSpaceObjectServiceImpl<EPerson> impleme
         // see if the authorization system says you can
         if (!context.ignoreAuthorization()
                 && ((context.getCurrentUser() == null) || (ePerson.getID() != context
-                .getCurrentUser().getID()))) {
+                        .getCurrentUser().getID()))) {
             authorizeService.authorizeAction(context, ePerson, Constants.WRITE);
         }
 
@@ -658,7 +668,7 @@ public class EPersonServiceImpl extends DSpaceObjectServiceImpl<EPerson> impleme
 
     @Override
     public List<EPerson> findByGroups(Context c, Set<Group> groups, int pageSize, int offset) throws SQLException {
-        //Make sure we at least have one group, if not don't even bother searching.
+        // Make sure we at least have one group, if not don't even bother searching.
         if (CollectionUtils.isNotEmpty(groups)) {
             return ePersonDAO.findByGroups(c, groups, pageSize, offset);
         } else {
@@ -668,7 +678,7 @@ public class EPersonServiceImpl extends DSpaceObjectServiceImpl<EPerson> impleme
 
     @Override
     public int countByGroups(Context c, Set<Group> groups) throws SQLException {
-        //Make sure we at least have one group, if not don't even bother counting.
+        // Make sure we at least have one group, if not don't even bother counting.
         if (CollectionUtils.isNotEmpty(groups)) {
             return ePersonDAO.countByGroups(c, groups);
         } else {
@@ -683,7 +693,7 @@ public class EPersonServiceImpl extends DSpaceObjectServiceImpl<EPerson> impleme
 
     @Override
     public void updateLastModified(Context context, EPerson dso) throws SQLException {
-        //Not used
+        // Not used
     }
 
     @Override
