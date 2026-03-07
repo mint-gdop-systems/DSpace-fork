@@ -43,8 +43,7 @@
                     <repeatable>false</repeatable>
                     <label>Document Type</label>
                     <input-type value-pairs-name="document_types">dropdown</input-type>
-                    <hint>Select the document type
-                    </hint>
+                    <hint>Select the document type </hint>
                     <required>You must choose a document type.</required>
                 </field>
             </row>
@@ -72,7 +71,8 @@
             </row>
         </form>
 
-        <!-- Form which defines the first page/section of the "traditional" DSpace submission process,
+        <!-- Form which defines the first page/section of the "traditional" DSpace submission
+        process,
              often used when depositing normal Items (i.e. Items which are not Entities). -->
         <form name="traditionalpageone">
             <row>
@@ -83,8 +83,7 @@
                     <repeatable>false</repeatable>
                     <label>House Type</label>
                     <input-type value-pairs-name="house_types">dropdown</input-type>
-                    <hint>Select the house type.
-                    </hint>
+                    <hint>Select the house type. </hint>
                     <required>You must choose a type.</required>
                 </field>
             </row>
@@ -178,15 +177,15 @@
                     <repeatable>true</repeatable>
                     <label>Identifiers</label>
                     <input-type value-pairs-name="common_identifiers">qualdrop_value</input-type>
-                    <hint>If the item has any identification numbers or codes associated with
-                        it, please enter the types and the actual numbers or codes.
-                    </hint>
+                    <hint>If the item has any identification numbers or codes associated with it,
+                        please enter the types and the actual numbers or codes. </hint>
                     <required></required>
                 </field>
             </row>
         </form>
 
-        <!-- Form which defines the second page/section of the "traditional" DSpace submission process,
+        <!-- Form which defines the second page/section of the "traditional" DSpace submission
+        process,
              often used when depositing normal Items. -->
         <form name="traditionalpagetwo">
             <row>
@@ -251,9 +250,64 @@
                 <field>
                     <dc-schema>crvs</dc-schema>
                     <dc-element>birth</dc-element>
+                    <dc-qualifier>placeOfBirth</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Place of Birth</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>birth</dc-element>
+                    <dc-qualifier>childCitizenship</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Citizenship</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>birth</dc-element>
                     <dc-qualifier>motherName</dc-qualifier>
                     <repeatable>false</repeatable>
                     <label>Mother Full Name</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>birth</dc-element>
+                    <dc-qualifier>motherCitizenship</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Mother's Citizenship</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>birth</dc-element>
+                    <dc-qualifier>fatherName</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Father Full Name</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>birth</dc-element>
+                    <dc-qualifier>fatherCitizenship</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Father's Citizenship</label>
                     <input-type>onebox</input-type>
                 </field>
             </row>
@@ -365,6 +419,39 @@
                 <field>
                     <dc-schema>crvs</dc-schema>
                     <dc-element>death</dc-element>
+                    <dc-qualifier>gender</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Gender</label>
+                    <input-type value-pairs-name="gender_types">dropdown</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>death</dc-element>
+                    <dc-qualifier>dateOfDeath</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Date of Death</label>
+                    <input-type>date</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>death</dc-element>
+                    <dc-qualifier>placeOfDeath</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Place of Death</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>death</dc-element>
                     <dc-qualifier>dateOfBirth</dc-qualifier>
                     <repeatable>false</repeatable>
                     <label>Date of Birth</label>
@@ -376,9 +463,20 @@
                 <field>
                     <dc-schema>crvs</dc-schema>
                     <dc-element>death</dc-element>
-                    <dc-qualifier>nationality</dc-qualifier>
+                    <dc-qualifier>placeOfBirth</dc-qualifier>
                     <repeatable>false</repeatable>
-                    <label>Nationality</label>
+                    <label>Place of Birth</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>death</dc-element>
+                    <dc-qualifier>citizenship</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Citizenship</label>
                     <input-type>onebox</input-type>
                 </field>
             </row>
@@ -390,6 +488,17 @@
                     <dc-qualifier>motherName</dc-qualifier>
                     <repeatable>false</repeatable>
                     <label>Mother Name</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>death</dc-element>
+                    <dc-qualifier>fatherName</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Father Name</label>
                     <input-type>onebox</input-type>
                 </field>
             </row>
@@ -605,7 +714,8 @@
             </row>
         </form>
 
-        <!-- Form which defines the *first* metadata page/section for depositing Publication Entities.
+        <!-- Form which defines the *first* metadata page/section for depositing Publication
+        Entities.
              Since Publication Entities are very similar to normal Items, this is nearly identical to the
              'traditionalpageone' form. The only difference is the Author field can be used to link the
              Publication Entity to a Person Entity. -->
@@ -625,7 +735,8 @@
                     </linked-metadata-field>
                     <externalsources>orcid</externalsources>
                     <required></required>
-                    <!-- You may choose to validate author names via a Regular Expression if it's appropriate for
+                    <!-- You may choose to validate author names via a Regular Expression if it's
+                    appropriate for
                          your institution. The below regex requires a comma to be present in the author field.
                          However, this is disabled by default to support organizations as authors, etc. -->
                     <!--<regex>\w+(,)+\w+</regex>-->
@@ -664,9 +775,8 @@
                     <label>Date of Issue</label>
                     <style>col-md-4</style>
                     <input-type>date</input-type>
-                    <hint>Please give the date of previous publication or public distribution.
-                        You can leave out the day and/or month if they aren't applicable.
-                    </hint>
+                    <hint>Please give the date of previous publication or public distribution. You
+                        can leave out the day and/or month if they aren't applicable. </hint>
                     <required>You must enter at least the year.</required>
                 </field>
 
@@ -678,7 +788,8 @@
                     <label>Publisher</label>
                     <style>col-md-8</style>
                     <input-type>onebox</input-type>
-                    <hint>Enter the name of the publisher of the previously issued instance of this item.</hint>
+                    <hint>Enter the name of the publisher of the previously issued instance of this
+                        item.</hint>
                     <required></required>
                 </field>
             </row>
@@ -690,7 +801,8 @@
                     <repeatable>false</repeatable>
                     <label>Citation</label>
                     <input-type>onebox</input-type>
-                    <hint>Enter the standard citation for the previously issued instance of this item.</hint>
+                    <hint>Enter the standard citation for the previously issued instance of this
+                        item.</hint>
                     <required></required>
                 </field>
             </row>
@@ -715,9 +827,8 @@
                     <repeatable>true</repeatable>
                     <label>Identifiers</label>
                     <input-type value-pairs-name="common_identifiers">qualdrop_value</input-type>
-                    <hint>If the item has any identification numbers or codes associated with
-                        it, please enter the types and the actual numbers or codes.
-                    </hint>
+                    <hint>If the item has any identification numbers or codes associated with it,
+                        please enter the types and the actual numbers or codes. </hint>
                     <required></required>
                 </field>
             </row>
@@ -729,9 +840,8 @@
                     <repeatable>true</repeatable>
                     <label>Type</label>
                     <input-type value-pairs-name="common_types">dropdown</input-type>
-                    <hint>Select the type(s) of content of the item. To select more than one value in the list, you may
-                        have to hold down the "CTRL" or "Shift" key.
-                    </hint>
+                    <hint>Select the type(s) of content of the item. To select more than one value
+                        in the list, you may have to hold down the "CTRL" or "Shift" key. </hint>
                     <required>You must choose at least one type.</required>
                 </field>
             </row>
@@ -743,10 +853,10 @@
                     <repeatable>false</repeatable>
                     <label>Language</label>
                     <input-type value-pairs-name="common_iso_languages">dropdown</input-type>
-                    <hint>Select the language of the main content of the item. If the language does not appear in the
-                        list, please select 'Other'. If the content does not really have a language (for example, if it
-                        is a dataset or an image) please select 'N/A'.
-                    </hint>
+                    <hint>Select the language of the main content of the item. If the language does
+                        not appear in the list, please select 'Other'. If the content does not
+                        really have a language (for example, if it is a dataset or an image) please
+                        select 'N/A'. </hint>
                     <required></required>
                 </field>
             </row>
@@ -809,16 +919,16 @@
                     <hint>Enter the birth date of the person</hint>
                 </field>
             </row>
-<!--            <row>-->
-<!--                <field>-->
-<!--                    <dc-schema>person</dc-schema>-->
-<!--                    <dc-element>identifier</dc-element>-->
-<!--                    <dc-qualifier>staffid</dc-qualifier>-->
-<!--                    <label>Staff ID</label>-->
-<!--                    <input-type>onebox</input-type>-->
-<!--                    <hint>Enter the staff id of the person</hint>-->
-<!--                </field>-->
-<!--            </row>-->
+            <!--            <row>-->
+            <!--                <field>-->
+            <!--                    <dc-schema>person</dc-schema>-->
+            <!--                    <dc-element>identifier</dc-element>-->
+            <!--                    <dc-qualifier>staffid</dc-qualifier>-->
+            <!--                    <label>Staff ID</label>-->
+            <!--                    <input-type>onebox</input-type>-->
+            <!--                    <hint>Enter the staff id of the person</hint>-->
+            <!--                </field>-->
+            <!--            </row>-->
             <row>
                 <field>
                     <dc-schema>person</dc-schema>
@@ -850,36 +960,36 @@
                     <hint>Enter the id of the project</hint>
                 </field>
             </row>
-<!--            <row>-->
-<!--                <field>-->
-<!--                    <dc-schema>project</dc-schema>-->
-<!--                    <dc-element>identifier</dc-element>-->
-<!--                    <dc-qualifier>status</dc-qualifier>-->
-<!--                    <label>Status</label>-->
-<!--                    <input-type value-pairs-name="project_status">dropdown</input-type>-->
-<!--                    <hint>Enter the status of the project</hint>-->
-<!--                </field>-->
-<!--            </row>-->
-<!--            <row>-->
-<!--                <field>-->
-<!--                    <dc-schema>project</dc-schema>-->
-<!--                    <dc-element>identifier</dc-element>-->
-<!--                    <dc-qualifier>startdate</dc-qualifier>-->
-<!--                    <label>Start date</label>-->
-<!--                    <input-type>date</input-type>-->
-<!--                    <hint>Enter the start date of the project</hint>-->
-<!--                </field>-->
-<!--            </row>-->
-<!--            <row>-->
-<!--                <field>-->
-<!--                    <dc-schema>project</dc-schema>-->
-<!--                    <dc-element>identifier</dc-element>-->
-<!--                    <dc-qualifier>expectedcompletion</dc-qualifier>-->
-<!--                    <label>Expected Completion</label>-->
-<!--                    <input-type>date</input-type>-->
-<!--                    <hint>Enter the expected completion date of the project</hint>-->
-<!--                </field>-->
-<!--            </row>-->
+            <!--            <row>-->
+            <!--                <field>-->
+            <!--                    <dc-schema>project</dc-schema>-->
+            <!--                    <dc-element>identifier</dc-element>-->
+            <!--                    <dc-qualifier>status</dc-qualifier>-->
+            <!--                    <label>Status</label>-->
+            <!--                    <input-type value-pairs-name="project_status">dropdown</input-type>-->
+            <!--                    <hint>Enter the status of the project</hint>-->
+            <!--                </field>-->
+            <!--            </row>-->
+            <!--            <row>-->
+            <!--                <field>-->
+            <!--                    <dc-schema>project</dc-schema>-->
+            <!--                    <dc-element>identifier</dc-element>-->
+            <!--                    <dc-qualifier>startdate</dc-qualifier>-->
+            <!--                    <label>Start date</label>-->
+            <!--                    <input-type>date</input-type>-->
+            <!--                    <hint>Enter the start date of the project</hint>-->
+            <!--                </field>-->
+            <!--            </row>-->
+            <!--            <row>-->
+            <!--                <field>-->
+            <!--                    <dc-schema>project</dc-schema>-->
+            <!--                    <dc-element>identifier</dc-element>-->
+            <!--                    <dc-qualifier>expectedcompletion</dc-qualifier>-->
+            <!--                    <label>Expected Completion</label>-->
+            <!--                    <input-type>date</input-type>-->
+            <!--                    <hint>Enter the expected completion date of the project</hint>-->
+            <!--                </field>-->
+            <!--            </row>-->
             <row>
                 <relation-field>
                     <relationship-type>isPersonOfProject</relationship-type>
@@ -1242,10 +1352,8 @@
                     <label>Date of Issue</label>
                     <style>col-md-4</style>
                     <input-type>date</input-type>
-                    <hint>Please give the date of previous publication or public distribution.
-                        You can leave out the day
-                        and/or month if they aren't applicable.
-                    </hint>
+                    <hint>Please give the date of previous publication or public distribution. You
+                        can leave out the day and/or month if they aren't applicable. </hint>
                     <required>You must enter at least the year.</required>
                 </field>
             </row>
@@ -1258,7 +1366,8 @@
                     <label>Publisher</label>
                     <style>col-md-8</style>
                     <input-type>onebox</input-type>
-                    <hint>Enter the name of the publisher of the previously issued instance of this item.</hint>
+                    <hint>Enter the name of the publisher of the previously issued instance of this
+                        item.</hint>
                     <required></required>
                 </field>
             </row>
@@ -1295,10 +1404,8 @@
                     <repeatable>true</repeatable>
                     <label>Identifiers</label>
                     <input-type value-pairs-name="common_identifiers">qualdrop_value</input-type>
-                    <hint>If the item has any identification numbers or codes associated with
-                        it, please enter the types
-                        and the actual numbers or codes.
-                    </hint>
+                    <hint>If the item has any identification numbers or codes associated with it,
+                        please enter the types and the actual numbers or codes. </hint>
                     <required></required>
                 </field>
             </row>
@@ -1310,7 +1417,8 @@
                     <repeatable>false</repeatable>
                     <label>Title of Journal, Book or Event</label>
                     <input-type>onebox</input-type>
-                    <hint>Include the name of related item like the journal name, book title or event name.</hint>
+                    <hint>Include the name of related item like the journal name, book title or
+                        event name.</hint>
                     <required></required>
                 </field>
             </row>
@@ -1404,9 +1512,8 @@
                     <repeatable>true</repeatable>
                     <label>Type</label>
                     <input-type value-pairs-name="openaire_types">dropdown</input-type>
-                    <hint>Select the type(s) of content of the item. To select more than one value in the list, you may
-                        have to hold down the "CTRL" or "Shift" key.
-                    </hint>
+                    <hint>Select the type(s) of content of the item. To select more than one value
+                        in the list, you may have to hold down the "CTRL" or "Shift" key. </hint>
                     <required>You must choose at least one type.</required>
                 </field>
             </row>
@@ -1417,8 +1524,8 @@
                     <repeatable>false</repeatable>
                     <label>Resource Version</label>
                     <input-type value-pairs-name="openaire_version_types">dropdown</input-type>
-                    <hint>Select the version of the resource. If the resource does not have that information, please
-                        select "Not Applicable (or Unknown)".</hint>
+                    <hint>Select the version of the resource. If the resource does not have that
+                        information, please select "Not Applicable (or Unknown)".</hint>
                     <required></required>
                 </field>
                 <field>
@@ -1428,10 +1535,10 @@
                     <repeatable>false</repeatable>
                     <label>Language</label>
                     <input-type value-pairs-name="common_iso_languages">dropdown</input-type>
-                    <hint>Select the language of the main content of the item. If the language does not appear in the
-                        list, please select 'Other'. If the content does not really have a language (for example, if it
-                        is a dataset or an image) please select 'N/A'.
-                    </hint>
+                    <hint>Select the language of the main content of the item. If the language does
+                        not appear in the list, please select 'Other'. If the content does not
+                        really have a language (for example, if it is a dataset or an image) please
+                        select 'N/A'. </hint>
                     <required></required>
                 </field>
             </row>
@@ -1581,9 +1688,8 @@
                     <repeatable>true</repeatable>
                     <label>Author identifier</label>
                     <input-type value-pairs-name="openaire_author_identifier_types">qualdrop_value</input-type>
-                    <hint>If the author has any identifiers or codes associated with
-                        it, please enter the types and the actual numbers or codes.
-                    </hint>
+                    <hint>If the author has any identifiers or codes associated with it, please
+                        enter the types and the actual numbers or codes. </hint>
                     <required></required>
                 </field>
             </row>
@@ -1663,10 +1769,10 @@
                     <!-- An input-type of qualdrop_value MUST be marked as repeatable -->
                     <repeatable>true</repeatable>
                     <label>Organization identifier</label>
-                    <input-type value-pairs-name="openaire_organization_identifier_types">qualdrop_value</input-type>
-                    <hint>If the organization has any identifiers or codes associated with
-                        it, please enter the types and the actual numbers or codes.
-                    </hint>
+                    <input-type value-pairs-name="openaire_organization_identifier_types">
+                        qualdrop_value</input-type>
+                    <hint>If the organization has any identifiers or codes associated with it,
+                        please enter the types and the actual numbers or codes. </hint>
                     <required></required>
                 </field>
             </row>
@@ -1888,7 +1994,8 @@
 
         <value-pairs value-pairs-name="openaire_license_types" dc-term="license">
 
-            <!-- Based on: http://openaire-guidelines-for-literature-repository-managers.readthedocs.io/en/latest/field_licensecondition.html#dc-rightslicensecondition -->
+            <!-- Based on:
+            http://openaire-guidelines-for-literature-repository-managers.readthedocs.io/en/latest/field_licensecondition.html#dc-rightslicensecondition -->
 
             <pair>
                 <displayed-value>Without License</displayed-value>
@@ -1927,7 +2034,7 @@
         </value-pairs>
 
         <!-- OpenAIRE document types
-             https://openaire-guidelines-for-literature-repository-managers.readthedocs.io/en/4.0.1/field_publicationtype.html
+        https://openaire-guidelines-for-literature-repository-managers.readthedocs.io/en/4.0.1/field_publicationtype.html
              Based on COAR Vocabularies -> Controlled Vocabulary for Resource Type Genres (Version 2.0):
              http://vocabularies.coar-repositories.org/documentation/resource_types/
         -->

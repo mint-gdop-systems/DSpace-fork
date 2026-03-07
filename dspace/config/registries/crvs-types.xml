@@ -1,205 +1,283 @@
 <?xml version="1.0"?>
 <dspace-dc-types>
 
-  <dspace-header>
-    <title>Custom CRVS Types Registry</title>    
-  </dspace-header>
+    <dspace-header>
+        <title>Custom CRVS Types Registry</title>
+    </dspace-header>
 
-  <dc-schema>
-    <name>crvs</name>
-    <namespace>https://example.com/</namespace>
-  </dc-schema>
+    <dc-schema>
+        <name>crvs</name>
+        <namespace>https://example.com/</namespace>
+    </dc-schema>
 
-  <dc-type>
-    <schema>crvs</schema>
-    <element>identifier</element>
-    <qualifier>houseType</qualifier>
-    <scope_note></scope_note>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>identifier</element>
+        <qualifier>houseType</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
 
-  <dc-type>
-    <schema>crvs</schema>
-    <element>identifier</element>
-    <qualifier>otherHouseType</qualifier>
-    <scope_note>a way to specify in text input if the selected house type is “other”</scope_note>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>identifier</element>
+        <qualifier>otherHouseType</qualifier>
+        <scope_note>a way to specify in text input if the selected house type is “other”</scope_note>
+    </dc-type>
 
-  <dc-type>
-    <schema>crvs</schema>
-    <element>identifier</element>
-    <qualifier>houseNumber</qualifier>
-    <scope_note></scope_note>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>identifier</element>
+        <qualifier>houseNumber</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
 
-  <dc-type>
-    <schema>crvs</schema>
-    <element>identifier</element>
-    <qualifier>houseFamilyKey</qualifier>
-    <scope_note>Unique composite ID: House Number plus Family Head Names.</scope_note>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>identifier</element>
+        <qualifier>houseFamilyKey</qualifier>
+        <scope_note>Unique composite ID: House Number plus Family Head Names.</scope_note>
+    </dc-type>
 
-  <dc-type>
-    <schema>dc</schema>
-    <element>identifier</element>
-    <qualifier>filenumber</qualifier>
-    <scope_note></scope_note>
-  </dc-type>
+    <dc-type>
+        <schema>dc</schema>
+        <element>identifier</element>
+        <qualifier>filenumber</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
 
-  <dc-type>
-    <schema>crvs</schema>
-    <element>head</element>
-    <qualifier>husband</qualifier>
-    <scope_note>Full name of the husband/head of household.</scope_note>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>head</element>
+        <qualifier>husband</qualifier>
+        <scope_note>Full name of the husband/head of household.</scope_note>
+    </dc-type>
 
-  <dc-type>
-    <schema>crvs</schema>
-    <element>head</element>
-    <qualifier>wife</qualifier>
-    <scope_note>Full name of the wife.</scope_note>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>head</element>
+        <qualifier>wife</qualifier>
+        <scope_note>Full name of the wife.</scope_note>
+    </dc-type>
 
-  <dc-type>
-    <schema>crvs</schema>
-    <element>family</element>
-    <qualifier>member</qualifier>
-    <scope_note>Full names of any additional family members.</scope_note>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>family</element>
+        <qualifier>member</qualifier>
+        <scope_note>Full names of any additional family members.</scope_note>
+    </dc-type>
 
-  <dc-type>
-    <schema>crvs</schema>
-    <element>date</element>
-    <qualifier>registration</qualifier>
-    <scope_note>The date the family was originally registered at the Woreda level.</scope_note>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>date</element>
+        <qualifier>registration</qualifier>
+        <scope_note>The date the family was originally registered at the Woreda level.</scope_note>
+    </dc-type>
 
-  <dc-type>
-    <schema>crvs</schema>
-    <element>family</element>
-    <qualifier>count</qualifier>
-    <scope_note>Total count of family members.</scope_note>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>family</element>
+        <qualifier>count</qualifier>
+        <scope_note>Total count of family members.</scope_note>
+    </dc-type>
 
-  <dc-type>
-    <schema>crvs</schema>
-    <element>documentType</element>
-    <qualifier></qualifier>
-    <scope_note></scope_note>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>documentType</element>
+        <qualifier></qualifier>
+        <scope_note></scope_note>
+    </dc-type>
 
-  <dc-type>
-    <schema>crvs</schema>
-    <element>document</element>
-    <qualifier>status</qualifier>
-    <scope_note></scope_note>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>document</element>
+        <qualifier>status</qualifier>
+        <scope_note></scope_note>
+    </dc-type>
 
-  <dc-type>
-    <schema>crvs</schema>
-    <element>birth</element>
-    <qualifier>childName</qualifier>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>birth</element>
+        <qualifier>childName</qualifier>
+    </dc-type>
 
-  <dc-type>
-      <schema>crvs</schema>
-      <element>birth</element>
-      <qualifier>gender</qualifier>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>birth</element>
+        <qualifier>gender</qualifier>
+    </dc-type>
 
-  <dc-type>
-      <schema>crvs</schema>
-      <element>birth</element>
-      <qualifier>dateOfBirth</qualifier>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>birth</element>
+        <qualifier>dateOfBirth</qualifier>
+    </dc-type>
 
-  <dc-type>
-      <schema>crvs</schema>
-      <element>birth</element>
-      <qualifier>motherName</qualifier>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>birth</element>
+        <qualifier>motherName</qualifier>
+    </dc-type>
 
-  <dc-type>
-      <schema>crvs</schema>
-      <element>birth</element>
-      <qualifier>registeredDate</qualifier>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>birth</element>
+        <qualifier>registeredDate</qualifier>
+    </dc-type>
 
-  <dc-type>
-      <schema>crvs</schema>
-      <element>birth</element>
-      <qualifier>certificateIssuedDate</qualifier>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>birth</element>
+        <qualifier>certificateIssuedDate</qualifier>
+    </dc-type>
 
-  <dc-type>
-      <schema>crvs</schema>
-      <element>marriage</element>
-      <qualifier>husbandName</qualifier>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>marriage</element>
+        <qualifier>husbandName</qualifier>
+    </dc-type>
 
-  <dc-type>
-      <schema>crvs</schema>
-      <element>marriage</element>
-      <qualifier>wifeName</qualifier>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>marriage</element>
+        <qualifier>wifeName</qualifier>
+    </dc-type>
 
-  <dc-type>
-      <schema>crvs</schema>
-      <element>marriage</element>
-      <qualifier>date</qualifier>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>marriage</element>
+        <qualifier>date</qualifier>
+    </dc-type>
 
-  <dc-type>
-      <schema>crvs</schema>
-      <element>divorce</element>
-      <qualifier>date</qualifier>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>divorce</element>
+        <qualifier>courtApprovalDate</qualifier>
+    </dc-type>
 
-  <dc-type>
-      <schema>crvs</schema>
-      <element>divorce</element>
-      <qualifier>courtApprovalDate</qualifier>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>divorce</element>
+        <qualifier>courtCaseNumber</qualifier>
+    </dc-type>
 
-  <dc-type>
-      <schema>crvs</schema>
-      <element>divorce</element>
-      <qualifier>courtCaseNumber</qualifier>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>death</element>
+        <qualifier>personName</qualifier>
+    </dc-type>
 
-  <dc-type>
-      <schema>crvs</schema>
-      <element>death</element>
-      <qualifier>personName</qualifier>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>death</element>
+        <qualifier>dateOfBirth</qualifier>
+    </dc-type>
 
-  <dc-type>
-      <schema>crvs</schema>
-      <element>death</element>
-      <qualifier>dateOfBirth</qualifier>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>death</element>
+        <qualifier>nationality</qualifier>
+    </dc-type>
 
-  <dc-type>
-      <schema>crvs</schema>
-      <element>death</element>
-      <qualifier>nationality</qualifier>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>death</element>
+        <qualifier>motherName</qualifier>
+    </dc-type>
 
-  <dc-type>
-      <schema>crvs</schema>
-      <element>death</element>
-      <qualifier>motherName</qualifier>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>death</element>
+        <qualifier>reason</qualifier>
+    </dc-type>
 
-  <dc-type>
-      <schema>crvs</schema>
-      <element>death</element>
-      <qualifier>reason</qualifier>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>death</element>
+        <qualifier>certificateIssuedDate</qualifier>
+    </dc-type>
 
-  <dc-type>
-      <schema>crvs</schema>
-      <element>death</element>
-      <qualifier>certificateIssuedDate</qualifier>
-  </dc-type>
+    <dc-type>
+        <schema>crvs</schema>
+        <element>birth</element>
+        <qualifier>placeOfBirth</qualifier>
+        <scope_note>Place where the child was born.</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>crvs</schema>
+        <element>birth</element>
+        <qualifier>childCitizenship</qualifier>
+        <scope_note>Citizenship of the child at birth.</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>crvs</schema>
+        <element>birth</element>
+        <qualifier>fatherName</qualifier>
+        <scope_note>Full name of the father.</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>crvs</schema>
+        <element>birth</element>
+        <qualifier>motherCitizenship</qualifier>
+        <scope_note>Citizenship of the mother.</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>crvs</schema>
+        <element>birth</element>
+        <qualifier>fatherCitizenship</qualifier>
+        <scope_note>Citizenship of the father.</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>crvs</schema>
+        <element>death</element>
+        <qualifier>dateOfDeath</qualifier>
+        <scope_note>Date on which the person died.</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>crvs</schema>
+        <element>death</element>
+        <qualifier>citizenship</qualifier>
+        <scope_note>Citizenship of the deceased.</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>crvs</schema>
+        <element>death</element>
+        <qualifier>placeOfBirth</qualifier>
+        <scope_note>Place of birth of the deceased.</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>crvs</schema>
+        <element>death</element>
+        <qualifier>motherName</qualifier>
+        <scope_note>Name of the deceased person's mother.</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>crvs</schema>
+        <element>death</element>
+        <qualifier>fatherName</qualifier>
+        <scope_note>Name of the deceased person's father.</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>crvs</schema>
+        <element>death</element>
+        <qualifier>placeOfDeath</qualifier>
+        <scope_note>Location where the death occurred.</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>crvs</schema>
+        <element>death</element>
+        <qualifier>gender</qualifier>
+        <scope_note>Gender of the deceased person.</scope_note>
+    </dc-type>
 
 </dspace-dc-types>
