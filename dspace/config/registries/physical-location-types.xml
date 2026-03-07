@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<dspace-dc-types>
+
+  <dspace-header>
+    <title>Physical Location Tracking Registry</title>    
+  </dspace-header>
+
+  <dc-schema>
+    <name>physical</name>
+    <namespace>https://example.com/physical-location-tracking</namespace>
+  </dc-schema>
+
+  <dc-type>
+    <schema>physical</schema>
+    <element>location</element>
+    <qualifier>building</qualifier>
+    <scope_note>Building where the physical item is stored.</scope_note>
+  </dc-type>
+
+  <dc-type>
+    <schema>physical</schema>
+    <element>location</element>
+    <qualifier>officeNumber</qualifier>
+    <scope_note>Office or room number containing the item.</scope_note>
+  </dc-type>
+
+  <dc-type>
+    <schema>physical</schema>
+    <element>location</element>
+    <qualifier>section</qualifier>
+    <scope_note>Storage section within the room or office.</scope_note>
+  </dc-type>
+
+  <dc-type>
+    <schema>physical</schema>
+    <element>location</element>
+    <qualifier>shelf</qualifier>
+    <scope_note>Shelf identifier where the item is placed.</scope_note>
+  </dc-type>
+
+  <dc-type>
+    <schema>physical</schema>
+    <element>location</element>
+    <qualifier>row</qualifier>
+    <scope_note>Row within the shelf or storage unit.</scope_note>
+  </dc-type>
+
+  <dc-type>
+    <schema>physical</schema>
+    <element>location</element>
+    <qualifier>position</qualifier>
+    <scope_note>Exact position of the item within the row or shelf.</scope_note>
+  </dc-type>
+
+  <dc-type>
+    <schema>physical</schema>
+    <element>location</element>
+    <qualifier>notes</qualifier>
+    <scope_note>Additional notes about the physical storage location.</scope_note>
+  </dc-type>
+
+  <dc-type>
+    <schema>physical</schema>
+    <element>location</element>
+    <qualifier>rfid</qualifier>
+    <scope_note>RFID Tag</scope_note>
+  </dc-type>
+
+</dspace-dc-types>

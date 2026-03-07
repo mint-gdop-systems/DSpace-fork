@@ -132,6 +132,11 @@
             <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
             <type>submission-form</type>
         </step-definition>
+        <step-definition id="physicalLocationForm">
+            <heading>submit.progressbar.describe.physical</heading>
+            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+            <type>submission-form</type>
+        </step-definition>
         <step-definition id="traditionalpageone" mandatory="true">
             <heading>submit.progressbar.describe.stepone</heading>
             <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
@@ -317,6 +322,8 @@
             <step id="traditionalpageone"/>
             <step id="traditionalpagetwo"/>
 
+            <step id="physicalLocationForm"/>
+
             <!-- Uncomment this step to allow the user to embargo or access restrict the entire item -->
             <!-- <step id="itemAccessConditions"/> -->
 
@@ -348,6 +355,7 @@
             <step id="collection"/>
             <step id="traditionalpageone"/>
             <step id="traditionalpagetwo"/>
+            <step id="physicalLocationForm"/>
             <step id="upload"/>
         </submission-process>
 
@@ -357,6 +365,7 @@
             <step id="birth"/>
             <step id="marriageAndDivorce"/>
             <step id="death"/>
+            <step id="physicalLocationForm"/>
             <step id="upload"/>
         </submission-process>
 
@@ -364,6 +373,7 @@
             <step id="duplicates"/>
             <step id="collection"/>
             <step id="letter" />
+            <step id="physicalLocationForm"/>
             <step id="upload"/>
         </submission-process>
 

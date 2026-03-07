@@ -514,6 +514,97 @@
 
         </form>
 
+        <form name="physicalLocationForm">
+            <row>
+                <field>
+                    <dc-schema>physical</dc-schema>
+                    <dc-element>location</dc-element>
+                    <dc-qualifier>building</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Building</label>
+                    <input-type>onebox</input-type>
+                    <hint>Enter the building where the item is stored.</hint>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>physical</dc-schema>
+                    <dc-element>location</dc-element>
+                    <dc-qualifier>officeNumber</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Office / Room Number</label>
+                    <input-type>onebox</input-type>
+                    <hint>Specify the office or room number containing the item.</hint>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>physical</dc-schema>
+                    <dc-element>location</dc-element>
+                    <dc-qualifier>section</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Section</label>
+                    <input-type>onebox</input-type>
+                    <hint>Enter the storage section within the room or office.</hint>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>physical</dc-schema>
+                    <dc-element>location</dc-element>
+                    <dc-qualifier>shelf</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Shelf</label>
+                    <input-type>onebox</input-type>
+                    <hint>Specify the shelf identifier where the item is placed.</hint>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>physical</dc-schema>
+                    <dc-element>location</dc-element>
+                    <dc-qualifier>row</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Row</label>
+                    <input-type>onebox</input-type>
+                    <hint>Enter the row number or position within the shelf.</hint>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>physical</dc-schema>
+                    <dc-element>location</dc-element>
+                    <dc-qualifier>position</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Position</label>
+                    <input-type>onebox</input-type>
+                    <hint>Exact position of the item within the row or shelf.</hint>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>physical</dc-schema>
+                    <dc-element>location</dc-element>
+                    <dc-qualifier>notes</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Notes</label>
+                    <input-type>textarea</input-type>
+                    <hint>Additional notes about the physical storage location.</hint>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>physical</dc-schema>
+                    <dc-element>location</dc-element>
+                    <dc-qualifier>rfid</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>RFID Tag</label>
+                    <input-type>onebox</input-type>
+                    <hint>Enter the RFID tag identifier for this item, if available.</hint>
+                </field>
+            </row>
+        </form>
+
         <!-- Form which defines the *first* metadata page/section for depositing Publication Entities.
              Since Publication Entities are very similar to normal Items, this is nearly identical to the
              'traditionalpageone' form. The only difference is the Author field can be used to link the
