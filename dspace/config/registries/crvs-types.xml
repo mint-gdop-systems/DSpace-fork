@@ -175,7 +175,7 @@
     <dc-type>
         <schema>crvs</schema>
         <element>death</element>
-        <qualifier>nationality</qualifier>
+        <qualifier>citizenship</qualifier>
     </dc-type>
 
     <dc-type>

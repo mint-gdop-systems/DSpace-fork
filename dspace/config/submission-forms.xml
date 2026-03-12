@@ -386,17 +386,6 @@
                 <field>
                     <dc-schema>crvs</dc-schema>
                     <dc-element>divorce</dc-element>
-                    <dc-qualifier>date</dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>Divorce Date</label>
-                    <input-type>date</input-type>
-                </field>
-            </row>
-
-            <row>
-                <field>
-                    <dc-schema>crvs</dc-schema>
-                    <dc-element>divorce</dc-element>
                     <dc-qualifier>courtApprovalDate</dc-qualifier>
                     <repeatable>false</repeatable>
                     <label>Court Approval Date</label>
