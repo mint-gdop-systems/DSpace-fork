@@ -61,7 +61,9 @@ public class AuditConsumer implements Consumer {
         if (enabled && meaningful) {
             auditService.store(ctx, event);
 
-            if (event.getEventType() == Event.DELETE) {
+            if (event.getEventType() == Event.DELETE && configurationService.getBooleanProperty(
+                    "send.deletion.email",
+                    true)) {
                 sendDeletionNotification(ctx, event);
             }
         }
