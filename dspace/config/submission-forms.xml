@@ -85,7 +85,7 @@
             <row>
 
                 <field>
-                    <dc-schema>dc</dc-schema>k
+                    <dc-schema>dc</dc-schema>
                     <dc-element>description</dc-element>
                     <repeatable>true</repeatable>
                     <label>Description</label>
