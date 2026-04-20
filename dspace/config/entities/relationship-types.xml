@@ -6,23 +6,10 @@
 	<!-- Sample relationship types setup used for the entities development
 	 This file can be imported using the initialize-entities launcher -->
     <type>
-        <leftType>House</leftType>
-        <rightType>VitalEvent</rightType>
-        <leftwardType>isVitalEventOfHouse</leftwardType>
-        <rightwardType>isHouseOfVitalEvent</rightwardType>
-        <leftCardinality>
-            <min>0</min>
-        </leftCardinality>
-        <rightCardinality>
-            <min>0</min>
-        </rightCardinality>
-    </type>
-
-    <type>
-        <leftType>Letter</leftType>
-        <rightType></rightType>
-        <leftwardType></leftwardType>
-        <rightwardType></rightwardType>
+        <leftType>CaseFile</leftType>
+        <rightType>CirculationEvent</rightType>
+        <leftwardType>isCaseFileOf</leftwardType>
+        <rightwardType>hasCirculationEvent</rightwardType>
         <leftCardinality>
             <min>0</min>
         </leftCardinality>

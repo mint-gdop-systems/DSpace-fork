@@ -35,32 +35,57 @@
                     <required>You must enter a name for this file</required>
                 </field>
             </row>
+
             <row>
                 <field>
-                    <dc-schema>crvs</dc-schema>
-                    <dc-element>documentType</dc-element>
-                    <dc-qualifier></dc-qualifier>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>document</dc-element>
+                    <dc-qualifier>section</dc-qualifier>
                     <repeatable>false</repeatable>
-                    <label>Document Type</label>
+                    <label>የሰነድ ክፍል (Section/Folder)</label>
+                    <input-type value-pairs-name="document_sections">dropdown</input-type>
+                    <required>Select Pleadings, Orders, Evidence, or Administrative. </required>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>document</dc-element>
+                    <dc-qualifier>type</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የሰነዱ ዓይነት (Document Type)</label>
                     <input-type value-pairs-name="document_types">dropdown</input-type>
-                    <hint>Select the document type </hint>
-                    <required>You must choose a document type.</required>
+                    <required></required>
                 </field>
             </row>
             <row>
                 <field>
-                    <dc-schema>crvs</dc-schema>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>document</dc-element>
+                    <dc-qualifier>exhibitCode</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የማስረጃ ኮድ (Exhibit Code)</label>
+                    <input-type>onebox</input-type>
+                    <hint>For Evidence section: Use ከ-# for Plaintiff or ተ-# for Defendant. [cite: 57, 73, 74]</hint>
+                    <required></required>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>legal</dc-schema>
                     <dc-element>document</dc-element>
                     <dc-qualifier>status</dc-qualifier>
                     <repeatable>false</repeatable>
-                    <label>Status</label>
+                    <label>የሰነድ ሁኔታ (Status)</label>
                     <input-type value-pairs-name="active_status_types">dropdown</input-type>
-                    <required>false</required>
+                    <required></required>
                 </field>
             </row>
             <row>
+
                 <field>
-                    <dc-schema>dc</dc-schema>
+                    <dc-schema>dc</dc-schema>k
                     <dc-element>description</dc-element>
                     <repeatable>true</repeatable>
                     <label>Description</label>
@@ -77,108 +102,62 @@
         <form name="traditionalpageone">
             <row>
                 <field>
-                    <dc-schema>crvs</dc-schema>
-                    <dc-element>identifier</dc-element>
-                    <dc-qualifier>houseType</dc-qualifier>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>case</dc-element>
+                    <dc-qualifier>fileNumber</dc-qualifier>
                     <repeatable>false</repeatable>
-                    <label>House Type</label>
-                    <input-type value-pairs-name="house_types">dropdown</input-type>
-                    <hint>Select the house type. </hint>
-                    <required>You must choose a type.</required>
-                </field>
-            </row>
-            <row>
-                <field>
-                    <dc-schema>crvs</dc-schema>
-                    <dc-element>identifier</dc-element>
-                    <dc-qualifier>otherHouseType</dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>Other House Type (optional)</label>
+                    <label>የመዝገብ ቁጥር (Case Number)</label>
                     <input-type>onebox</input-type>
-                    <hint>Enter the house type if it is not listed in the dropdown.</hint>
+                    <required>Primary identification is mandatory. [cite: 25]</required>
                 </field>
-            </row>
-            <row>
                 <field>
-                    <dc-schema>crvs</dc-schema>
-                    <dc-element>identifier</dc-element>
-                    <dc-qualifier>houseFamilyKey</dc-qualifier>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>case</dc-element>
+                    <dc-qualifier>type</dc-qualifier>
                     <repeatable>false</repeatable>
-                    <label>House Identifier</label>
-                    <input-type>onebox</input-type>
-                    <hint></hint>
-                    <required>You must enter a house identifier.</required>
-                </field>
-            </row>
-            <row>
-                <field>
-                    <dc-schema>crvs</dc-schema>
-                    <dc-element>identifier</dc-element>
-                    <dc-qualifier>houseNumber</dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>House Number</label>
-                    <input-type>onebox</input-type>
-                    <hint>House Number + Family Head Name.</hint>
-                    <required>You must enter a house number.</required>
-                </field>
-            </row>
-            <row>
-                <field>
-                    <dc-schema>crvs</dc-schema>
-                    <dc-element>head</dc-element>
-                    <dc-qualifier>husband</dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>Husband</label>
-                    <input-type>onebox</input-type>
-                    <hint>Enter the husband's name</hint>
+                    <label>የጉዳዩ አይነት (Case Type)</label>
+                    <input-type value-pairs-name="case_types">dropdown</input-type>
                     <required></required>
                 </field>
             </row>
             <row>
                 <field>
-                    <dc-schema>crvs</dc-schema>
-                    <dc-element>head</dc-element>
-                    <dc-qualifier>wife</dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>Wife</label>
-                    <input-type>onebox</input-type>
-                    <hint>Enter the wife's name</hint>
-                    <required></required>
-                </field>
-            </row>
-            <row>
-                <field>
-                    <dc-schema>crvs</dc-schema>
-                    <dc-element>family</dc-element>
-                    <dc-qualifier>member</dc-qualifier>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>case</dc-element>
+                    <dc-qualifier>plaintiff</dc-qualifier>
                     <repeatable>true</repeatable>
-                    <label>Additional Family Members</label>
+                    <label>ከሳሽ/አመልካች (Plaintiff/Applicant)</label>
+                    <input-type>onebox</input-type>
+                    <required>The party initiating the legal action. (ከሳሽ ወይም አመልካች) [cite: 57, 73]</required>
+                </field>
+                <field>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>case</dc-element>
+                    <dc-qualifier>defendant</dc-qualifier>
+                    <repeatable>true</repeatable>
+                    <label>ተከሳሽ/መልስ ሰጪ (Defendant/Respondent)</label>
+                    <input-type>onebox</input-type>
+                    <required>The party against whom the action is brought. (ተከሳሽ ወይም መልስ ሰጪ) [cite: 57, 74]</required>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>case</dc-element>
+                    <dc-qualifier>representative</dc-qualifier>
+                    <repeatable>true</repeatable>
+                    <label>የሕግ ወኪል/ጠበቃ (Legal Representative)</label>
                     <input-type>onebox</input-type>
                 </field>
             </row>
             <row>
                 <field>
-                    <dc-schema>crvs</dc-schema>
+                    <dc-schema>legal</dc-schema>
                     <dc-element>date</dc-element>
                     <dc-qualifier>registration</dc-qualifier>
                     <repeatable>false</repeatable>
-                    <label>Date of Registration</label>
-                    <style>col-sm-4</style>
+                    <label>ምዝገባ ቀን (Registration Date)</label>
                     <input-type>date</input-type>
-                    <hint>The date the family was originally registered at the Woreda level.</hint>
-                </field>
-            </row>
-            <row>
-                <field>
-                    <dc-schema>dc</dc-schema>
-                    <dc-element>identifier</dc-element>
-                    <dc-qualifier></dc-qualifier>
-                    <!-- An input-type of qualdrop_value MUST be marked as repeatable -->
-                    <repeatable>true</repeatable>
-                    <label>Identifiers</label>
-                    <input-type value-pairs-name="common_identifiers">qualdrop_value</input-type>
-                    <hint>If the item has any identification numbers or codes associated with it,
-                        please enter the types and the actual numbers or codes. </hint>
                 </field>
             </row>
         </form>
@@ -189,24 +168,208 @@
         <form name="traditionalpagetwo">
             <row>
                 <field>
-                    <dc-schema>crvs</dc-schema>
-                    <dc-element>family</dc-element>
-                    <dc-qualifier>count</dc-qualifier>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>case</dc-element>
+                    <dc-qualifier>level</dc-qualifier>
                     <repeatable>false</repeatable>
-                    <label>Total count of family members.</label>
+                    <label>የመዝገቡ ደረጃ (Case Level)</label>
+                    <input-type value-pairs-name="case_levels">dropdown</input-type>
+                    <hint>Current process stage: Registrar, Screening, etc. [cite: 18]</hint>
+                </field>
+                <field>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>case</dc-element>
+                    <dc-qualifier>status</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የመዝገቡ ሁኔታ (Case Status)</label>
+                    <input-type value-pairs-name="case_status_types">dropdown</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>judge</dc-element>
+                    <dc-qualifier>primary</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ሰብሳቢ ዳኛ (Primary Judge)</label>
                     <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>judge</dc-element>
+                    <dc-qualifier>number</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የዳኛ ብዛት(Total number of judges)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>location</dc-element>
+                    <dc-qualifier></dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የፍርድ ቤቱ ቦታ/ምድብ (Physical court location or division)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>bench</dc-element>
+                    <dc-qualifier>session</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ችሎት (Bench)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>case</dc-element>
+                    <dc-qualifier>format</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የፋይል አደረጃጀት (Record Format)</label>
+                    <input-type value-pairs-name="record_formats">dropdown</input-type>
+                    <hint>Choose Physical, E-File, or Hybrid. [cite: 51]</hint>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>physical</dc-element>
+                    <dc-qualifier>shelfNumber</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>መደርደሪያ ቁጥር (Shelf No.)</label>
+                    <input-type>onebox</input-type>
+                    <hint>Only required for "Physical" format files. [cite: 52]</hint>
+                </field>
+                <field>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>physical</dc-element>
+                    <dc-qualifier>rowNumber</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ረድፍ ቁጥር (Row No.)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>physical</dc-element>
+                    <dc-qualifier>rowNumber</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ረድፍ ቁጥር (Row No.)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>physical</dc-element>
+                    <dc-qualifier>rfid</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የራፊድ መለያ ቁጥር ( RFID Tag )</label>
+                    <input-type>onebox</input-type>
+                    <hint>Enter the RFID tag identifier for this item, if available.</hint>
+                </field>
+            </row> 
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>description</dc-element>
+                    <label>Description</label>
+                    <input-type>textarea</input-type>
+                    <hint>Enter the description of the Case</hint>
+                </field>
+            </row>
+        </form>
+
+        <!-- <form name="physicalLocationForm">
+
+        </form> -->
+
+        <form name="circulationEventForm">
+            
+            <row>
+                <field>
+                    <dc-schema>relation</dc-schema>
+                    <dc-element>isCirculationEventOf</dc-element>
+                    <repeatable>false</repeatable>
+                    <label>የመዝገብ ቁጥር (Link to Case File)</label>
+                    <input-type>relationship</input-type>
+                    <hint>Search for the Case File this movement belongs to.</hint>
+                    <required>You must link this event to a Case File.</required>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>event</dc-element>
+                    <dc-qualifier>date</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የወጣበት ቀን (Date Out)</label>
+                    <input-type>date</input-type>
+                    <required>Date is required.</required>
+                </field>
+                <field>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>event</dc-element>
+                    <dc-qualifier>status</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የሰነድ ሁኔታ (Status)</label>
+                    <input-type value-pairs-name="event_status_types">dropdown</input-type>
+                    <required>Status is required.</required>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>event</dc-element>
+                    <dc-qualifier>handover</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ያስረከበው (Handed Over By)</label>
+                    <input-type>onebox</input-type>
+                    <hint>Name of the Record Officer.</hint>
+                    <required></required>
+                </field>
+                <field>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>event</dc-element>
+                    <dc-qualifier>receiver</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የተቀበለው (Received By)</label>
+                    <input-type>onebox</input-type>
+                    <hint>Name of the Judge, Prosecutor, or Clerk.</hint>
+                    <required>Receiver name is required.</required>
+                </field>
+            </row>
+
+            <row>
+                <field>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>event</dc-element>
+                    <dc-qualifier>department</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የሄደበት ክፍል (Destination Department/Bench)</label>
+                    <input-type>onebox</input-type>
+                    <required></required>
+                </field>
+                <field>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>event</dc-element>
+                    <dc-qualifier>returnDate</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የተመለሰበት ቀን (Return Date)</label>
+                    <input-type>date</input-type>
+                    <hint>Leave blank until the file is returned to the archive.</hint>
                 </field>
             </row>
             <row>
                 <field>
                     <dc-schema>dc</dc-schema>
                     <dc-element>description</dc-element>
-                    <dc-qualifier></dc-qualifier>
                     <repeatable>false</repeatable>
-                    <label>Description</label>
+                    <label>ተጨማሪ ማብራሪያ (Remarks)</label>
                     <input-type>textarea</input-type>
-                    <hint>Enter any other description or summary in this box.</hint>
-                    <required></required>
                 </field>
             </row>
         </form>
@@ -653,96 +816,6 @@
 
         </form>
 
-        <form name="physicalLocationForm">
-            <row>
-                <field>
-                    <dc-schema>physical</dc-schema>
-                    <dc-element>location</dc-element>
-                    <dc-qualifier>building</dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>Building</label>
-                    <input-type>onebox</input-type>
-                    <hint>Enter the building where the item is stored.</hint>
-                </field>
-            </row>
-            <row>
-                <field>
-                    <dc-schema>physical</dc-schema>
-                    <dc-element>location</dc-element>
-                    <dc-qualifier>officeNumber</dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>Office / Room Number</label>
-                    <input-type>onebox</input-type>
-                    <hint>Specify the office or room number containing the item.</hint>
-                </field>
-            </row>
-            <row>
-                <field>
-                    <dc-schema>physical</dc-schema>
-                    <dc-element>location</dc-element>
-                    <dc-qualifier>section</dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>Section</label>
-                    <input-type>onebox</input-type>
-                    <hint>Enter the storage section within the room or office.</hint>
-                </field>
-            </row>
-            <row>
-                <field>
-                    <dc-schema>physical</dc-schema>
-                    <dc-element>location</dc-element>
-                    <dc-qualifier>shelf</dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>Shelf</label>
-                    <input-type>onebox</input-type>
-                    <hint>Specify the shelf identifier where the item is placed.</hint>
-                </field>
-            </row>
-            <row>
-                <field>
-                    <dc-schema>physical</dc-schema>
-                    <dc-element>location</dc-element>
-                    <dc-qualifier>row</dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>Row</label>
-                    <input-type>onebox</input-type>
-                    <hint>Enter the row number or position within the shelf.</hint>
-                </field>
-            </row>
-            <row>
-                <field>
-                    <dc-schema>physical</dc-schema>
-                    <dc-element>location</dc-element>
-                    <dc-qualifier>position</dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>Position</label>
-                    <input-type>onebox</input-type>
-                    <hint>Exact position of the item within the row or shelf.</hint>
-                </field>
-            </row>
-            <row>
-                <field>
-                    <dc-schema>physical</dc-schema>
-                    <dc-element>location</dc-element>
-                    <dc-qualifier>notes</dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>Notes</label>
-                    <input-type>textarea</input-type>
-                    <hint>Additional notes about the physical storage location.</hint>
-                </field>
-            </row>
-            <row>
-                <field>
-                    <dc-schema>physical</dc-schema>
-                    <dc-element>location</dc-element>
-                    <dc-qualifier>rfid</dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>RFID Tag</label>
-                    <input-type>onebox</input-type>
-                    <hint>Enter the RFID tag identifier for this item, if available.</hint>
-                </field>
-            </row>
-        </form>
 
         <!-- Form which defines the *first* metadata page/section for depositing Publication
         Entities.
@@ -2544,7 +2617,7 @@
             </pair>
         </value-pairs>
 
-        <value-pairs value-pairs-name="document_types" dc-term="type">
+        <!-- <value-pairs value-pairs-name="document_types" dc-term="type">
             <pair>
                 <displayed-value>ID Card</displayed-value>
                 <stored-value>ID Card</stored-value>
@@ -2581,6 +2654,61 @@
                 <displayed-value>Other</displayed-value>
                 <stored-value>Other</stored-value>
             </pair>
+        </value-pairs> -->
+        <value-pairs value-pairs-name="case_types" dc-term="case.type">
+            <pair><displayed-value>የፍትሐብሔር መዝገብ (Civil)</displayed-value><stored-value>Civil</stored-value></pair>
+            <pair><displayed-value>የወንጀል መዝገብ (Criminal)</displayed-value><stored-value>Criminal</stored-value></pair>
+            <pair><displayed-value>የሰበር መዝገብ (Cassation)</displayed-value><stored-value>Cassation</stored-value></pair>
+        </value-pairs>
+
+        <value-pairs value-pairs-name="case_levels" dc-term="case.level">
+            <pair><displayed-value>Registrar (ሬጅስትራር)</displayed-value><stored-value>Registrar</stored-value></pair>
+            <pair><displayed-value>Screening (ቅድመ ምርመራ)</displayed-value><stored-value>Screening</stored-value></pair>
+            <pair><displayed-value>Litigation (የችሎት ክርክር)</displayed-value><stored-value>Litigation</stored-value></pair>
+            <pair><displayed-value>Archive (መዝገብ ቤት)</displayed-value><stored-value>Archive</stored-value></pair>
+        </value-pairs>
+
+        <value-pairs value-pairs-name="case_status_types" dc-term="case.status">
+            <pair><displayed-value>Active (በሂደት ላይ)</displayed-value><stored-value>Active</stored-value></pair>
+            <pair><displayed-value>Adjourned (የተቀጠረ)</displayed-value><stored-value>Adjourned</stored-value></pair>
+            <pair><displayed-value>Closed (የተዘጋ)</displayed-value><stored-value>Closed</stored-value></pair>
+        </value-pairs>
+
+        <value-pairs value-pairs-name="record_formats" dc-term="case.format">
+            <pair><displayed-value>የኤሌክትሮኒክ ፋይል (E-File Only)</displayed-value><stored-value>Electronic</stored-value></pair>
+            <pair><displayed-value>የወረቀት ፋይል (Physical File Only)</displayed-value><stored-value>Physical</stored-value></pair>
+            <pair><displayed-value>ድብልቅ (Hybrid/Both)</displayed-value><stored-value>Hybrid</stored-value></pair>
+        </value-pairs>
+
+        <value-pairs value-pairs-name="document_sections" dc-term="document.section">
+            <pair><displayed-value>1. Pleadings (የአቤቱታ/የክስ ክፍል)</displayed-value><stored-value>Pleadings</stored-value></pair>
+            <pair><displayed-value>2. Orders &amp; Minutes (የቃለ-ጉባኤ እና የትዕዛዝ ክፍል)</displayed-value><stored-value>Orders_Minutes</stored-value></pair>
+            <pair><displayed-value>3. Evidence (የማስረጃ ክፍል)</displayed-value><stored-value>Evidence</stored-value></pair>
+            <pair><displayed-value>4. Administrative (የአስተዳደር ክፍል)</displayed-value><stored-value>Administrative</stored-value></pair>
+        </value-pairs>
+
+        <value-pairs value-pairs-name="document_types" dc-term="document.type">
+            <pair><displayed-value>የክስ ማመልከቻ (Complaint)</displayed-value><stored-value>Complaint</stored-value></pair>
+            <pair><displayed-value>የመከላከያ መልስ (Defense Statement)</displayed-value><stored-value>Defense</stored-value></pair>
+            <pair><displayed-value>የችሎት ቃለ-ጉባኤ (Minutes)</displayed-value><stored-value>Minutes</stored-value></pair>
+            <pair><displayed-value>የመጨረሻ ውሳኔ (Final Judgment)</displayed-value><stored-value>Judgment</stored-value></pair>
+            <pair><displayed-value>የሰነድ ማስረጃ (Exhibit Document)</displayed-value><stored-value>Exhibit</stored-value></pair>
+            <pair><displayed-value>የባለሙያ ሪፖርት (Expert Report)</displayed-value><stored-value>Expert_Report</stored-value></pair>
+            <pair><displayed-value>የዳኝነት ክፍያ ደረሰኝ (Court Fee Receipt)</displayed-value><stored-value>Fee_Receipt</stored-value></pair>
+        </value-pairs>
+        <value-pairs value-pairs-name="event_status_types" dc-term="status">
+            <pair>
+            <displayed-value>Returned</displayed-value>
+            <stored-value>returned</stored-value>
+            </pair>
+            <pair>
+            <displayed-value>Out</displayed-value>
+            <stored-value>out</stored-value>
+            </pair>
+        </value-pairs>
+        <value-pairs value-pairs-name="active_status_types" dc-term="document.status">
+            <pair><displayed-value>Active (ገቢ)</displayed-value><stored-value>Active</stored-value></pair>
+            <pair><displayed-value>Inactive (ውድቅ)</displayed-value><stored-value>Inactive</stored-value></pair>
         </value-pairs>
 
         <value-pairs value-pairs-name="gender_types">

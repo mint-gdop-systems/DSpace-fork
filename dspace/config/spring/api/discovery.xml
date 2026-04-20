@@ -194,11 +194,13 @@
         <!--Which sidebar facets are to be displayed-->
         <property name="sidebarFacets">
             <list>
-                <ref bean="searchFilterHouseType" />
-                <ref bean="searchFilterHouseNumber" />
-                <ref bean="searchFilterHusbandName" />
-                <ref bean="searchFilterWifeName" />
-                <ref bean="searchFilterRegistration" />
+                <ref bean="searchFilterCaseType" />
+                <ref bean="searchFilterCaseLevel" />
+                <ref bean="searchFilterFileNumber" />
+                <ref bean="searchFilterPrimaryJudge" />
+                <ref bean="searchFilterPlaintiff" />
+                <ref bean="searchFilterDefendant" />
+                <ref bean="searchFilterLegalRegistrationDate" />
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
@@ -214,11 +216,13 @@
         <!--The search filters which can be used on the discovery search page-->
         <property name="searchFilters">
             <list>
-                <ref bean="searchFilterHouseType" />
-                <ref bean="searchFilterHouseNumber" />
-                <ref bean="searchFilterHusbandName" />
-                <ref bean="searchFilterWifeName" />
-                <ref bean="searchFilterRegistration" />
+                <ref bean="searchFilterCaseType" />
+                <ref bean="searchFilterCaseLevel" />
+                <ref bean="searchFilterFileNumber" />
+                <ref bean="searchFilterPrimaryJudge" />
+                <ref bean="searchFilterPlaintiff" />
+                <ref bean="searchFilterDefendant" />
+                <ref bean="searchFilterLegalRegistrationDate" />
                 <ref bean="searchFilterTitle" />
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
@@ -243,10 +247,10 @@
             <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
                 <property name="sortFields">
                     <list>
-                        <ref bean="sortDateRegistration" />
-                        <ref bean="sortHouseNumber" />
-                        <ref bean="sortDateRegistrationAsc" />
-                        <ref bean="sortHouseNumberDesc" />
+                        <ref bean="sortLegalDateRegistration" />
+                        <ref bean="sortLegalDateRegistrationAsc" />
+                        <ref bean="sortLegalFileNumber" />
+                        <ref bean="sortLegalFileNumberDesc" />
                         <ref bean="sortScore" />
                         <ref bean="sortTitle" />
                         <ref bean="sortDateIssued" />
@@ -547,20 +551,19 @@
         <property name="tagCloudFacetConfiguration" ref="defaultTagCloudFacetConfiguration"/>
         <!--The search filters which can be used on the discovery search page-->
         <property name="searchFilters">
-            <list>
-                <ref bean="searchFilterTitle" />
+            <list>    
+                <ref bean="searchFilterCaseType" />
+                <ref bean="searchFilterCaseLevel" />
+                <ref bean="searchFilterFileNumber" />
+                <ref bean="searchFilterPrimaryJudge" />
+                <ref bean="searchFilterPlaintiff" />
+                <ref bean="searchFilterDefendant" />
+                <ref bean="searchFilterLegalRegistrationDate" />
                 <ref bean="searchFilterAuthor" />
                 <ref bean="searchFilterSubject" />
                 <ref bean="searchFilterIssued" />
                 <ref bean="searchFilterContentInOriginalBundle"/>
-                <ref bean="searchFilterFileNameInOriginalBundle" />
-                <ref bean="searchFilterFileDescriptionInOriginalBundle" />
                 <ref bean="searchFilterEntityType"/>
-                <ref bean="searchFilterIsAuthorOfPublicationRelation"/>
-                <ref bean="searchFilterIsProjectOfPublicationRelation"/>
-                <ref bean="searchFilterIsOrgUnitOfPublicationRelation"/>
-                <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
-                <ref bean="searchFilterIsJournalOfPublicationRelation"/>
             </list>
         </property>
         <!--The sort filters for the discovery search-->
@@ -825,11 +828,13 @@
         <!--Which sidebar facets are to be displayed -->
         <property name="sidebarFacets">
             <list>
-                <ref bean="searchFilterHouseType" />
-                <ref bean="searchFilterHouseNumber" />
-                <ref bean="searchFilterHusbandName" />
-                <ref bean="searchFilterWifeName" />
-                <ref bean="searchFilterRegistration" />
+                <ref bean="searchFilterCaseType" />
+                <ref bean="searchFilterCaseLevel" />
+                <ref bean="searchFilterFileNumber" />
+                <ref bean="searchFilterPrimaryJudge" />
+                <ref bean="searchFilterPlaintiff" />
+                <ref bean="searchFilterDefendant" />
+                <ref bean="searchFilterLegalRegistrationDate" />
                 <ref bean="searchFilterObjectNamedType" />
                 <ref bean="searchFilterType" />
                 <ref bean="searchFilterIssued" />
@@ -838,11 +843,13 @@
         <!--The search filters which can be used on the discovery search page -->
         <property name="searchFilters">
             <list>
-                <ref bean="searchFilterHouseType" />
-                <ref bean="searchFilterHouseNumber" />
-                <ref bean="searchFilterHusbandName" />
-                <ref bean="searchFilterWifeName" />
-                <ref bean="searchFilterRegistration" />
+                <ref bean="searchFilterCaseType" />
+                <ref bean="searchFilterCaseLevel" />
+                <ref bean="searchFilterFileNumber" />
+                <ref bean="searchFilterPrimaryJudge" />
+                <ref bean="searchFilterPlaintiff" />
+                <ref bean="searchFilterDefendant" />
+                <ref bean="searchFilterLegalRegistrationDate" />
                 <ref bean="searchFilterObjectNamedType" />
                 <ref bean="searchFilterType" />
                 <ref bean="searchFilterIssued" />
@@ -855,14 +862,21 @@
                 <property name="defaultSortField" ref="sortLastModified" />
                 <property name="sortFields">
                     <list>
-                        <ref bean="sortDateRegistration" />
-                        <ref bean="sortHouseNumber" />
-                        <ref bean="sortDateRegistrationAsc" />
-                        <ref bean="sortHouseNumberDesc" />
+
                         <ref bean="sortLastModified" />
                         <ref bean="sortScore" />
                         <ref bean="sortTitle" />
                         <ref bean="sortDateIssued" />
+                        <ref bean="sortDateAccessioned"/>
+                        
+                        <ref bean="sortLegalDateRegistration" />
+                        <ref bean="sortLegalDateRegistrationAsc" />
+                        <ref bean="sortLegalFileNumber" />
+                        <ref bean="sortLegalFileNumberDesc" />
+                        <ref bean="sortLegalPrimaryJudge" />
+                        <ref bean="sortLegalPlaintiff" />
+                        <ref bean="sortLegalDefendant" />
+                        <ref bean="sortLegalCaseType" />
                     </list>
                 </property>
             </bean>
@@ -990,11 +1004,13 @@
         <!--Which sidebar facets are to be displayed -->
         <property name="sidebarFacets">
             <list>
-                <ref bean="searchFilterHouseType" />
-                <ref bean="searchFilterHouseNumber" />
-                <ref bean="searchFilterHusbandName" />
-                <ref bean="searchFilterWifeName" />
-                <ref bean="searchFilterRegistration" />
+                <ref bean="searchFilterCaseType" />
+                <ref bean="searchFilterCaseLevel" />
+                <ref bean="searchFilterFileNumber" />
+                <ref bean="searchFilterPrimaryJudge" />
+                <ref bean="searchFilterPlaintiff" />
+                <ref bean="searchFilterDefendant" />
+                <ref bean="searchFilterLegalRegistrationDate" />
                 <ref bean="searchFilterObjectNamedType" />
                 <ref bean="searchFilterType" />
                 <ref bean="searchFilterIssued" />
@@ -1004,11 +1020,13 @@
         <!--The search filters which can be used on the discovery search page -->
         <property name="searchFilters">
             <list>
-                <ref bean="searchFilterHouseType" />
-                <ref bean="searchFilterHouseNumber" />
-                <ref bean="searchFilterHusbandName" />
-                <ref bean="searchFilterWifeName" />
-                <ref bean="searchFilterRegistration" />
+                <ref bean="searchFilterCaseType" />
+                <ref bean="searchFilterCaseLevel" />
+                <ref bean="searchFilterFileNumber" />
+                <ref bean="searchFilterPrimaryJudge" />
+                <ref bean="searchFilterPlaintiff" />
+                <ref bean="searchFilterDefendant" />
+                <ref bean="searchFilterLegalRegistrationDate" />
                 <ref bean="searchFilterObjectNamedType" />
                 <ref bean="searchFilterType" />
                 <ref bean="searchFilterIssued" />
@@ -1020,11 +1038,14 @@
             <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
                 <property name="sortFields">
                     <list>
-                        <ref bean="sortDateRegistration" />
-                        <ref bean="sortHouseNumber" />
-                        <ref bean="sortDateRegistrationAsc" />
-                        <ref bean="sortHouseNumberDesc" />
-                        <ref bean="sortLastModified" />
+                        <ref bean="sortLegalDateRegistration" />
+                        <ref bean="sortLegalDateRegistrationAsc" />
+                        <ref bean="sortLegalFileNumber" />
+                        <ref bean="sortLegalFileNumberDesc" />
+                        <ref bean="sortLegalPrimaryJudge" />
+                        <ref bean="sortLegalPlaintiff" />
+                        <ref bean="sortLegalDefendant" />
+                        <ref bean="sortLegalCaseType" />
                         <ref bean="sortScore" />
                         <ref bean="sortTitle" />
                         <ref bean="sortDateIssued" />
@@ -1370,17 +1391,21 @@
             <list>
                 <ref bean="searchFilterJobtitle"/>
                 <ref bean="searchFilterKnowsLanguage"/>
-                <ref bean="searchFilterBirthdate"/>
+                <ref bean="searchFilterFileNumber" />
+                <ref bean="searchFilterPlaintiff" />
+                <ref bean="searchFilterDefendant" />
+
             </list>
         </property>
         <!--The search filters which can be used on the discovery search page-->
         <property name="searchFilters">
             <list>
-                <ref bean="searchFilterFamilyName"/>
-                <ref bean="searchFilterGivenName"/>
                 <ref bean="searchFilterJobtitle"/>
                 <ref bean="searchFilterKnowsLanguage"/>
-                <ref bean="searchFilterBirthdate"/>
+                <ref bean="searchFilterFileNumber" />
+                <ref bean="searchFilterPrimaryJudge" />
+                <ref bean="searchFilterPlaintiff" />
+                <ref bean="searchFilterDefendant" />
                 <ref bean="searchFilterIsOrgUnitOfPersonRelation"/>
                 <ref bean="searchFilterIsProjectOfPersonRelation"/>
                 <ref bean="searchFilterIsPublicationOfAuthorRelation"/>
@@ -1392,9 +1417,11 @@
                 <property name="sortFields">
                     <list>
                         <ref bean="sortScore" />
-                        <ref bean="sortFamilyName"/>
-                        <ref bean="sortGivenName"/>
-                        <ref bean="sortBirthDate"/>
+                        <ref bean="sortLegalFileNumber" />
+                        <ref bean="sortLegalPrimaryJudge" />
+                        <ref bean="sortLegalPlaintiff" />
+                        <ref bean="sortLegalDefendant" />
+                        <ref bean="sortLegalCaseType" />
                         <ref bean="sortDateAccessioned"/>
                     </list>
                 </property>
@@ -1432,17 +1459,19 @@
             <list>
                 <ref bean="searchFilterJobtitle"/>
                 <ref bean="searchFilterKnowsLanguage"/>
-                <ref bean="searchFilterBirthdate"/>
+                <ref bean="searchFilterFileNumber" />
+                <ref bean="searchFilterPlaintiff" />
+                <ref bean="searchFilterDefendant" />
             </list>
         </property>
         <!--The search filters which can be used on the discovery search page-->
         <property name="searchFilters">
             <list>
-                <ref bean="searchFilterFamilyName"/>
-                <ref bean="searchFilterGivenName"/>
                 <ref bean="searchFilterJobtitle"/>
                 <ref bean="searchFilterKnowsLanguage"/>
-                <ref bean="searchFilterBirthdate"/>
+                <ref bean="searchFilterFileNumber" />
+                <ref bean="searchFilterPlaintiff" />
+                <ref bean="searchFilterDefendant" />
                 <ref bean="searchFilterIsOrgUnitOfPersonRelation"/>
                 <ref bean="searchFilterIsProjectOfPersonRelation"/>
                 <ref bean="searchFilterIsPublicationOfAuthorRelation"/>
@@ -1454,9 +1483,11 @@
                 <property name="sortFields">
                     <list>
                         <ref bean="sortScore" />
-                        <ref bean="sortFamilyName"/>
-                        <ref bean="sortGivenName"/>
-                        <ref bean="sortBirthDate"/>
+                        <ref bean="sortLegalFileNumber" />
+                        <ref bean="sortLegalPrimaryJudge" />
+                        <ref bean="sortLegalPlaintiff" />
+                        <ref bean="sortLegalDefendant" />
+                        <ref bean="sortLegalCaseType" />
                         <ref bean="sortDateAccessioned"/>
                     </list>
                 </property>
@@ -2179,9 +2210,11 @@
                         <ref bean="sortOrganizationAddressLocality"/>
                         <ref bean="sortOrganizationFoundingDate"/>
                         <ref bean="sortDateAccessioned"/>
-                        <ref bean="sortFamilyName"/>
-                        <ref bean="sortGivenName"/>
-                        <ref bean="sortBirthDate"/>
+                        <ref bean="sortLegalFileNumber" />
+                        <ref bean="sortLegalPrimaryJudge" />
+                        <ref bean="sortLegalPlaintiff" />
+                        <ref bean="sortLegalDefendant" />
+                        <ref bean="sortLegalCaseType" />
                     </list>
                 </property>
             </bean>
@@ -2574,6 +2607,54 @@
     </bean>
 
     <!--Search filter configuration beans-->
+
+
+    <bean id="searchFilterCaseType" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="caseType"/>
+        <property name="metadataFields"><list><value>legal.case.type</value></list></property>
+        <property name="facetLimit" value="5"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+        <property name="isOpenByDefault" value="true"/>
+        <property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="searchFilterCaseLevel" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="caseLevel"/>
+        <property name="metadataFields"><list><value>legal.case.level</value></list></property>
+        <property name="facetLimit" value="5"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+        <property name="isOpenByDefault" value="true"/>
+    </bean>
+
+    <bean id="searchFilterLegalRegistrationDate" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="registrationDate"/>
+        <property name="metadataFields"><list><value>legal.date.registration</value></list></property>
+        <property name="type" value="date"/>
+        <property name="isOpenByDefault" value="false"/>
+        <property name="exposeMinAndMaxValue" value="true"/>
+    </bean>
+
+    <bean id="searchFilterPrimaryJudge" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="primaryJudge"/>
+        <property name="metadataFields"><list><value>legal.judge.primary</value></list></property>
+        <property name="facetLimit" value="10"/>
+        <property name="sortOrderSidebar" value="COUNT"/>
+    </bean>
+
+    <bean id="searchFilterFileNumber" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="fileNumber"/>
+        <property name="metadataFields"><list><value>legal.case.fileNumber</value></list></property>
+    </bean>
+
+    <bean id="searchFilterPlaintiff" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="plaintiff"/>
+        <property name="metadataFields"><list><value>legal.case.plaintiff</value></list></property>
+    </bean>
+
+    <bean id="searchFilterDefendant" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="defendant"/>
+        <property name="metadataFields"><list><value>legal.case.defendant</value></list></property>
+    </bean>
 
     <bean id="searchFilterHouseType" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="houseType"/>
@@ -3492,6 +3573,48 @@
     </bean>
 
     <!--Sort properties-->
+
+    <bean id="sortLegalDateRegistration" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
+        <property name="metadataField" value="legal.date.registration"/>
+        <property name="type" value="date"/>
+        <property name="defaultSortOrder" value="desc"/>
+    </bean>
+    <bean id="sortLegalDateRegistrationAsc" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
+        <property name="metadataField" value="legal.date.registration"/>
+        <property name="type" value="date"/>
+        <property name="defaultSortOrder" value="asc"/>
+    </bean>
+
+    <bean id="sortLegalFileNumber" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
+        <property name="metadataField" value="legal.case.fileNumber"/>
+        <property name="defaultSortOrder" value="asc"/>
+    </bean>
+    <bean id="sortLegalFileNumberDesc" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
+        <property name="metadataField" value="legal.case.fileNumber"/>
+        <property name="defaultSortOrder" value="desc"/>
+    </bean>
+
+    <bean id="sortLegalPrimaryJudge" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
+        <property name="metadataField" value="legal.judge.primary"/>
+        <property name="defaultSortOrder" value="asc"/>
+    </bean>
+
+    <bean id="sortLegalPlaintiff" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
+        <property name="metadataField" value="legal.case.plaintiff"/>
+        <property name="defaultSortOrder" value="asc"/>
+    </bean>
+
+    <bean id="sortLegalDefendant" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
+        <property name="metadataField" value="legal.case.defendant"/>
+        <property name="defaultSortOrder" value="asc"/>
+    </bean>
+
+    <bean id="sortLegalCaseType" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
+        <property name="metadataField" value="legal.case.type"/>
+        <property name="defaultSortOrder" value="asc"/>
+    </bean>
+
+
     <bean id="sortDateRegistration" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
         <property name="metadataField" value="crvs.date.registration"/>
         <property name="type" value="date"/>
