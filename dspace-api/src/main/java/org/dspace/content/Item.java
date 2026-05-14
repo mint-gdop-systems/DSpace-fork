@@ -34,7 +34,6 @@ import org.dspace.core.Context;
 import org.dspace.core.HibernateProxyHelper;
 import org.dspace.eperson.EPerson;
 
-
 /**
  * Class representing an item in DSpace.
  * <P>
@@ -71,7 +70,7 @@ public class Item extends DSpaceObject implements DSpaceObjectLegacySupport {
     @Column(name = "last_modified", columnDefinition = "timestamp with time zone")
     private Instant lastModified = Instant.now();
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
     @JoinColumn(name = "owning_collection")
     private Collection owningCollection;
 
@@ -85,16 +84,12 @@ public class Item extends DSpaceObject implements DSpaceObjectLegacySupport {
     @JoinColumn(name = "submitter_id")
     private EPerson submitter = null;
 
-
     /**
      * The bundles in this item - kept in sync with DB
      */
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
-    @JoinTable(
-        name = "collection2item",
-        joinColumns = {@JoinColumn(name = "item_id")},
-        inverseJoinColumns = {@JoinColumn(name = "collection_id")}
-    )
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST })
+    @JoinTable(name = "collection2item", joinColumns = { @JoinColumn(name = "item_id") }, inverseJoinColumns = {
+            @JoinColumn(name = "collection_id") })
     private final Set<Collection> collections = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "items")
@@ -149,9 +144,9 @@ public class Item extends DSpaceObject implements DSpaceObjectLegacySupport {
         return withdrawn;
     }
 
-
     /**
-     * Set an item to be withdrawn, do NOT make this method public, use itemService().withdraw() to withdraw an item
+     * Set an item to be withdrawn, do NOT make this method public, use
+     * itemService().withdraw() to withdraw an item
      *
      * @param withdrawn
      */
@@ -173,7 +168,7 @@ public class Item extends DSpaceObject implements DSpaceObjectLegacySupport {
      * last_modified is null
      *
      * @return the date the item was last modified, or the current date if the
-     * column is null.
+     *         column is null.
      */
     public Instant getLastModified() {
         return lastModified;
@@ -246,12 +241,14 @@ public class Item extends DSpaceObject implements DSpaceObjectLegacySupport {
     }
 
     /**
-     * Get the collections this item is in. The order is sorted ascending by collection name.
+     * Get the collections this item is in. The order is sorted ascending by
+     * collection name.
      *
      * @return the collections this item is in, if any.
      */
     public List<Collection> getCollections() {
-        // We return a copy because we do not want people to add elements to this collection directly.
+        // We return a copy because we do not want people to add elements to this
+        // collection directly.
         // We return a list to maintain backwards compatibility
         Collection[] output = collections.toArray(new Collection[] {});
         Arrays.sort(output, new NameAscendingComparator());
@@ -274,7 +271,6 @@ public class Item extends DSpaceObject implements DSpaceObjectLegacySupport {
         return templateItemOf;
     }
 
-
     void setTemplateItemOf(Collection templateItemOf) {
         this.templateItemOf = templateItemOf;
     }
@@ -292,13 +288,13 @@ public class Item extends DSpaceObject implements DSpaceObjectLegacySupport {
      * Get the bundles matching a bundle name (name corresponds roughly to type)
      *
      * @param name
-     *            name of bundle (ORIGINAL/TEXT/THUMBNAIL)
+     *             name of bundle (ORIGINAL/TEXT/THUMBNAIL)
      *
      * @return the bundles in an unordered array
      */
     public List<Bundle> getBundles(String name) {
         List<Bundle> matchingBundles = new ArrayList<>();
-         // now only keep bundles with matching names
+        // now only keep bundles with matching names
         List<Bundle> bunds = getBundles();
         for (Bundle bundle : bunds) {
             if (name.equals(bundle.getName())) {
@@ -309,7 +305,8 @@ public class Item extends DSpaceObject implements DSpaceObjectLegacySupport {
     }
 
     /**
-     * Add a bundle to the item, should not be made public since we don't want to skip business logic
+     * Add a bundle to the item, should not be made public since we don't want to
+     * skip business logic
      *
      * @param bundle the bundle to be added
      */
@@ -318,7 +315,8 @@ public class Item extends DSpaceObject implements DSpaceObjectLegacySupport {
     }
 
     /**
-     * Remove a bundle from item, should not be made public since we don't want to skip business logic
+     * Remove a bundle from item, should not be made public since we don't want to
+     * skip business logic
      *
      * @param bundle the bundle to be removed
      */
@@ -332,7 +330,7 @@ public class Item extends DSpaceObject implements DSpaceObjectLegacySupport {
      *
      * @param obj object to compare to
      * @return <code>true</code> if object passed in represents the same item
-     * as this object
+     *         as this object
      */
     @Override
     public boolean equals(Object obj) {
@@ -367,7 +365,7 @@ public class Item extends DSpaceObject implements DSpaceObjectLegacySupport {
 
     @Override
     public String getName() {
-        return getItemService().getMetadataFirstValue(this, MetadataSchemaEnum.DC.getName(), "title", null, Item.ANY);
+        return getItemService().getMetadataFirstValue(this, "crvs", "identifier", "houseFamilyKey", Item.ANY);
     }
 
     @Override
