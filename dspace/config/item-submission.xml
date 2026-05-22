@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE item-submission SYSTEM "item-submission.dtd">
 
 <!-- Configurable Submission configuration file -->
@@ -18,9 +18,10 @@
     <!-- for handle "default". -->
     <submission-map>
         <!-- Default submission process -->
-        <name-map collection-handle="default" submission-name="traditional"/>
+        <name-map collection-handle="default" submission-name="traditional" />
 
-        <!-- Sample Entities Collection configuration based on the demo Entities dataset available at:
+        <!-- Sample Entities Collection configuration based on the demo Entities dataset available
+        at:
              https://github.com/DSpace-Labs/AIP-Files/releases/tag/demo-entities-data
              This sets up the following Entity-based Collections in that dataset:
                 "Publication" Collections = "Publications" -> "Articles", "Books", "Publications 2", & "Theses"
@@ -30,7 +31,8 @@
                 "Journal" Collection = "Compound Journals" -> "Journals"
                 "Journal Volume" Collection = "Compound Journals" -> "Journal Volumes"
                 "Journal Issue" Collection = "Compound Journals" ->  "Journal Issues"
-             If you are using that demo dataset, you can simply uncomment the below configuration to enable Entity
+             If you are using that demo dataset, you can simply uncomment the below configuration to enable
+        Entity
              submission into all of the above Collections.
         -->
         <!--
@@ -56,13 +58,13 @@
             PLEASE NOTICE THAT YOU WILL HAVE TO RESTART DSPACE
             - - - - - -
         -->
-        <name-map collection-entity-type="Publication" submission-name="Publication"/>
-        <name-map collection-entity-type="Person" submission-name="Person"/>
-        <name-map collection-entity-type="Project" submission-name="Project"/>
-        <name-map collection-entity-type="OrgUnit" submission-name="OrgUnit"/>
-        <name-map collection-entity-type="Journal" submission-name="Journal"/>
-        <name-map collection-entity-type="JournalVolume" submission-name="JournalVolume"/>
-        <name-map collection-entity-type="JournalIssue" submission-name="JournalIssue"/>
+        <name-map collection-entity-type="Publication" submission-name="Publication" />
+        <name-map collection-entity-type="Person" submission-name="Person" />
+        <name-map collection-entity-type="Project" submission-name="Project" />
+        <name-map collection-entity-type="OrgUnit" submission-name="OrgUnit" />
+        <name-map collection-entity-type="Journal" submission-name="Journal" />
+        <name-map collection-entity-type="JournalVolume" submission-name="JournalVolume" />
+        <name-map collection-entity-type="JournalIssue" submission-name="JournalIssue" />
         <name-map collection-entity-type="House" submission-name="House" />
         <name-map collection-entity-type="VitalEvent" submission-name="VitalEvent" />
         <name-map collection-entity-type="Letter" submission-name="Letter" />
@@ -77,7 +79,6 @@
         -->
 
     </submission-map>
-
 
 
     <!-- The 'step-definitions' allows you to define steps which you may wish -->
@@ -110,23 +111,29 @@
             <type>collection</type>
         </step-definition>
 
-        <!-- The following set of DescribeStep <step-definition>s all point to forms (of the same name) which are
+        <!-- The following set of DescribeStep <step-definition>s all point to forms (of the same
+        name) which are
              defined in submission-forms.xml -->
+        <step-definition id="vitalEventType" mandatory="true">
+            <heading>submit.progressbar.vitalEventType</heading>
+            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+            <type>submission-form</type>
+        </step-definition>
         <step-definition id="birth" mandatory="true">
             <heading>submit.progressbar.birth</heading>
             <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
             <type>submission-form</type>
-        </step-definition>  
+        </step-definition>
         <step-definition id="marriageAndDivorce" mandatory="true">
             <heading>submit.progressbar.marriage</heading>
             <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
             <type>submission-form</type>
-        </step-definition>  
+        </step-definition>
         <step-definition id="death" mandatory="true">
             <heading>submit.progressbar.death</heading>
             <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
             <type>submission-form</type>
-        </step-definition>   
+        </step-definition>
         <step-definition id="letter" mandatory="true">
             <heading>submit.progressbar.describe.stepone</heading>
             <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
@@ -199,7 +206,7 @@
         <step-definition id="cclicense" mandatory="false">
             <heading>submit.progressbar.CClicense</heading>
             <processing-class>org.dspace.app.rest.submit.step.CCLicenseStep</processing-class>
-	        <type>cclicense</type>
+            <type>cclicense</type>
         </step-definition>
         <step-definition id="custom-url">
             <heading>submit.progressbar.CustomUrlStep</heading>
@@ -207,7 +214,7 @@
             <type>custom-url</type>
         </step-definition>
 
-		<!-- This optional step may allow the user to select access conditions on the item -->
+        <!-- This optional step may allow the user to select access conditions on the item -->
         <step-definition id="itemAccessConditions">
             <heading>submit.progressbar.accessCondition</heading>
             <processing-class>org.dspace.app.rest.submit.step.AccessConditionStep</processing-class>
@@ -306,28 +313,34 @@
     <!-- -->
     <submission-definitions>
 
-        <!--This "traditional" process defines the DEFAULT item submission process -->
+        <!--This
+        "traditional" process defines the DEFAULT item submission process -->
         <submission-process name="traditional">
-            <!--Uncommment to display the SAMPLE step as your first step -->
-            <!--<step id="sample"/> -->
+            <!--Uncommment
+            to display the SAMPLE step as your first step -->
+            <!--<step
+            id="sample"/> --> !-- This step enables preview of potential
+            duplicates for the in-progress item --> <step id="duplicates" />
 
-            !-- This step enables preview of potential duplicates for the in-progress item -->
-            <step id="duplicates"/>
-
-            <step id="collection"/>
+            <step id="collection" />
             <!-- To include the 'Show Identifiers' step, uncomment the line below. Make sure
                  that identifiers.cfg and identifier-service.xml are properly configured. -->
-            <!--<step id="identifiers"/>-->
-            <!--Step will be to Describe the item. -->
-            <step id="traditionalpageone"/>
-            <step id="traditionalpagetwo"/>
+            <!--<step
+            id="identifiers"/>-->
+            <!--Step
+            will be to Describe the item. -->
+            <step
+                id="traditionalpageone" />
+            <step id="traditionalpagetwo" />
 
-            <step id="physicalLocationForm"/>
+            <step
+                id="physicalLocationForm" />
 
             <!-- Uncomment this step to allow the user to embargo or access restrict the entire item -->
             <!-- <step id="itemAccessConditions"/> -->
 
-            <!-- Uncomment this step to show when appropriate publisher policies retrieved from SHERPA/RoMEO -->
+            <!-- Uncomment this step to show when appropriate publisher policies retrieved from
+            SHERPA/RoMEO -->
             <!-- <step id="sherpaPolicies"/> -->
 
             <!-- To include the 'Duplicate Detection' step, uncomment the line below. Make sure
@@ -335,162 +348,177 @@
                  enabling the feature -->
             <!-- <step id="duplicates"/> -->
 
-            <!--Step will be COAR Notify services to the item -->
+            <!--Step
+            will be COAR Notify services to the item -->
             <!-- <step id="coarnotify"/> -->
 
-            <!--Step will be to Upload the item -->
-            <step id="upload"/>
+            <!--Step
+            will be to Upload the item -->
+            <step id="upload" />
 
             <!-- <step id="extractionstep"/> -->
 
             <!-- Uncomment this step to allow the user to select a Creative Commons License -->
             <!-- <step id="cclicense"/> -->
 
-            <!--Step will be to Sign off on the required DSpace License agreement -->
+            <!--Step
+            will be to Sign off on the required DSpace License agreement -->
             <!-- <step id="license"/> -->
         </submission-process>
 
         <submission-process name="House">
-            <step id="duplicates"/>
-            <step id="collection"/>
-            <step id="traditionalpageone"/>
-            <step id="traditionalpagetwo"/>
-            <step id="physicalLocationForm"/>
-            <step id="upload"/>
+            <step id="duplicates" />
+            <step id="collection" />
+            <step id="traditionalpageone" />
+            <step id="traditionalpagetwo" />
+            <step id="physicalLocationForm" />
+            <step id="upload" />
         </submission-process>
 
         <submission-process name="VitalEvent">
-            <step id="duplicates"/>
-            <step id="collection"/>
-            <step id="birth"/>
-            <step id="marriageAndDivorce"/>
-            <step id="death"/>
-            <step id="physicalLocationForm"/>
-            <step id="upload"/>
+            <step id="duplicates" />
+            <step id="collection" />
+            <step id="vitalEventType" />
+            <step id="birth" />
+            <step id="marriageAndDivorce" />
+            <step id="death" />
+            <step id="physicalLocationForm" />
+            <step id="upload" />
         </submission-process>
 
         <submission-process name="Letter">
-            <step id="duplicates"/>
-            <step id="collection"/>
+            <step id="duplicates" />
+            <step id="collection" />
             <step id="letter" />
-            <step id="physicalLocationForm"/>
-            <step id="upload"/>
+            <step id="physicalLocationForm" />
+            <step id="upload" />
         </submission-process>
 
         <!--
         Submission Process for 'Publication' Entities.
         These are not to be confused with default Items, as Publications may be linked with other Entities
         (e.g. Person, JournalIssue, etc).
-        To enable: create a collection for Publications and add it to the <submission-map> tag linking to this process
+        To enable: create a collection for Publications and add it to the <submission-map> tag linking to
+        this process
          -->
         <submission-process name="Publication">
-            <step id="collection"/>
+            <step id="collection" />
             <!-- Publications use a custom first step, but share page 2 with "traditional" Item form -->
-            <step id="publicationStep"/>
-            <step id="traditionalpagetwo"/>
-            <step id="upload"/>
-            <step id="license"/>
+            <step id="publicationStep" />
+            <step id="traditionalpagetwo" />
+            <step id="upload" />
+            <step id="license" />
         </submission-process>
 
         <!--
         Submission Process for 'Person' Entities
-        To enable: create a collection for Persons and add it to the <submission-map> tag linking to this process
+        To enable: create a collection for Persons and add it to the <submission-map> tag linking to this
+        process
          -->
         <submission-process name="Person">
-            <step id="collection"/>
-            <step id="personStep"/>
-            <!-- The custom-url step can be uncommented to allow the Person's custom URL (when enabled) to be
+            <step id="collection" />
+            <step id="personStep" />
+            <!-- The custom-url step can be uncommented to allow the Person's custom URL (when
+            enabled) to be
                  customized during submission.-->
             <!-- <step id="custom-url"/> -->
-            <step id="upload"/>
-            <step id="license"/>
+            <step id="upload" />
+            <step id="license" />
         </submission-process>
 
         <!--
         Submission Process for 'Pproject' Entities
-        To enable: create a collection for Projects and add it to the <submission-map> tag linking to this process
+        To enable: create a collection for Projects and add it to the <submission-map> tag linking to this
+        process
          -->
         <submission-process name="Project">
-            <step id="collection"/>
-            <step id="projectStep"/>
-            <step id="upload"/>
-            <step id="license"/>
+            <step id="collection" />
+            <step id="projectStep" />
+            <step id="upload" />
+            <step id="license" />
         </submission-process>
 
         <!--
         Submission Process for 'OrgUnit' Entities
-        To enable: create a collection for OrgUnits and add it to the <submission-map> tag linking to this process
+        To enable: create a collection for OrgUnits and add it to the <submission-map> tag linking to this
+        process
          -->
         <submission-process name="OrgUnit">
-            <step id="collection"/>
-            <step id="orgUnitStep"/>
-            <step id="upload"/>
-            <step id="license"/>
+            <step id="collection" />
+            <step id="orgUnitStep" />
+            <step id="upload" />
+            <step id="license" />
         </submission-process>
 
         <!--
         Submission Process for 'Journal' Entities
-        To enable: create a collection for Journals and add it to the <submission-map> tag linking to this process
+        To enable: create a collection for Journals and add it to the <submission-map> tag linking to this
+        process
          -->
         <submission-process name="Journal">
-            <step id="collection"/>
-            <step id="journalStep"/>
-            <step id="upload"/>
-            <step id="license"/>
+            <step id="collection" />
+            <step id="journalStep" />
+            <step id="upload" />
+            <step id="license" />
         </submission-process>
 
         <!--
         Submission Process for 'JournalVolume' Entities
-        To enable: create a collection for JournalVolumes and add it to the <submission-map> tag linking to this process
+        To enable: create a collection for JournalVolumes and add it to the <submission-map> tag linking to
+        this process
          -->
         <submission-process name="JournalVolume">
-            <step id="collection"/>
-            <step id="journalVolumeStep"/>
-            <step id="upload"/>
-            <step id="license"/>
+            <step id="collection" />
+            <step id="journalVolumeStep" />
+            <step id="upload" />
+            <step id="license" />
         </submission-process>
 
         <!--
         Submission Process for 'JournalIssues' Entities
-        To enable: create a collection for JournalIssues and add it to the <submission-map> tag linking to this process
+        To enable: create a collection for JournalIssues and add it to the <submission-map> tag linking to
+        this process
          -->
         <submission-process name="JournalIssue">
-            <step id="collection"/>
-            <step id="journalIssueStep"/>
-            <step id="upload"/>
-            <step id="license"/>
+            <step id="collection" />
+            <step id="journalIssueStep" />
+            <step id="upload" />
+            <step id="license" />
         </submission-process>
 
         <!-- Openaire submission processes -->
         <submission-process name="openairePublicationSubmission">
-            <step id="collection"/>
+            <step id="collection" />
 
-            <!--Step will be to Describe the item. -->
-            <step id="openairePublicationPageoneForm"/>
-            <step id="openairePublicationPagetwoForm"/>
+            <!--Step
+            will be to Describe the item. -->
+            <step id="openairePublicationPageoneForm" />
+            <step id="openairePublicationPagetwoForm" />
 
-            <!--Step will be to Upload the item -->
+            <!--Step
+            will be to Upload the item -->
             <!-- step id="upload-with-embargo"/-->
-            <step id="upload"/>
+            <step id="upload" />
 
-            <!--Step will be to Sign off on the License -->
-            <step id="license"/>
+            <!--Step
+            will be to Sign off on the License -->
+            <step id="license" />
 
             <!-- Step allows the user to select a Creative Commons License -->
             <!-- Required for OpenAIREv4 support -->
-            <step id="cclicense"/>
+            <step id="cclicense" />
         </submission-process>
         <submission-process name="openairePersonSubmission">
-            <step id="collection"/>
-            <step id="openairePersonForm"/>
+            <step id="collection" />
+            <step id="openairePersonForm" />
         </submission-process>
         <submission-process name="openaireProjectSubmission">
-            <step id="collection"/>
-            <step id="openaireProjectForm"/>
+            <step id="collection" />
+            <step id="openaireProjectForm" />
         </submission-process>
         <submission-process name="openaireOrganizationSubmission">
-            <step id="collection"/>
-            <step id="openaireOrganizationForm"/>
+            <step id="collection" />
+            <step id="openaireOrganizationForm" />
         </submission-process>
     </submission-definitions>
 

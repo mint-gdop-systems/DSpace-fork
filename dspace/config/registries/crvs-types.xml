@@ -280,4 +280,11 @@
         <scope_note>Gender of the deceased person.</scope_note>
     </dc-type>
 
+    <dc-type>
+        <schema>crvs</schema>
+        <element>vital</element>
+        <qualifier>eventType</qualifier>
+        <scope_note>Type of vital event. Birth, Death or Marriage/Divorce</scope_note>
+    </dc-type>
+
 </dspace-dc-types>

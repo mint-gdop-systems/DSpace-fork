@@ -211,6 +211,21 @@
             </row>
         </form>
 
+        <form name="vitalEventType">
+            <row>
+                <field>
+                    <dc-schema>crvs</dc-schema>
+                    <dc-element>vital</dc-element>
+                    <dc-qualifier>eventType</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>Vital Event Type</label>
+                    <input-type value-pairs-name="vital_event_types">dropdown</input-type>
+                    <hint>Select the type of vital event you are registering.</hint>
+                    <required>You must select a vital event type.</required>
+                </field>
+            </row>
+        </form>
+
         <form name="birth">
             <row>
                 <field>
@@ -2610,6 +2625,21 @@
             <pair>
                 <displayed-value>Internal</displayed-value>
                 <stored-value>Internal</stored-value>
+            </pair>
+        </value-pairs>
+
+        <value-pairs value-pairs-name="vital_event_types">
+            <pair>
+                <displayed-value>Birth</displayed-value>
+                <stored-value>Birth</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Marriage / Divorce</displayed-value>
+                <stored-value>Marriage / Divorce</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>Death</displayed-value>
+                <stored-value>Death</stored-value>
             </pair>
         </value-pairs>
 
