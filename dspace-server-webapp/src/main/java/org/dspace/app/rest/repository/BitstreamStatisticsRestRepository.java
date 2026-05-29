@@ -36,6 +36,7 @@ import org.dspace.content.Item;
 import org.dspace.content.service.BitstreamService;
 import org.dspace.content.service.ItemService;
 import org.dspace.content.service.PdfPageCountService;
+import org.dspace.content.MetadataValue;
 import org.dspace.core.Context;
 import org.dspace.eperson.EPerson;
 import org.dspace.eperson.service.EPersonService;
@@ -75,13 +76,11 @@ public class BitstreamStatisticsRestRepository extends DSpaceRestRepository<Bits
     @PreAuthorize("hasAuthority('ADMIN')")
     @SearchRestMethod(name = "getStatistics")
     public BitstreamStatisticsRest getStatistics(@Parameter(value = "submitter") String submitter,
-            @Parameter(value = "startDate") String startDate,
-            @Parameter(value = "endDate") String endDate) {
+            @Parameter(value = "date") String date) {
         Context context = obtainContext();
 
         EPerson submitterPerson = resolveSubmitter(context, submitter);
-        Instant startInstant = parseDate(startDate);
-        Instant endInstant = parseDate(endDate);
+        LocalDate filterDate = parseDate(date);
 
         BitstreamStatistics statistics = new BitstreamStatistics();
 
@@ -94,7 +93,7 @@ public class BitstreamStatisticsRestRepository extends DSpaceRestRepository<Bits
                 if (!matchesSubmitterFilter(context, bitstream, submitterPerson)) {
                     continue;
                 }
-                if (!matchesDateRange(bitstream, startInstant, endInstant)) {
+                if (!matchesAccessionDate(bitstream, filterDate)) {
                     continue;
                 }
 
@@ -160,41 +159,64 @@ public class BitstreamStatisticsRestRepository extends DSpaceRestRepository<Bits
         }
     }
 
-    private boolean matchesDateRange(Bitstream bitstream, Instant startInstant, Instant endInstant) {
-        if (startInstant == null && endInstant == null) {
+    private boolean matchesAccessionDate(Bitstream bitstream, LocalDate filterDate) {
+        if (filterDate == null) {
             return true;
         }
 
         try {
-            Long lastModified = bitstreamService.getLastModified(bitstream);
-            if (lastModified == null) {
-                return false;
+            for (Bundle bundle : bitstream.getBundles()) {
+                for (Item item : bundle.getItems()) {
+                    if (itemMatchesAccessionDate(item, filterDate)) {
+                        return true;
+                    }
+                }
             }
-            Instant modifiedInstant = Instant.ofEpochMilli(lastModified);
-            return (startInstant == null || !modifiedInstant.isBefore(startInstant))
-                    && (endInstant == null || !modifiedInstant.isAfter(endInstant));
-        } catch (IOException e) {
             return false;
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 
-    private Instant parseDate(String value) {
+    private boolean itemMatchesAccessionDate(Item item, LocalDate filterDate) {
+        List<MetadataValue> metadataValues = itemService.getMetadata(item, "dc", "date", "accessioned", Item.ANY);
+        for (MetadataValue metadataValue : metadataValues) {
+            if (metadataValue == null || StringUtils.isBlank(metadataValue.getValue())) {
+                continue;
+            }
+            LocalDate valueDate = parseMetadataDate(metadataValue.getValue());
+            if (filterDate.equals(valueDate)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private LocalDate parseMetadataDate(String value) {
+        try {
+            return Instant.parse(value).atZone(ZoneOffset.UTC).toLocalDate();
+        } catch (DateTimeParseException ignored) {
+            try {
+                return LocalDate.parse(value);
+            } catch (DateTimeParseException ignored2) {
+                try {
+                    return LocalDateTime.parse(value).toLocalDate();
+                } catch (DateTimeParseException e) {
+                    throw new DSpaceBadRequestException("Invalid date format: " + value + ". Use ISO-8601.");
+                }
+            }
+        }
+    }
+
+    private LocalDate parseDate(String value) {
         if (StringUtils.isBlank(value)) {
             return null;
         }
 
         try {
-            return Instant.parse(value);
-        } catch (DateTimeParseException ignored) {
-            try {
-                return LocalDate.parse(value).atStartOfDay(ZoneOffset.UTC).toInstant();
-            } catch (DateTimeParseException ignored2) {
-                try {
-                    return LocalDateTime.parse(value).atZone(ZoneOffset.UTC).toInstant();
-                } catch (DateTimeParseException e) {
-                    throw new DSpaceBadRequestException("Invalid date format: " + value + ". Use ISO-8601.");
-                }
-            }
+            return LocalDate.parse(value);
+        } catch (DateTimeParseException e) {
+            throw new DSpaceBadRequestException("Invalid date format: " + value + ". Use ISO-8601.");
         }
     }
 
