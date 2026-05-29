@@ -10,6 +10,7 @@ package org.dspace.app.rest.security;
 import java.util.List;
 
 import jakarta.servlet.FilterChain;
+import org.apache.commons.lang3.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.GenericTypeResolver;
@@ -40,13 +41,13 @@ public class WebSecurityExpressionEvaluator {
         throw new UnsupportedOperationException();
     };
 
-    private final List<SecurityExpressionHandler> securityExpressionHandlers;
+    private final List<SecurityExpressionHandler<FilterInvocation>> securityExpressionHandlers;
 
     /**
      * Constructor for this class that sets all the {@link SecurityExpressionHandler} objects in a list
      * @param securityExpressionHandlers    The {@link SecurityExpressionHandler} for this class
      */
-    public WebSecurityExpressionEvaluator(List<SecurityExpressionHandler> securityExpressionHandlers) {
+    public WebSecurityExpressionEvaluator(List<SecurityExpressionHandler<FilterInvocation>> securityExpressionHandlers) {
         this.securityExpressionHandlers = securityExpressionHandlers;
     }
 
@@ -63,7 +64,11 @@ public class WebSecurityExpressionEvaluator {
      */
     public boolean evaluate(String securityExpression, HttpServletRequest request, HttpServletResponse response,
                             String id) {
-        SecurityExpressionHandler handler = getFilterSecurityHandler();
+        if (StringUtils.isBlank(securityExpression)) {
+            return true;
+        }
+
+        SecurityExpressionHandler<FilterInvocation> handler = getFilterSecurityHandler();
 
         Expression expression = handler.getExpressionParser().parseExpression(securityExpression);
 
@@ -72,8 +77,8 @@ public class WebSecurityExpressionEvaluator {
         return ExpressionUtils.evaluateAsBoolean(expression, evaluationContext);
     }
 
-    @SuppressWarnings("unchecked")
-    private EvaluationContext createEvaluationContext(SecurityExpressionHandler handler, HttpServletRequest request,
+    private EvaluationContext createEvaluationContext(SecurityExpressionHandler<FilterInvocation> handler,
+                                                      HttpServletRequest request,
                                                       HttpServletResponse response) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         FilterInvocation filterInvocation = new FilterInvocation(request, response, EMPTY_CHAIN);
@@ -81,7 +86,7 @@ public class WebSecurityExpressionEvaluator {
         return handler.createEvaluationContext(authentication, filterInvocation);
     }
 
-    private SecurityExpressionHandler getFilterSecurityHandler() {
+    private SecurityExpressionHandler<FilterInvocation> getFilterSecurityHandler() {
         return securityExpressionHandlers.stream()
                                          .filter(handler ->
                                                      FilterInvocation.class.equals(
