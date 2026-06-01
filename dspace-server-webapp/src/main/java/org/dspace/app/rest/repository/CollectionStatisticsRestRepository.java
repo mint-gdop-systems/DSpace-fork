@@ -106,50 +106,20 @@ public class CollectionStatisticsRestRepository extends DSpaceRestRepository<Col
 
                         totalVitalEvents++;
 
-                        // Determine sub-type by looking for specific CRVS metadata elements
-                        boolean foundType = false;
-                        if (!itemService.getMetadata(item, "crvs", "birth", Item.ANY, Item.ANY, true).isEmpty()) {
-                            births++;
-                            foundType = true;
-                        } else if (!itemService.getMetadata(item, "crvs", "death", Item.ANY, Item.ANY, true)
-                                .isEmpty()) {
-                            deaths++;
-                            foundType = true;
-                        } else if (!itemService.getMetadata(item, "crvs", "marriage", Item.ANY, Item.ANY, true)
-                                .isEmpty()
-                                || !itemService.getMetadata(item, "crvs", "divorce", Item.ANY, Item.ANY, true)
-                                        .isEmpty()) {
-                            marriages++;
-                            foundType = true;
-                        }
+                        List<MetadataValue> vitalType = itemService.getMetadata(
+                                item, "crvs", "vital", "eventType", Item.ANY, true);
+                        String eventType = (vitalType != null && !vitalType.isEmpty()
+                                && vitalType.get(0).getValue() != null)
+                                        ? vitalType.get(0).getValue().toLowerCase()
+                                        : null;
 
-                        if (!foundType) {
-                            // Fallback to searching type metadata if specific elements are missing
-                            String eventType = null;
-                            String[][] candidates = {
-                                    { "crvs", "event", "type" },
-                                    { "crvs", "type", null },
-                                    { "crvs", "identifier", "eventType" },
-                                    { "dc", "type", null }
-                            };
-
-                            for (String[] c : candidates) {
-                                List<MetadataValue> ev = itemService.getMetadata(item, c[0], c[1], c[2], Item.ANY,
-                                        true);
-                                if (ev != null && !ev.isEmpty() && ev.get(0).getValue() != null) {
-                                    eventType = ev.get(0).getValue().toLowerCase();
-                                    break;
-                                }
-                            }
-
-                            if (eventType != null) {
-                                if (eventType.contains("birth")) {
-                                    births++;
-                                } else if (eventType.contains("death") || eventType.contains("died")) {
-                                    deaths++;
-                                } else if (eventType.contains("marriage") || eventType.contains("married")) {
-                                    marriages++;
-                                }
+                        if (eventType != null) {
+                            if (eventType.contains("birth")) {
+                                births++;
+                            } else if (eventType.contains("death")) {
+                                deaths++;
+                            } else if (eventType.contains("marriage") || eventType.contains("divorce")) {
+                                marriages++;
                             }
                         }
                     } else {
