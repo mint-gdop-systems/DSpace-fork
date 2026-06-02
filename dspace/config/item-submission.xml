@@ -66,6 +66,8 @@
         <name-map collection-entity-type="House" submission-name="House" />
         <name-map collection-entity-type="VitalEvent" submission-name="VitalEvent" />
         <name-map collection-entity-type="Letter" submission-name="Letter" />
+        <name-map collection-entity-type="CaseFile" submission-name="CaseFile" />
+        <name-map collection-entity-type="CirculationEvent" submission-name="CirculationEvent" />
 
 
         <!-- Example of configuration using a community handle to map an Item Submission Process.
@@ -134,6 +136,11 @@
         </step-definition>
         <step-definition id="physicalLocationForm">
             <heading>submit.progressbar.describe.physical</heading>
+            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+            <type>submission-form</type>
+        </step-definition>
+        <step-definition id="circulationEventForm">
+            <heading>submit.progressbar.describe.stepone</heading>
             <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
             <type>submission-form</type>
         </step-definition>
@@ -375,6 +382,20 @@
             <step id="letter" />
             <step id="physicalLocationForm"/>
             <step id="upload"/>
+        </submission-process>
+
+        <submission-process name="CaseFile">
+            <step id="duplicates"/>
+            <step id="collection"/>
+            <step id="traditionalpageone"/>
+            <step id="traditionalpagetwo"/>
+            <step id="physicalLocationForm"/>
+            <step id="upload"/>
+        </submission-process>
+
+        <submission-process name="CirculationEvent">
+            <step id="collection"/>
+            <step id="circulationEventForm"/>
         </submission-process>
 
         <!--

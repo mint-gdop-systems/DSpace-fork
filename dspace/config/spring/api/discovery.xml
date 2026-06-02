@@ -145,6 +145,9 @@
                 <entry key="NOTIFY.outgoing.queued_for_retry" value-ref="NOTIFY.outgoing.queued_for_retry"/>
                 <entry key="NOTIFY.outgoing.failure" value-ref="NOTIFY.outgoing.failure"/>
                 <entry key="NOTIFY.outgoing.involvedItems" value-ref="NOTIFY.outgoing.involvedItems"/>
+                
+                <!-- Search configuration for CaseFile entity lookup -->
+                <entry key="casefile" value-ref="casefile"/>
             </map>
         </property>
         <property name="toIgnoreMetadataFields">
@@ -195,9 +198,9 @@
         <property name="sidebarFacets">
             <list>
                 <ref bean="searchFilterCaseType" />
-                <ref bean="searchFilterCaseLevel" />
+                <ref bean="searchFilterCaseStatus" />
                 <ref bean="searchFilterFileNumber" />
-                <ref bean="searchFilterPrimaryJudge" />
+                <!-- <ref bean="searchFilterPrimaryJudge" /> -->
                 <ref bean="searchFilterPlaintiff" />
                 <ref bean="searchFilterDefendant" />
                 <ref bean="searchFilterLegalRegistrationDate" />
@@ -217,9 +220,9 @@
         <property name="searchFilters">
             <list>
                 <ref bean="searchFilterCaseType" />
-                <ref bean="searchFilterCaseLevel" />
+                <ref bean="searchFilterCaseStatus" />
                 <ref bean="searchFilterFileNumber" />
-                <ref bean="searchFilterPrimaryJudge" />
+                <!-- <ref bean="searchFilterPrimaryJudge" /> -->
                 <ref bean="searchFilterPlaintiff" />
                 <ref bean="searchFilterDefendant" />
                 <ref bean="searchFilterLegalRegistrationDate" />
@@ -239,6 +242,8 @@
                 <ref bean="searchFilterIsOrgUnitOfPublicationRelation"/>
                 <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
                 <ref bean="searchFilterIsJournalOfPublicationRelation"/>
+                <ref bean="searchFilterIsCaseFileOfRelation"/>
+                <ref bean="searchFilterHasCirculationEventRelation"/>
                 <ref bean="searchFilterGeospatialPoint"/>
             </list>
         </property>
@@ -426,6 +431,8 @@
                 <ref bean="searchFilterIsOrgUnitOfPublicationRelation"/>
                 <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
                 <ref bean="searchFilterIsJournalOfPublicationRelation"/>
+                <ref bean="searchFilterIsCaseFileOfRelation"/>
+                <ref bean="searchFilterHasCirculationEventRelation"/>
             </list>
         </property>
         <!--The sort filters for the discovery search-->
@@ -553,9 +560,9 @@
         <property name="searchFilters">
             <list>    
                 <ref bean="searchFilterCaseType" />
-                <ref bean="searchFilterCaseLevel" />
+                <ref bean="searchFilterCaseStatus" />
                 <ref bean="searchFilterFileNumber" />
-                <ref bean="searchFilterPrimaryJudge" />
+                <!-- <ref bean="searchFilterPrimaryJudge" /> -->
                 <ref bean="searchFilterPlaintiff" />
                 <ref bean="searchFilterDefendant" />
                 <ref bean="searchFilterLegalRegistrationDate" />
@@ -710,6 +717,8 @@
                 <ref bean="searchFilterIsOrgUnitOfPublicationRelation"/>
                 <ref bean="searchFilterIsPublicationOfJournalIssueRelation"/>
                 <ref bean="searchFilterIsJournalOfPublicationRelation"/>
+                <ref bean="searchFilterIsCaseFileOfRelation"/>
+                <ref bean="searchFilterHasCirculationEventRelation"/>
                 <ref bean="searchFilterNotifyRelation" />
                 <ref bean="searchFilterNotifyEndorsement" />
                 <ref bean="searchFilterNotifyReview" />
@@ -829,9 +838,9 @@
         <property name="sidebarFacets">
             <list>
                 <ref bean="searchFilterCaseType" />
-                <ref bean="searchFilterCaseLevel" />
+                <ref bean="searchFilterCaseStatus" />
                 <ref bean="searchFilterFileNumber" />
-                <ref bean="searchFilterPrimaryJudge" />
+                <!-- <ref bean="searchFilterPrimaryJudge" /> -->
                 <ref bean="searchFilterPlaintiff" />
                 <ref bean="searchFilterDefendant" />
                 <ref bean="searchFilterLegalRegistrationDate" />
@@ -844,9 +853,9 @@
         <property name="searchFilters">
             <list>
                 <ref bean="searchFilterCaseType" />
-                <ref bean="searchFilterCaseLevel" />
+                <ref bean="searchFilterCaseStatus" />
                 <ref bean="searchFilterFileNumber" />
-                <ref bean="searchFilterPrimaryJudge" />
+                <!-- <ref bean="searchFilterPrimaryJudge" /> -->
                 <ref bean="searchFilterPlaintiff" />
                 <ref bean="searchFilterDefendant" />
                 <ref bean="searchFilterLegalRegistrationDate" />
@@ -873,7 +882,7 @@
                         <ref bean="sortLegalDateRegistrationAsc" />
                         <ref bean="sortLegalFileNumber" />
                         <ref bean="sortLegalFileNumberDesc" />
-                        <ref bean="sortLegalPrimaryJudge" />
+                        <!-- <ref bean="sortLegalPrimaryJudge" /> -->
                         <ref bean="sortLegalPlaintiff" />
                         <ref bean="sortLegalDefendant" />
                         <ref bean="sortLegalCaseType" />
@@ -1005,9 +1014,9 @@
         <property name="sidebarFacets">
             <list>
                 <ref bean="searchFilterCaseType" />
-                <ref bean="searchFilterCaseLevel" />
+                <ref bean="searchFilterCaseStatus" />
                 <ref bean="searchFilterFileNumber" />
-                <ref bean="searchFilterPrimaryJudge" />
+                <!-- <ref bean="searchFilterPrimaryJudge" /> -->
                 <ref bean="searchFilterPlaintiff" />
                 <ref bean="searchFilterDefendant" />
                 <ref bean="searchFilterLegalRegistrationDate" />
@@ -1021,9 +1030,9 @@
         <property name="searchFilters">
             <list>
                 <ref bean="searchFilterCaseType" />
-                <ref bean="searchFilterCaseLevel" />
+                <ref bean="searchFilterCaseStatus" />
                 <ref bean="searchFilterFileNumber" />
-                <ref bean="searchFilterPrimaryJudge" />
+                <!-- <ref bean="searchFilterPrimaryJudge" /> -->
                 <ref bean="searchFilterPlaintiff" />
                 <ref bean="searchFilterDefendant" />
                 <ref bean="searchFilterLegalRegistrationDate" />
@@ -1042,7 +1051,7 @@
                         <ref bean="sortLegalDateRegistrationAsc" />
                         <ref bean="sortLegalFileNumber" />
                         <ref bean="sortLegalFileNumberDesc" />
-                        <ref bean="sortLegalPrimaryJudge" />
+                        <!-- <ref bean="sortLegalPrimaryJudge" /> -->
                         <ref bean="sortLegalPlaintiff" />
                         <ref bean="sortLegalDefendant" />
                         <ref bean="sortLegalCaseType" />
@@ -1403,7 +1412,7 @@
                 <ref bean="searchFilterJobtitle"/>
                 <ref bean="searchFilterKnowsLanguage"/>
                 <ref bean="searchFilterFileNumber" />
-                <ref bean="searchFilterPrimaryJudge" />
+                <!-- <ref bean="searchFilterPrimaryJudge" /> -->
                 <ref bean="searchFilterPlaintiff" />
                 <ref bean="searchFilterDefendant" />
                 <ref bean="searchFilterIsOrgUnitOfPersonRelation"/>
@@ -1418,7 +1427,7 @@
                     <list>
                         <ref bean="sortScore" />
                         <ref bean="sortLegalFileNumber" />
-                        <ref bean="sortLegalPrimaryJudge" />
+                        <!-- <ref bean="sortLegalPrimaryJudge" /> -->
                         <ref bean="sortLegalPlaintiff" />
                         <ref bean="sortLegalDefendant" />
                         <ref bean="sortLegalCaseType" />
@@ -1449,6 +1458,50 @@
 
         <!-- When true a "did you mean" example will be displayed, value can be true or false -->
         <property name="spellCheckEnabled" value="true"/>
+    </bean>
+
+    <bean id="casefile" class="org.dspace.discovery.configuration.DiscoveryConfiguration" scope="prototype">
+        <property name="id" value="casefile"/>
+        <property name="indexAlways" value="true"/>
+        <property name="sidebarFacets">
+            <list>
+                <ref bean="searchFilterCaseType" />
+                <ref bean="searchFilterCaseStatus" />
+                <ref bean="searchFilterFileNumber" />
+            </list>
+        </property>
+        <property name="searchFilters">
+            <list>
+                <ref bean="searchFilterFileNumber" />
+                <ref bean="searchFilterCaseType" />
+                <ref bean="searchFilterCaseStatus" />
+                <!-- <ref bean="searchFilterPrimaryJudge" /> -->
+                <ref bean="searchFilterPlaintiff" />
+                <ref bean="searchFilterDefendant" />
+                <ref bean="searchFilterLegalRegistrationDate" />
+                <ref bean="searchFilterEntityType" />
+            </list>
+        </property>
+        <property name="searchSortConfiguration">
+            <bean class="org.dspace.discovery.configuration.DiscoverySortConfiguration">
+                <property name="sortFields">
+                    <list>
+                        <ref bean="sortLegalFileNumber" />
+                        <ref bean="sortLegalFileNumberDesc" />
+                        <ref bean="sortLegalDateRegistration" />
+                        <ref bean="sortLegalDateRegistrationAsc" />
+                        <ref bean="sortScore" />
+                    </list>
+                </property>
+            </bean>
+        </property>
+        <property name="defaultFilterQueries">
+            <list>
+                <value>search.resourcetype:Item AND latestVersion:true AND entityType_keyword:CaseFile</value>
+                <!-- OMITTING the -discoverable:false filter so authorized users can find private items via lookup -->
+            </list>
+        </property>
+        <property name="defaultRpp" value="10"/>
     </bean>
 
     <bean id="personRelationships" class="org.dspace.discovery.configuration.DiscoveryConfiguration" scope="prototype">
@@ -1484,7 +1537,7 @@
                     <list>
                         <ref bean="sortScore" />
                         <ref bean="sortLegalFileNumber" />
-                        <ref bean="sortLegalPrimaryJudge" />
+                        <!-- <ref bean="sortLegalPrimaryJudge" /> -->
                         <ref bean="sortLegalPlaintiff" />
                         <ref bean="sortLegalDefendant" />
                         <ref bean="sortLegalCaseType" />
@@ -2211,7 +2264,7 @@
                         <ref bean="sortOrganizationFoundingDate"/>
                         <ref bean="sortDateAccessioned"/>
                         <ref bean="sortLegalFileNumber" />
-                        <ref bean="sortLegalPrimaryJudge" />
+                        <!-- <ref bean="sortLegalPrimaryJudge" /> -->
                         <ref bean="sortLegalPlaintiff" />
                         <ref bean="sortLegalDefendant" />
                         <ref bean="sortLegalCaseType" />
@@ -2618,9 +2671,9 @@
         <property name="pageSize" value="10"/>
     </bean>
 
-    <bean id="searchFilterCaseLevel" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
-        <property name="indexFieldName" value="caseLevel"/>
-        <property name="metadataFields"><list><value>legal.case.level</value></list></property>
+    <bean id="searchFilterCaseStatus" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="caseStatus"/>
+        <property name="metadataFields"><list><value>legal.case.status</value></list></property>
         <property name="facetLimit" value="5"/>
         <property name="sortOrderSidebar" value="COUNT"/>
         <property name="isOpenByDefault" value="true"/>
@@ -2634,12 +2687,12 @@
         <property name="exposeMinAndMaxValue" value="true"/>
     </bean>
 
-    <bean id="searchFilterPrimaryJudge" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+    <!-- <bean id="searchFilterPrimaryJudge" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="primaryJudge"/>
         <property name="metadataFields"><list><value>legal.judge.primary</value></list></property>
         <property name="facetLimit" value="10"/>
         <property name="sortOrderSidebar" value="COUNT"/>
-    </bean>
+    </bean> -->
 
     <bean id="searchFilterFileNumber" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="fileNumber"/>
@@ -2799,6 +2852,28 @@
         <property name="metadataFields">
             <list>
                 <value>relation.isJournalOfPublication.latestForDiscovery</value>
+            </list>
+        </property>
+        <property name="isOpenByDefault" value="false"/>
+        <property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="searchFilterIsCaseFileOfRelation" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+        <property name="indexFieldName" value="isCaseFileOf"/>
+        <property name="metadataFields">
+            <list>
+                <value>relation.isCaseFileOf.latestForDiscovery</value>
+            </list>
+        </property>
+        <property name="isOpenByDefault" value="false"/>
+        <property name="pageSize" value="10"/>
+    </bean>
+
+    <bean id="searchFilterHasCirculationEventRelation" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
+        <property name="indexFieldName" value="hasCirculationEvent"/>
+        <property name="metadataFields">
+            <list>
+                <value>relation.hasCirculationEvent.latestForDiscovery</value>
             </list>
         </property>
         <property name="isOpenByDefault" value="false"/>
@@ -3594,10 +3669,10 @@
         <property name="defaultSortOrder" value="desc"/>
     </bean>
 
-    <bean id="sortLegalPrimaryJudge" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
+    <!-- <bean id="sortLegalPrimaryJudge" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
         <property name="metadataField" value="legal.judge.primary"/>
         <property name="defaultSortOrder" value="asc"/>
-    </bean>
+    </bean> -->
 
     <bean id="sortLegalPlaintiff" class="org.dspace.discovery.configuration.DiscoverySortFieldConfiguration">
         <property name="metadataField" value="legal.case.plaintiff"/>

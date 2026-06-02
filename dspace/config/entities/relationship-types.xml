@@ -14,7 +14,7 @@
             <min>0</min>
         </leftCardinality>
         <rightCardinality>
-            <min>0</min>
+            <min>1</min>
         </rightCardinality>
     </type>
 </relationships>

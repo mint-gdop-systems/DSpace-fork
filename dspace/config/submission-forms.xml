@@ -156,7 +156,7 @@
                     <dc-element>date</dc-element>
                     <dc-qualifier>registration</dc-qualifier>
                     <repeatable>false</repeatable>
-                    <label>ምዝገባ ቀን (Registration Date)</label>
+                    <label>መዝገቡ የተከፈተበት ቀን</label>
                     <input-type>date</input-type>
                 </field>
             </row>
@@ -167,7 +167,7 @@
              often used when depositing normal Items. -->
         <form name="traditionalpagetwo">
             <row>
-                <field>
+                <!-- <field>
                     <dc-schema>legal</dc-schema>
                     <dc-element>case</dc-element>
                     <dc-qualifier>level</dc-qualifier>
@@ -175,7 +175,7 @@
                     <label>የመዝገቡ ደረጃ (Case Level)</label>
                     <input-type value-pairs-name="case_levels">dropdown</input-type>
                     <hint>Current process stage: Registrar, Screening, etc. [cite: 18]</hint>
-                </field>
+                </field> -->
                 <field>
                     <dc-schema>legal</dc-schema>
                     <dc-element>case</dc-element>
@@ -185,7 +185,7 @@
                     <input-type value-pairs-name="case_status_types">dropdown</input-type>
                 </field>
             </row>
-            <row>
+            <!-- <row>
                 <field>
                     <dc-schema>legal</dc-schema>
                     <dc-element>judge</dc-element>
@@ -202,7 +202,7 @@
                     <label>የዳኛ ብዛት(Total number of judges)</label>
                     <input-type>onebox</input-type>
                 </field>
-            </row>
+            </row> -->
             <row>
                 <field>
                     <dc-schema>legal</dc-schema>
@@ -210,7 +210,7 @@
                     <dc-qualifier></dc-qualifier>
                     <repeatable>false</repeatable>
                     <label>የፍርድ ቤቱ ቦታ/ምድብ (Physical court location or division)</label>
-                    <input-type>onebox</input-type>
+                    <input-type value-pairs-name="court_locations">dropdown</input-type>
                 </field>
                 <field>
                     <dc-schema>legal</dc-schema>
@@ -218,7 +218,7 @@
                     <dc-qualifier>session</dc-qualifier>
                     <repeatable>false</repeatable>
                     <label>ችሎት (Bench)</label>
-                    <input-type>onebox</input-type>
+                    <input-type value-pairs-name="court_adjured_locations">dropdown</input-type>
                 </field>
             </row>
             <row>
@@ -232,6 +232,18 @@
                     <hint>Choose Physical, E-File, or Hybrid. [cite: 51]</hint>
                 </field>
             </row>
+            <row>
+                <field>
+                    <dc-schema>dc</dc-schema>
+                    <dc-element>description</dc-element>
+                    <label>Description</label>
+                    <input-type>textarea</input-type>
+                    <hint>Enter the description of the Case</hint>
+                </field>
+            </row>
+        </form>
+
+        <form name="physicalLocationForm">
             <row>
                 <field>
                     <dc-schema>legal</dc-schema>
@@ -253,9 +265,9 @@
                 <field>
                     <dc-schema>legal</dc-schema>
                     <dc-element>physical</dc-element>
-                    <dc-qualifier>rowNumber</dc-qualifier>
+                    <dc-qualifier>colNumber</dc-qualifier>
                     <repeatable>false</repeatable>
-                    <label>ረድፍ ቁጥር (Row No.)</label>
+                    <label>አምድ ቁጥር (Column No.)</label>
                     <input-type>onebox</input-type>
                 </field>
             </row>
@@ -269,34 +281,26 @@
                     <input-type>onebox</input-type>
                     <hint>Enter the RFID tag identifier for this item, if available.</hint>
                 </field>
-            </row> 
-            <row>
-                <field>
-                    <dc-schema>dc</dc-schema>
-                    <dc-element>description</dc-element>
-                    <label>Description</label>
-                    <input-type>textarea</input-type>
-                    <hint>Enter the description of the Case</hint>
-                </field>
             </row>
         </form>
-
-        <!-- <form name="physicalLocationForm">
-
-        </form> -->
 
         <form name="circulationEventForm">
             
             <row>
-                <field>
-                    <dc-schema>relation</dc-schema>
-                    <dc-element>isCirculationEventOf</dc-element>
+                <relation-field>
+                    <relationship-type>hasCirculationEvent</relationship-type>
+                    <search-configuration>casefile</search-configuration>
                     <repeatable>false</repeatable>
                     <label>የመዝገብ ቁጥር (Link to Case File)</label>
-                    <input-type>relationship</input-type>
                     <hint>Search for the Case File this movement belongs to.</hint>
+                    <linked-metadata-field>
+                        <dc-schema>legal</dc-schema>
+                        <dc-element>case</dc-element>
+                        <dc-qualifier>fileNumber</dc-qualifier>
+                        <input-type>onebox</input-type>
+                    </linked-metadata-field>
                     <required>You must link this event to a Case File.</required>
-                </field>
+                </relation-field>
             </row>
 
             <row>
@@ -2655,22 +2659,24 @@
                 <stored-value>Other</stored-value>
             </pair>
         </value-pairs> -->
+
+
+        <!-- <value-pairs value-pairs-name="case_levels" dc-term="case.level">
+            <pair><displayed-value>Registrar (ሬጅስትራር)</displayed-value><stored-value>Registrar</stored-value></pair>
+            <pair><displayed-value>Screening (ቅድመ ምርመራ)</displayed-value><stored-value>Screening</stored-value></pair>
+            <pair><displayed-value>Litigation (የችሎት ክርክር)</displayed-value><stored-value>Litigation</stored-value></pair>
+            <pair><displayed-value>Archive (መዝገብ ቤት)</displayed-value><stored-value>Archive</stored-value></pair>
+        </value-pairs> -->
+
         <value-pairs value-pairs-name="case_types" dc-term="case.type">
             <pair><displayed-value>የፍትሐብሔር መዝገብ (Civil)</displayed-value><stored-value>Civil</stored-value></pair>
             <pair><displayed-value>የወንጀል መዝገብ (Criminal)</displayed-value><stored-value>Criminal</stored-value></pair>
             <pair><displayed-value>የሰበር መዝገብ (Cassation)</displayed-value><stored-value>Cassation</stored-value></pair>
         </value-pairs>
 
-        <value-pairs value-pairs-name="case_levels" dc-term="case.level">
-            <pair><displayed-value>Registrar (ሬጅስትራር)</displayed-value><stored-value>Registrar</stored-value></pair>
-            <pair><displayed-value>Screening (ቅድመ ምርመራ)</displayed-value><stored-value>Screening</stored-value></pair>
-            <pair><displayed-value>Litigation (የችሎት ክርክር)</displayed-value><stored-value>Litigation</stored-value></pair>
-            <pair><displayed-value>Archive (መዝገብ ቤት)</displayed-value><stored-value>Archive</stored-value></pair>
-        </value-pairs>
-
         <value-pairs value-pairs-name="case_status_types" dc-term="case.status">
             <pair><displayed-value>Active (በሂደት ላይ)</displayed-value><stored-value>Active</stored-value></pair>
-            <pair><displayed-value>Adjourned (የተቀጠረ)</displayed-value><stored-value>Adjourned</stored-value></pair>
+            <!-- <pair><displayed-value>Adjourned (የተቀጠረ)</displayed-value><stored-value>Adjourned</stored-value></pair> -->
             <pair><displayed-value>Closed (የተዘጋ)</displayed-value><stored-value>Closed</stored-value></pair>
         </value-pairs>
 
@@ -2696,6 +2702,46 @@
             <pair><displayed-value>የባለሙያ ሪፖርት (Expert Report)</displayed-value><stored-value>Expert_Report</stored-value></pair>
             <pair><displayed-value>የዳኝነት ክፍያ ደረሰኝ (Court Fee Receipt)</displayed-value><stored-value>Fee_Receipt</stored-value></pair>
         </value-pairs>
+
+        <value-pairs value-pairs-name="court_locations">
+            <pair>
+                <displayed-value>6 ኪሎ</displayed-value>
+                <stored-value>6 ኪሎ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>4 ኪሎ</displayed-value>
+                <stored-value>4 ኪሎ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ፍርድ አፈፃፀም ያሬድ ት/ት ቤት ፊት ለፊት</displayed-value>
+                <stored-value>ፍርድ አፈፃፀም</stored-value>
+            </pair>
+        </value-pairs>
+
+        <value-pairs value-pairs-name="court_adjured_locations">
+            <pair>
+                <displayed-value>ልደታ - ፍትሐብሔር ምድብ (Lideta - Civil Division)</displayed-value>
+                <stored-value>ልደታ - ፍትሐብሔር ምድብ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ልደታ - ወንጀል ምድብ (Lideta - Criminal Division)</displayed-value>
+                <stored-value>ልደታ - ወንጀል ምድብ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>አራዳ ምድብ ችሎት (Arada Division)</displayed-value>
+                <stored-value>አራዳ ምድብ ችሎት</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>የካ ምድብ ችሎት (Yeka Division)</displayed-value>
+                <stored-value>የካ ምድብ ችሎት</stored-value>
+            </pair>
+        </value-pairs>
+
+        <value-pairs value-pairs-name="active_status_types" dc-term="document.status">
+            <pair><displayed-value>Active</displayed-value><stored-value>Active</stored-value></pair>
+            <pair><displayed-value>Inactive</displayed-value><stored-value>Inactive</stored-value></pair>
+        </value-pairs>
+
         <value-pairs value-pairs-name="event_status_types" dc-term="status">
             <pair>
             <displayed-value>Returned</displayed-value>
@@ -2705,10 +2751,6 @@
             <displayed-value>Out</displayed-value>
             <stored-value>out</stored-value>
             </pair>
-        </value-pairs>
-        <value-pairs value-pairs-name="active_status_types" dc-term="document.status">
-            <pair><displayed-value>Active (ገቢ)</displayed-value><stored-value>Active</stored-value></pair>
-            <pair><displayed-value>Inactive (ውድቅ)</displayed-value><stored-value>Inactive</stored-value></pair>
         </value-pairs>
 
         <value-pairs value-pairs-name="gender_types">
