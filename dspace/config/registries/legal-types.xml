@@ -39,22 +39,14 @@
     <scope_note>Date the file was opened at the Registrar. (መዝገቡ የተከፈተበት ቀን) [cite: 19]</scope_note>
   </dc-type>
 
-  <!-- <dc-type>
-    <schema>legal</schema><element>case</element><qualifier>level</qualifier>
-    <scope_note>Workflow stage: Registrar, Screening, Litigation, or Archive. (የመዝገቡ የሥራ ሂደት ደረጃ) [cite: 18, 19, 20, 21, 22]</scope_note>
-  </dc-type> -->
+  <dc-type>
+    <schema>legal</schema><element>lowerCourt</element><qualifier>fileNumber</qualifier>
+    <scope_note>Lower Court File Number (የስር ፍርድ ቤት የመዝገብ ቁጥር)</scope_note>
+  </dc-type>
   <dc-type>
     <schema>legal</schema><element>case</element><qualifier>status</qualifier>
     <scope_note>Current judicial state (e.g., Active, Closed). (የመዝገቡ ወቅታዊ ሁኔታ) [cite: 35, 69]</scope_note>
   </dc-type>
-  <!-- <dc-type>
-    <schema>legal</schema><element>judge</element><qualifier>primary</qualifier>
-    <scope_note>The presiding judge in the bench. (ሰብሳቢ ዳኛ)</scope_note>
-  </dc-type>
-  <dc-type>
-    <schema>legal</schema><element>judge</element><qualifier>number</qualifier>
-    <scope_note>Total number of judges (e.g., 3 for Screening, 5 for Cassation). (የዳኞች ብዛት) [cite: 6, 20]</scope_note>
-  </dc-type> -->
   <dc-type>
     <schema>legal</schema><element>bench</element><qualifier>session</qualifier>
     <scope_note>Assigned bench name or courtroom number. (የችሎት ስም ወይም ቁጥር) [cite: 34, 67]</scope_note>
@@ -85,22 +77,17 @@
   </dc-type>
 
   <dc-type>
-    <schema>legal</schema><element>document</element><qualifier>section</qualifier>
-    <scope_note>Sub-folder: Pleadings, Orders, Evidence, or Admin. (የሰነድ ክፍል) [cite: 58, 59, 65, 70, 77]</scope_note>
+    <schema>legal</schema><element>document</element><qualifier>pageCount</qualifier>
+    <scope_note>Number of pages in the document. (የሰነዱ የገጽ ቁጥር)</scope_note>
   </dc-type>
   <dc-type>
     <schema>legal</schema><element>document</element><qualifier>type</qualifier>
-    <scope_note>Specific document title (e.g., Complaint, Minutes). (የሰነዱ ዓይነት) [cite: 30, 34, 35]</scope_note>
+    <scope_note>Specific document title (e.g., በዳኛ የተሰራ፣ ሌሎች ). (የሰነዱ ዓይነት) [cite: 30, 34, 35]</scope_note>
   </dc-type>
   <dc-type>
     <schema>legal</schema><element>document</element><qualifier>status</qualifier>
     <scope_note>Active or Inactive status for specific documents. (የሰነዱ ሁኔታ)</scope_note>
   </dc-type>
-  <dc-type>
-    <schema>legal</schema><element>document</element><qualifier>exhibitCode</qualifier>
-    <scope_note>Evidence ID (e.g., ከ-1 or ተ-1). (የማስረጃ መለያ ኮድ) [cite: 57, 73, 74]</scope_note>
-  </dc-type>
-
   <dc-type>
     <schema>legal</schema><element>event</element><qualifier>date</qualifier>
     <scope_note>Date the file was checked out. (የወጣበት ቀን)</scope_note>

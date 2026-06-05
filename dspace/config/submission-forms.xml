@@ -40,18 +40,6 @@
                 <field>
                     <dc-schema>legal</dc-schema>
                     <dc-element>document</dc-element>
-                    <dc-qualifier>section</dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>የሰነድ ክፍል (Section/Folder)</label>
-                    <input-type value-pairs-name="document_sections">dropdown</input-type>
-                    <required>Select Pleadings, Orders, Evidence, or Administrative. </required>
-                </field>
-            </row>
-
-            <row>
-                <field>
-                    <dc-schema>legal</dc-schema>
-                    <dc-element>document</dc-element>
                     <dc-qualifier>type</dc-qualifier>
                     <repeatable>false</repeatable>
                     <label>የሰነዱ ዓይነት (Document Type)</label>
@@ -63,11 +51,11 @@
                 <field>
                     <dc-schema>legal</dc-schema>
                     <dc-element>document</dc-element>
-                    <dc-qualifier>exhibitCode</dc-qualifier>
+                    <dc-qualifier>pageCount</dc-qualifier>
                     <repeatable>false</repeatable>
-                    <label>የማስረጃ ኮድ (Exhibit Code)</label>
+                    <label> የሰነዱ የገጽ ቁጥር ( Number of pages ) </label>
                     <input-type>onebox</input-type>
-                    <hint>For Evidence section: Use ከ-# for Plaintiff or ተ-# for Defendant. [cite: 57, 73, 74]</hint>
+                    <hint>Page Count</hint>
                     <required></required>
                 </field>
             </row>
@@ -167,15 +155,15 @@
              often used when depositing normal Items. -->
         <form name="traditionalpagetwo">
             <row>
-                <!-- <field>
+                <field>
                     <dc-schema>legal</dc-schema>
-                    <dc-element>case</dc-element>
-                    <dc-qualifier>level</dc-qualifier>
+                    <dc-element>lowerCourt</dc-element>
+                    <dc-qualifier>fileNumber</dc-qualifier>
                     <repeatable>false</repeatable>
-                    <label>የመዝገቡ ደረጃ (Case Level)</label>
-                    <input-type value-pairs-name="case_levels">dropdown</input-type>
-                    <hint>Current process stage: Registrar, Screening, etc. [cite: 18]</hint>
-                </field> -->
+                    <label>የስር ፍርድ ቤት የመዝገብ ቁጥር (Case Number)</label>
+                    <input-type>onebox</input-type>
+                    <required>Lower Court File Number is mandatory. [cite: 25]</required>
+                </field>
                 <field>
                     <dc-schema>legal</dc-schema>
                     <dc-element>case</dc-element>
@@ -185,33 +173,7 @@
                     <input-type value-pairs-name="case_status_types">dropdown</input-type>
                 </field>
             </row>
-            <!-- <row>
-                <field>
-                    <dc-schema>legal</dc-schema>
-                    <dc-element>judge</dc-element>
-                    <dc-qualifier>primary</dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>ሰብሳቢ ዳኛ (Primary Judge)</label>
-                    <input-type>onebox</input-type>
-                </field>
-                <field>
-                    <dc-schema>legal</dc-schema>
-                    <dc-element>judge</dc-element>
-                    <dc-qualifier>number</dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>የዳኛ ብዛት(Total number of judges)</label>
-                    <input-type>onebox</input-type>
-                </field>
-            </row> -->
             <row>
-                <field>
-                    <dc-schema>legal</dc-schema>
-                    <dc-element>location</dc-element>
-                    <dc-qualifier></dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>የፍርድ ቤቱ ቦታ/ምድብ (Physical court location or division)</label>
-                    <input-type value-pairs-name="court_locations">dropdown</input-type>
-                </field>
                 <field>
                     <dc-schema>legal</dc-schema>
                     <dc-element>bench</dc-element>
@@ -219,17 +181,6 @@
                     <repeatable>false</repeatable>
                     <label>ችሎት (Bench)</label>
                     <input-type value-pairs-name="court_adjured_locations">dropdown</input-type>
-                </field>
-            </row>
-            <row>
-                <field>
-                    <dc-schema>legal</dc-schema>
-                    <dc-element>case</dc-element>
-                    <dc-qualifier>format</dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>የፋይል አደረጃጀት (Record Format)</label>
-                    <input-type value-pairs-name="record_formats">dropdown</input-type>
-                    <hint>Choose Physical, E-File, or Hybrid. [cite: 51]</hint>
                 </field>
             </row>
             <row>
@@ -244,6 +195,16 @@
         </form>
 
         <form name="physicalLocationForm">
+            <row>
+                <field>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>location</dc-element>
+                    <dc-qualifier></dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የመዝገቡ መገኛ (Case File Physical location)</label>
+                    <input-type value-pairs-name="court_locations">dropdown</input-type>
+                </field>
+            </row>
             <row>
                 <field>
                     <dc-schema>legal</dc-schema>
@@ -2680,27 +2641,14 @@
             <pair><displayed-value>Closed (የተዘጋ)</displayed-value><stored-value>Closed</stored-value></pair>
         </value-pairs>
 
-        <value-pairs value-pairs-name="record_formats" dc-term="case.format">
-            <pair><displayed-value>የኤሌክትሮኒክ ፋይል (E-File Only)</displayed-value><stored-value>Electronic</stored-value></pair>
-            <pair><displayed-value>የወረቀት ፋይል (Physical File Only)</displayed-value><stored-value>Physical</stored-value></pair>
-            <pair><displayed-value>ድብልቅ (Hybrid/Both)</displayed-value><stored-value>Hybrid</stored-value></pair>
-        </value-pairs>
-
-        <value-pairs value-pairs-name="document_sections" dc-term="document.section">
-            <pair><displayed-value>1. Pleadings (የአቤቱታ/የክስ ክፍል)</displayed-value><stored-value>Pleadings</stored-value></pair>
-            <pair><displayed-value>2. Orders &amp; Minutes (የቃለ-ጉባኤ እና የትዕዛዝ ክፍል)</displayed-value><stored-value>Orders_Minutes</stored-value></pair>
-            <pair><displayed-value>3. Evidence (የማስረጃ ክፍል)</displayed-value><stored-value>Evidence</stored-value></pair>
-            <pair><displayed-value>4. Administrative (የአስተዳደር ክፍል)</displayed-value><stored-value>Administrative</stored-value></pair>
-        </value-pairs>
-
         <value-pairs value-pairs-name="document_types" dc-term="document.type">
-            <pair><displayed-value>የክስ ማመልከቻ (Complaint)</displayed-value><stored-value>Complaint</stored-value></pair>
-            <pair><displayed-value>የመከላከያ መልስ (Defense Statement)</displayed-value><stored-value>Defense</stored-value></pair>
-            <pair><displayed-value>የችሎት ቃለ-ጉባኤ (Minutes)</displayed-value><stored-value>Minutes</stored-value></pair>
-            <pair><displayed-value>የመጨረሻ ውሳኔ (Final Judgment)</displayed-value><stored-value>Judgment</stored-value></pair>
-            <pair><displayed-value>የሰነድ ማስረጃ (Exhibit Document)</displayed-value><stored-value>Exhibit</stored-value></pair>
-            <pair><displayed-value>የባለሙያ ሪፖርት (Expert Report)</displayed-value><stored-value>Expert_Report</stored-value></pair>
-            <pair><displayed-value>የዳኝነት ክፍያ ደረሰኝ (Court Fee Receipt)</displayed-value><stored-value>Fee_Receipt</stored-value></pair>
+            <pair><displayed-value>በዳኛ የተሰራ</displayed-value><stored-value>በዳኛ የተሰራ</stored-value></pair>
+            <pair><displayed-value>ልዩ ልዩ</displayed-value><stored-value>ልዩ ልዩ</stored-value></pair>
+            <pair><displayed-value>የመልስ መልስ</displayed-value><stored-value>የመልስ መልስ</stored-value></pair>
+            <pair><displayed-value>ሰበር መልስ እና ማስረጃ</displayed-value><stored-value>ሰበር መልስ እና ማስረጃ</stored-value></pair>
+            <pair><displayed-value>ሰበር ማመልከቻ እና ማስረጃ</displayed-value><stored-value>ሰበር ማመልከቻ እና ማስረጃ</stored-value></pair>
+            <pair><displayed-value>የስር ፍርድ ቤት ውሳኔ</displayed-value><stored-value>የስር ፍርድ ቤት ውሳኔ</stored-value></pair>
+            <pair><displayed-value>ሌሎች</displayed-value><stored-value>ሌሎች</stored-value></pair>
         </value-pairs>
 
         <value-pairs value-pairs-name="court_locations">
@@ -2720,20 +2668,68 @@
 
         <value-pairs value-pairs-name="court_adjured_locations">
             <pair>
-                <displayed-value>ልደታ - ፍትሐብሔር ምድብ (Lideta - Civil Division)</displayed-value>
-                <stored-value>ልደታ - ፍትሐብሔር ምድብ</stored-value>
+                <displayed-value>የውዝፍ መዛግብት ሰበር ችሎት</displayed-value>
+                <stored-value>የውዝፍ መዛግብት ሰበር ችሎት</stored-value>
             </pair>
             <pair>
-                <displayed-value>ልደታ - ወንጀል ምድብ (Lideta - Criminal Division)</displayed-value>
-                <stored-value>ልደታ - ወንጀል ምድብ</stored-value>
+                <displayed-value>1ኛ ሰበር ችሎት</displayed-value>
+                <stored-value>1ኛ ሰበር ችሎት</stored-value>
             </pair>
             <pair>
-                <displayed-value>አራዳ ምድብ ችሎት (Arada Division)</displayed-value>
-                <stored-value>አራዳ ምድብ ችሎት</stored-value>
+                <displayed-value>2ኛ ሰበር ችሎት</displayed-value>
+                <stored-value>2ኛ ሰበር ችሎት</stored-value>
             </pair>
             <pair>
-                <displayed-value>የካ ምድብ ችሎት (Yeka Division)</displayed-value>
-                <stored-value>የካ ምድብ ችሎት</stored-value>
+                <displayed-value>3ኛ ሰበር ችሎት</displayed-value>
+                <stored-value>3ኛ ሰበር ችሎት</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>4ኛ ሰበር ችሎት</displayed-value>
+                <stored-value>4ኛ ሰበር ችሎት</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ፍትሐብሔር 1ኛ ችሎት</displayed-value>
+                <stored-value>ፍትሐብሔር 1ኛ ችሎት</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ፍትሐብሔር 1ኛ ችሎት</displayed-value>
+                <stored-value>ፍትሐብሔር 1ኛ ችሎት</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ፍትሐብሔር 2ኛ ችሎት</displayed-value>
+                <stored-value>ፍትሐብሔር 2ኛ ችሎት</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ፍትሐብሔር 3ኛ ችሎት</displayed-value>
+                <stored-value>ፍትሐብሔር 3ኛ ችሎት</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ፍትሐብሔር 4ኛ ችሎት</displayed-value>
+                <stored-value>ፍትሐብሔር 4ኛ ችሎት</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>1ኛ አጣሪ ሰበር ችሎት</displayed-value>
+                <stored-value>1ኛ አጣሪ ሰበር ችሎት</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>2ኛ አጣሪ ሰበር ችሎት</displayed-value>
+                <stored-value>2ኛ አጣሪ ሰበር ችሎት</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>3ኛ አጣሪ ሰበር ችሎት</displayed-value>
+                <stored-value>3ኛ አጣሪ ሰበር ችሎት</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>4ኛ አጣሪ ሰበር ችሎት</displayed-value>
+                <stored-value>4ኛ አጣሪ ሰበር ችሎት</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ወንጀል ችሎት 1ኛ</displayed-value>
+                <stored-value>ወንጀል ችሎት 1ኛ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ወንጀል ችሎት 2ኛ</displayed-value>
+                <stored-value>ወንጀል ችሎት 2ኛ</stored-value>
             </pair>
         </value-pairs>
 
