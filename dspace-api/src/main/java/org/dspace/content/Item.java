@@ -367,7 +367,7 @@ public class Item extends DSpaceObject implements DSpaceObjectLegacySupport {
 
     @Override
     public String getName() {
-        return getItemService().getMetadataFirstValue(this, MetadataSchemaEnum.DC.getName(), "title", null, Item.ANY);
+        return getItemService().getMetadataFirstValue(this, "legal", "case", "fileNumber", Item.ANY);
     }
 
     @Override
