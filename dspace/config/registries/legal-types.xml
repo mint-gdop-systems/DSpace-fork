@@ -84,10 +84,10 @@
     <schema>legal</schema><element>document</element><qualifier>type</qualifier>
     <scope_note>Specific document title (e.g., በዳኛ የተሰራ፣ ሌሎች ). (የሰነዱ ዓይነት) [cite: 30, 34, 35]</scope_note>
   </dc-type>
-  <dc-type>
+  <!-- <dc-type>
     <schema>legal</schema><element>document</element><qualifier>status</qualifier>
     <scope_note>Active or Inactive status for specific documents. (የሰነዱ ሁኔታ)</scope_note>
-  </dc-type>
+  </dc-type> -->
   <dc-type>
     <schema>legal</schema><element>event</element><qualifier>date</qualifier>
     <scope_note>Date the file was checked out. (የወጣበት ቀን)</scope_note>

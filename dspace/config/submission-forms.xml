@@ -59,7 +59,7 @@
                     <required></required>
                 </field>
             </row>
-            <row>
+            <!-- <row>
                 <field>
                     <dc-schema>legal</dc-schema>
                     <dc-element>document</dc-element>
@@ -69,7 +69,7 @@
                     <input-type value-pairs-name="active_status_types">dropdown</input-type>
                     <required></required>
                 </field>
-            </row>
+            </row> -->
             <row>
 
                 <field>
@@ -162,7 +162,6 @@
                     <repeatable>false</repeatable>
                     <label>የስር ፍርድ ቤት የመዝገብ ቁጥር (Case Number)</label>
                     <input-type>onebox</input-type>
-                    <required>Lower Court File Number is mandatory. [cite: 25]</required>
                 </field>
                 <field>
                     <dc-schema>legal</dc-schema>
