@@ -12,10 +12,12 @@ public class UserContentStatsRest extends BaseObjectRest<String> {
 
     private MySubmissionStats mySubmission;
     private java.util.Map<String, java.util.Map<String, Integer>> myActions;
+    private java.util.Map<String, java.util.Map<String, Integer>> myActionsPageCounts;
 
     public UserContentStatsRest() {
         this.mySubmission = new MySubmissionStats();
         this.myActions = new java.util.HashMap<>();
+        this.myActionsPageCounts = new java.util.HashMap<>();
     }
 
     public MySubmissionStats getMySubmission() {
@@ -34,15 +36,32 @@ public class UserContentStatsRest extends BaseObjectRest<String> {
         this.myActions = myActions;
     }
 
+    public java.util.Map<String, java.util.Map<String, Integer>> getMyActionsPageCounts() {
+        return myActionsPageCounts;
+    }
+
+    public void setMyActionsPageCounts(java.util.Map<String, java.util.Map<String, Integer>> myActionsPageCounts) {
+        this.myActionsPageCounts = myActionsPageCounts;
+    }
+
     public static class MySubmissionStats {
         private WorkspaceStats workspace;
         private WorkflowStats workflow;
         private int archived;
         private int withdrawn;
+        private int pageCount;
 
         public MySubmissionStats() {
             this.workspace = new WorkspaceStats();
             this.workflow = new WorkflowStats();
+        }
+
+        public int getPageCount() {
+            return pageCount;
+        }
+
+        public void setPageCount(int pageCount) {
+            this.pageCount = pageCount;
         }
 
         public WorkspaceStats getWorkspace() {

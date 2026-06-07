@@ -23,6 +23,9 @@ import org.dspace.xmlworkflow.storedcomponents.PoolTask;
 import org.dspace.content.WorkspaceItem;
 import org.dspace.content.Item;
 import org.dspace.content.MetadataValue;
+import org.dspace.content.Bundle;
+import org.dspace.content.Bitstream;
+import org.dspace.content.service.BitstreamService;
 
 import org.dspace.statistics.ObjectCount;
 import org.dspace.statistics.service.SolrLoggerService;
@@ -59,6 +62,33 @@ public class UserContentStatsRestRepository extends DSpaceRestRepository<UserCon
     @Autowired
     private SolrLoggerService solrLoggerService;
 
+    @Autowired
+    private BitstreamService bitstreamService;
+
+    private int calculatePageCount(Item item) {
+        int total = 0;
+        try {
+            List<Bundle> bundles = item.getBundles();
+            for (Bundle bundle : bundles) {
+                for (Bitstream bitstream : bundle.getBitstreams()) {
+                    List<MetadataValue> pageCountMvs = bitstreamService.getMetadata(bitstream, "legal", "document", "pageCount", Item.ANY);
+                    for (MetadataValue mv : pageCountMvs) {
+                        try {
+                            if (mv.getValue() != null) {
+                                total += Integer.parseInt(mv.getValue().trim());
+                            }
+                        } catch (NumberFormatException e) {
+                            // ignore invalid numbers
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            org.apache.logging.log4j.LogManager.getLogger(this.getClass()).error("Error calculating page count", e);
+        }
+        return total;
+    }
+
     @Override
     @PreAuthorize("isAuthenticated()")
     public UserContentStatsRest findOne(Context context, UUID id) {
@@ -93,8 +123,10 @@ public class UserContentStatsRestRepository extends DSpaceRestRepository<UserCon
             List<WorkspaceItem> wsItems = workspaceItemService.findByEPerson(context, eperson);
             int workspaceCount = wsItems.size();
             int rejectedCount = 0;
+            int totalPageCount = 0;
 
             for (WorkspaceItem wsi : wsItems) {
+                totalPageCount += calculatePageCount(wsi.getItem());
                 List<MetadataValue> provenance = itemService.getMetadata(wsi.getItem(), "dc", "description",
                         "provenance", Item.ANY);
                 for (MetadataValue mv : provenance) {
@@ -115,6 +147,7 @@ public class UserContentStatsRestRepository extends DSpaceRestRepository<UserCon
             mySubmission.getWorkflow().setTotal(workflowCount);
 
             for (XmlWorkflowItem wfi : wfItems) {
+                totalPageCount += calculatePageCount(wfi.getItem());
                 String stage = "unknown";
                 List<ClaimedTask> claimedTasks = claimedTaskService.find(context, wfi);
                 if (!claimedTasks.isEmpty()) {
@@ -138,12 +171,15 @@ public class UserContentStatsRestRepository extends DSpaceRestRepository<UserCon
                 Item item = itemIterator.next();
                 if (item.isArchived()) {
                     archivedCount++;
+                    totalPageCount += calculatePageCount(item);
                 } else if (item.isWithdrawn()) {
                     withdrawnCount++;
+                    totalPageCount += calculatePageCount(item);
                 }
             }
             mySubmission.setArchived(archivedCount);
             mySubmission.setWithdrawn(withdrawnCount);
+            mySubmission.setPageCount(totalPageCount);
 
             // ==========================================
             // 2. My Actions (Grouped by Step)
@@ -152,6 +188,7 @@ public class UserContentStatsRestRepository extends DSpaceRestRepository<UserCon
             // Then parse provenance metadata to extract actions
 
             Map<String, Map<String, Integer>> myActions = stats.getMyActions();
+            Map<String, Map<String, Integer>> myActionsPageCounts = stats.getMyActionsPageCounts();
             UUID userUuid = eperson.getID();
             String userEmail = eperson.getEmail();
 
@@ -221,7 +258,9 @@ public class UserContentStatsRestRepository extends DSpaceRestRepository<UserCon
 
                             if (isUserActor) {
                                 myActions.putIfAbsent(step, new HashMap<>());
+                                myActionsPageCounts.putIfAbsent(step, new HashMap<>());
                                 Map<String, Integer> stepActions = myActions.get(step);
+                                Map<String, Integer> stepPageCounts = myActionsPageCounts.get(step);
 
                                 String outcomeKey = info.outcome;
                                 if (outcomeKey.equalsIgnoreCase("approved"))
@@ -230,6 +269,7 @@ public class UserContentStatsRestRepository extends DSpaceRestRepository<UserCon
                                     outcomeKey = "Rejected";
 
                                 stepActions.put(outcomeKey, stepActions.getOrDefault(outcomeKey, 0) + 1);
+                                stepPageCounts.put(outcomeKey, stepPageCounts.getOrDefault(outcomeKey, 0) + calculatePageCount(item));
                             }
                         }
                     }
