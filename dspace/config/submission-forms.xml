@@ -130,6 +130,14 @@
                 <field>
                     <dc-schema>legal</dc-schema>
                     <dc-element>date</dc-element>
+                    <dc-qualifier>registrationAm</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>መዝገቡ የተከፈተበት ቀን (Ethiopian Date)</label>
+                    <input-type>date</input-type>
+                </field>
+                <field>
+                    <dc-schema>legal</dc-schema>
+                    <dc-element>date</dc-element>
                     <dc-qualifier>registration</dc-qualifier>
                     <repeatable>false</repeatable>
                     <label>መዝገቡ የተከፈተበት ቀን</label>
@@ -2617,14 +2625,14 @@
         </value-pairs> -->
 
         <value-pairs value-pairs-name="case_types" dc-term="case.type">
-            <pair><displayed-value>የፍትሐብሔር መዝገብ (Civil)</displayed-value><stored-value>Civil</stored-value></pair>
-            <pair><displayed-value>የወንጀል መዝገብ (Criminal)</displayed-value><stored-value>Criminal</stored-value></pair>
-            <pair><displayed-value>የሰበር መዝገብ (Cassation)</displayed-value><stored-value>Cassation</stored-value></pair>
+            <pair><displayed-value>ፍትሐብሔር</displayed-value><stored-value>ፍትሐብሔር</stored-value></pair>
+            <pair><displayed-value>ወንጀል</displayed-value><stored-value>ወንጀል</stored-value></pair>
+            <pair><displayed-value>ስራ ክርክር</displayed-value><stored-value>ስራ ክርክር</stored-value></pair>
         </value-pairs>
 
         <value-pairs value-pairs-name="case_status_types" dc-term="case.status">
-            <pair><displayed-value>Active (በሂደት ላይ)</displayed-value><stored-value>Active</stored-value></pair>
-            <pair><displayed-value>Closed (የተዘጋ)</displayed-value><stored-value>Closed</stored-value></pair>
+            <pair><displayed-value>በሂደት ላይ</displayed-value><stored-value>በሂደት ላይ</stored-value></pair>
+            <pair><displayed-value>የተዘጋ</displayed-value><stored-value>የተዘጋ</stored-value></pair>
         </value-pairs>
 
         <value-pairs value-pairs-name="document_types" dc-term="document.type">
@@ -2634,7 +2642,6 @@
             <pair><displayed-value>ሰበር መልስ እና ማስረጃ</displayed-value><stored-value>ሰበር መልስ እና ማስረጃ</stored-value></pair>
             <pair><displayed-value>ሰበር ማመልከቻ እና ማስረጃ</displayed-value><stored-value>ሰበር ማመልከቻ እና ማስረጃ</stored-value></pair>
             <pair><displayed-value>የስር ፍርድ ቤት ውሳኔ</displayed-value><stored-value>የስር ፍርድ ቤት ውሳኔ</stored-value></pair>
-            <pair><displayed-value>ሌሎች</displayed-value><stored-value>ሌሎች</stored-value></pair>
         </value-pairs>
 
         <value-pairs value-pairs-name="court_locations">
@@ -2719,10 +2726,10 @@
             </pair>
         </value-pairs>
 
-        <value-pairs value-pairs-name="active_status_types" dc-term="document.status">
+        <!-- <value-pairs value-pairs-name="active_status_types" dc-term="document.status">
             <pair><displayed-value>Active</displayed-value><stored-value>Active</stored-value></pair>
             <pair><displayed-value>Inactive</displayed-value><stored-value>Inactive</stored-value></pair>
-        </value-pairs>
+        </value-pairs> -->
 
         <value-pairs value-pairs-name="event_status_types" dc-term="status">
             <pair>

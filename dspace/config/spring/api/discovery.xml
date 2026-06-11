@@ -2681,7 +2681,7 @@
 
     <bean id="searchFilterLegalRegistrationDate" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="registrationDate"/>
-        <property name="metadataFields"><list><value>legal.date.registration</value></list></property>
+        <property name="metadataFields"><list><value>legal.date.registrationAm</value></list></property>
         <property name="type" value="date"/>
         <property name="isOpenByDefault" value="false"/>
         <property name="exposeMinAndMaxValue" value="true"/>

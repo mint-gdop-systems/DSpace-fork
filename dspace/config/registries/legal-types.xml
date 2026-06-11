@@ -38,7 +38,10 @@
     <schema>legal</schema><element>date</element><qualifier>registration</qualifier>
     <scope_note>Date the file was opened at the Registrar. (መዝገቡ የተከፈተበት ቀን) [cite: 19]</scope_note>
   </dc-type>
-
+  <dc-type>
+    <schema>legal</schema><element>date</element><qualifier>registrationAm</qualifier>
+    <scope_note>Ethiopian Date the file was opened at the Registrar. (መዝገቡ የተከፈተበት ቀን እንድ ኢትዮጵያን አቆጣጠር) [cite: 19]</scope_note>
+  </dc-type>
   <dc-type>
     <schema>legal</schema><element>lowerCourt</element><qualifier>fileNumber</qualifier>
     <scope_note>Lower Court File Number (የስር ፍርድ ቤት የመዝገብ ቁጥር)</scope_note>
@@ -84,10 +87,6 @@
     <schema>legal</schema><element>document</element><qualifier>type</qualifier>
     <scope_note>Specific document title (e.g., በዳኛ የተሰራ፣ ሌሎች ). (የሰነዱ ዓይነት) [cite: 30, 34, 35]</scope_note>
   </dc-type>
-  <!-- <dc-type>
-    <schema>legal</schema><element>document</element><qualifier>status</qualifier>
-    <scope_note>Active or Inactive status for specific documents. (የሰነዱ ሁኔታ)</scope_note>
-  </dc-type> -->
   <dc-type>
     <schema>legal</schema><element>event</element><qualifier>date</qualifier>
     <scope_note>Date the file was checked out. (የወጣበት ቀን)</scope_note>
