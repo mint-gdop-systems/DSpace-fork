@@ -59,19 +59,7 @@
                     <required></required>
                 </field>
             </row>
-            <!-- <row>
-                <field>
-                    <dc-schema>legal</dc-schema>
-                    <dc-element>document</dc-element>
-                    <dc-qualifier>status</dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>የሰነድ ሁኔታ (Status)</label>
-                    <input-type value-pairs-name="active_status_types">dropdown</input-type>
-                    <required></required>
-                </field>
-            </row> -->
             <row>
-
                 <field>
                     <dc-schema>dc</dc-schema>
                     <dc-element>description</dc-element>
@@ -2636,7 +2624,6 @@
 
         <value-pairs value-pairs-name="case_status_types" dc-term="case.status">
             <pair><displayed-value>Active (በሂደት ላይ)</displayed-value><stored-value>Active</stored-value></pair>
-            <!-- <pair><displayed-value>Adjourned (የተቀጠረ)</displayed-value><stored-value>Adjourned</stored-value></pair> -->
             <pair><displayed-value>Closed (የተዘጋ)</displayed-value><stored-value>Closed</stored-value></pair>
         </value-pairs>
 
