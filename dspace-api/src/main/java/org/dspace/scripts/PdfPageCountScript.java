@@ -14,11 +14,14 @@ import org.apache.commons.cli.ParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.dspace.content.Bitstream;
+import org.dspace.content.MetadataValue;
 import org.dspace.content.factory.ContentServiceFactory;
 import org.dspace.content.service.BitstreamService;
 import org.dspace.content.service.PdfPageCountService;
 import org.dspace.core.Context;
 import org.dspace.utils.DSpace;
+import org.dspace.content.Item;
+import java.util.List;
 
 /**
  * Script to batch-process all PDF bitstreams, calculate page count,
@@ -86,6 +89,13 @@ public class PdfPageCountScript extends DSpaceRunnable<PdfPageCountScriptConfigu
                         String mime = bitstream.getFormat(context).getMIMEType();
 
                         if (!"application/pdf".equalsIgnoreCase(mime)) {
+                            skipped++;
+                            continue;
+                        }
+
+                        List<MetadataValue> existing = bitstreamService.getMetadata(
+                                bitstream, METADATA_SCHEMA, METADATA_ELEMENT, METADATA_QUALIFIER, Item.ANY);
+                        if (!existing.isEmpty()) {
                             skipped++;
                             continue;
                         }
