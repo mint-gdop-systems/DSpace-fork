@@ -126,6 +126,7 @@ public class PdfPageCountScript extends DSpaceRunnable<PdfPageCountScriptConfigu
 
                 // Commit after each batch to avoid memory build-up
                 context.commit();
+                context.uncacheEntities();
                 log.info("Committed batch at offset {}. Processed so far: {}", offset, processed);
             }
 
