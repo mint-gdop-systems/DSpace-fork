@@ -12,6 +12,7 @@ import java.io.IOException;
 import org.dspace.app.rest.model.ErrorRest;
 import org.dspace.app.util.SubmissionStepConfig;
 import org.dspace.content.InProgressSubmission;
+import org.dspace.content.service.PdfPageCountService;
 import org.dspace.core.Context;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,23 +25,27 @@ import org.springframework.web.multipart.MultipartFile;
 public interface UploadableStep extends RestProcessingStep {
 
     /**
-     * The method to implement to support upload of a file in the submission section (aka panel / step)
+     * The method to implement to support upload of a file in the submission section
+     * (aka panel / step)
      * 
      * @param context
-     *            the dspace context
+     *                          the dspace context
      * @param submissionService
-     *            the submission service
+     *                          the submission service
      * @param stepConfig
-     *            the configuration of the submission section
+     *                          the configuration of the submission section
      * @param wsi
-     *            the inprogress submission
+     *                          the inprogress submission
      * @param file
-     *            the multipart file, please note that it is a complex object containing additional information other
-     *            than just the binary such as the filename and the mimetype
+     *                          the multipart file, please note that it is a complex
+     *                          object containing additional information other
+     *                          than just the binary such as the filename and the
+     *                          mimetype
      * @return the encountered error if any
      * @throws IOException
      */
-    public ErrorRest upload(Context context, SubmissionService submissionService, SubmissionStepConfig stepConfig,
-                            InProgressSubmission wsi, MultipartFile file) throws IOException;
+    public ErrorRest upload(Context context, SubmissionService submissionService,
+            PdfPageCountService pdfPageCountService, SubmissionStepConfig stepConfig,
+            InProgressSubmission wsi, MultipartFile file) throws IOException;
 
 }

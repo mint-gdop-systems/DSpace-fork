@@ -52,6 +52,7 @@ import org.dspace.content.WorkspaceItem;
 import org.dspace.content.service.CollectionService;
 import org.dspace.content.service.DuplicateDetectionService;
 import org.dspace.content.service.ItemService;
+import org.dspace.content.service.PdfPageCountService;
 import org.dspace.content.service.WorkspaceItemService;
 import org.dspace.content.virtual.PotentialDuplicate;
 import org.dspace.core.Constants;
@@ -110,6 +111,8 @@ public class SubmissionService {
     private SubmissionConfigService submissionConfigService;
     @Autowired
     private DuplicateDetectionService duplicateDetectionService;
+    @Autowired
+    private PdfPageCountService pdfPageCountService;
 
     public SubmissionService() throws SubmissionConfigReaderException {
         submissionConfigService = SubmissionServiceFactory.getInstance().getSubmissionConfigService();
@@ -119,9 +122,10 @@ public class SubmissionService {
      * Create a workspaceitem using the information in the request
      *
      * @param context
-     *            the dspace context
+     *                the dspace context
      * @param request
-     *            the request containing the details about the workspace to create
+     *                the request containing the details about the workspace to
+     *                create
      * @return
      * @throws SQLException
      * @throws AuthorizeException
@@ -198,14 +202,14 @@ public class SubmissionService {
             if (data.getMetadata()
                     .containsKey(Utils.standardize(metadataToCheck[0], metadataToCheck[1], metadataToCheck[2], "."))) {
                 data.getMetadata().get(Utils.standardize(md.getMetadataField().getMetadataSchema().getName(),
-                                                         md.getMetadataField().getElement(),
-                                                         md.getMetadataField().getQualifier(), ".")).add(dto);
+                        md.getMetadataField().getElement(),
+                        md.getMetadataField().getQualifier(), ".")).add(dto);
             } else {
                 List<MetadataValueRest> listDto = new ArrayList<>();
                 listDto.add(dto);
                 data.getMetadata().put(Utils.standardize(md.getMetadataField().getMetadataSchema().getName(),
-                                                         md.getMetadataField().getElement(),
-                                                         md.getMetadataField().getQualifier(), "."), listDto);
+                        md.getMetadataField().getElement(),
+                        md.getMetadataField().getQualifier(), "."), listDto);
             }
 
         }
@@ -227,7 +231,7 @@ public class SubmissionService {
         data.setCheckSum(checksum);
         data.setSizeBytes(source.getSizeBytes());
         data.setUrl(configurationService.getProperty("dspace.server.url") + "/api/" + BitstreamRest.CATEGORY + "/" +
-                        BitstreamRest.PLURAL_NAME + "/" + source.getID() + "/content");
+                BitstreamRest.PLURAL_NAME + "/" + source.getID() + "/content");
         return data;
     }
 
@@ -235,9 +239,9 @@ public class SubmissionService {
      * Create a workflowitem using the information in the request
      *
      * @param context
-     *            the dspace context
+     *                             the dspace context
      * @param requestUriListString
-     *            the id of the workspaceItem
+     *                             the id of the workspaceItem
      * @return
      * @throws SQLException
      * @throws AuthorizeException
@@ -276,7 +280,7 @@ public class SubmissionService {
             wi = workflowService.start(context, wsi);
         } catch (IOException e) {
             throw new RuntimeException("The workflow could not be started for workspaceItem with" +
-                                               " id:  " + id, e);
+                    " id:  " + id, e);
         }
 
         return wi;
@@ -298,9 +302,10 @@ public class SubmissionService {
     }
 
     /**
-     * Builds the CC License data of an inprogress submission based on the cc license info present in the metadata
+     * Builds the CC License data of an inprogress submission based on the cc
+     * license info present in the metadata
      *
-     * @param obj   - the in progress submission
+     * @param obj - the in progress submission
      * @return an object representing the CC License data
      * @throws SQLException
      * @throws IOException
@@ -323,15 +328,19 @@ public class SubmissionService {
     }
 
     /**
-     * Prepare section data containing a list of potential duplicates, for use in submission steps.
-     * This method belongs in SubmissionService and not DuplicateDetectionService because it depends on
+     * Prepare section data containing a list of potential duplicates, for use in
+     * submission steps.
+     * This method belongs in SubmissionService and not DuplicateDetectionService
+     * because it depends on
      * the DataDuplicateDetection class which only appears in the REST project.
      *
      * @param context DSpace context
      * @param obj     The in-progress submission object
-     * @return        A DataDuplicateDetection object which implements SectionData for direct use in
-     *                a submission step (see DuplicateDetectionStep)
-     * @throws SearchServiceException if an error is encountered during Discovery search
+     * @return A DataDuplicateDetection object which implements SectionData for
+     *         direct use in
+     *         a submission step (see DuplicateDetectionStep)
+     * @throws SearchServiceException if an error is encountered during Discovery
+     *                                search
      */
     public DataDuplicateDetection getDataDuplicateDetection(Context context, InProgressSubmission obj)
             throws SearchServiceException {
@@ -348,10 +357,12 @@ public class SubmissionService {
             throw new ResourceNotFoundException("Duplicate data step could not find valid item for the" +
                     " current in-progress submission obj id=" + obj.getID());
         }
-        // Initialise empty list of PotentialDuplicateRest objects for use in the section data object
+        // Initialise empty list of PotentialDuplicateRest objects for use in the
+        // section data object
         List<PotentialDuplicateRest> potentialDuplicateRestList = new LinkedList<>();
 
-        // Get discovery search result for a duplicate detection search based on this item and populate
+        // Get discovery search result for a duplicate detection search based on this
+        // item and populate
         // the list of REST objects
         List<PotentialDuplicate> potentialDuplicates = duplicateDetectionService.getPotentialDuplicates(context, item);
         for (PotentialDuplicate potentialDuplicate : potentialDuplicates) {
@@ -382,8 +393,8 @@ public class SubmissionService {
     public List<ErrorRest> uploadFileToInprogressSubmission(Context context, HttpServletRequest request,
             AInprogressSubmissionRest wsi, InProgressSubmission source, MultipartFile file) {
         List<ErrorRest> errors = new ArrayList<ErrorRest>();
-        SubmissionConfig submissionConfig =
-            submissionConfigService.getSubmissionConfigByName(wsi.getSubmissionDefinition().getName());
+        SubmissionConfig submissionConfig = submissionConfigService
+                .getSubmissionConfigByName(wsi.getSubmissionDefinition().getName());
         List<Object[]> stepInstancesAndConfigs = new ArrayList<Object[]>();
         // we need to run the preProcess of all the appropriate steps and move on to the
         // upload and postProcess step
@@ -401,7 +412,7 @@ public class SubmissionService {
                 stepClass = loader.loadClass(stepConfig.getProcessingClassName());
                 if (UploadableStep.class.isAssignableFrom(stepClass)) {
                     Object stepInstance = stepClass.newInstance();
-                    stepInstancesAndConfigs.add(new Object[] {stepInstance, stepConfig});
+                    stepInstancesAndConfigs.add(new Object[] { stepInstance, stepConfig });
                 }
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
@@ -417,7 +428,8 @@ public class SubmissionService {
             UploadableStep uploadableStep = (UploadableStep) stepInstanceAndCfg[0];
             ErrorRest err;
             try {
-                err = uploadableStep.upload(context, this, (SubmissionStepConfig) stepInstanceAndCfg[1],
+                err = uploadableStep.upload(context, this, pdfPageCountService,
+                        (SubmissionStepConfig) stepInstanceAndCfg[1],
                         source, file);
             } catch (IOException e) {
                 throw new RuntimeException(e);

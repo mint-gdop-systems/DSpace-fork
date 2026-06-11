@@ -45,6 +45,7 @@ import org.dspace.content.service.BitstreamFormatService;
 import org.dspace.content.service.BitstreamService;
 import org.dspace.content.service.CollectionService;
 import org.dspace.content.service.ItemService;
+import org.dspace.content.service.PdfPageCountService;
 import org.dspace.content.service.WorkspaceItemService;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
@@ -115,6 +116,9 @@ public class WorkspaceItemRestRepository extends DSpaceRestRepository<WorkspaceI
 
     @Autowired
     private UriListHandlerService uriListHandlerService;
+
+    @Autowired
+    PdfPageCountService pdfPageCountService;
 
     private SubmissionConfigService submissionConfigService;
 
@@ -300,7 +304,7 @@ public class WorkspaceItemRestRepository extends DSpaceRestRepository<WorkspaceI
                                 UploadableStep uploadableStep = (UploadableStep) stepInstance;
                                 for (MultipartFile mpFile : uploadfiles) {
                                     ErrorRest err = uploadableStep.upload(context,
-                                            submissionService, stepConfig, wi, mpFile);
+                                            submissionService, pdfPageCountService, stepConfig, wi, mpFile);
                                     if (err != null) {
                                         errors.add(err);
                                     }

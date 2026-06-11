@@ -8,6 +8,7 @@
 package org.dspace.content.dao.impl;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -33,10 +34,13 @@ import org.dspace.core.AbstractHibernateDSODAO;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.core.UUIDIterator;
+import org.dspace.eperson.EPerson;
 
 /**
- * Hibernate implementation of the Database Access Object interface class for the Bitstream object.
- * This class is responsible for all database calls for the Bitstream object and is autowired by spring
+ * Hibernate implementation of the Database Access Object interface class for
+ * the Bitstream object.
+ * This class is responsible for all database calls for the Bitstream object and
+ * is autowired by spring
  * This class should never be accessed directly.
  *
  * @author kevinvandevelde at atmire.com
@@ -66,24 +70,23 @@ public class BitstreamDAOImpl extends AbstractHibernateDSODAO<Bitstream> impleme
         Root<Bitstream> bitstreamRoot = criteriaQuery.from(Bitstream.class);
         criteriaQuery.select(bitstreamRoot);
         criteriaQuery.where(criteriaBuilder.and(
-            criteriaBuilder.equal(bitstreamRoot.get(Bitstream_.internalId), bitstream.getInternalId()),
-            criteriaBuilder.notEqual(bitstreamRoot.get(Bitstream_.id), bitstream.getID())
-                            )
-        );
+                criteriaBuilder.equal(bitstreamRoot.get(Bitstream_.internalId), bitstream.getInternalId()),
+                criteriaBuilder.notEqual(bitstreamRoot.get(Bitstream_.id), bitstream.getID())));
         return list(context, criteriaQuery, false, Bitstream.class, -1, -1);
     }
 
     @Override
     public List<Bitstream> findBitstreamsWithNoRecentChecksum(Context context) throws SQLException {
         Query query = createQuery(context, "SELECT b FROM MostRecentChecksum c RIGHT JOIN Bitstream b " +
-            "ON c.bitstream = b WHERE c IS NULL" );
+                "ON c.bitstream = b WHERE c IS NULL");
 
         return query.getResultList();
     }
 
     @Override
     public Iterator<Bitstream> findByCommunity(Context context, Community community) throws SQLException {
-        // Select UUID of all bitstreams, joining from Bitstream -> Bundle -> Item -> Collection -> Community
+        // Select UUID of all bitstreams, joining from Bitstream -> Bundle -> Item ->
+        // Collection -> Community
         // to find all that exist under the given community.
         CriteriaBuilder criteriaBuilder = getCriteriaBuilder(context);
         CriteriaQuery<UUID> criteriaQuery = criteriaBuilder.createQuery(UUID.class);
@@ -93,7 +96,8 @@ public class BitstreamDAOImpl extends AbstractHibernateDSODAO<Bitstream> impleme
         Join<Bitstream, Bundle> joinBundle = bitstreamRoot.join(Bitstream_.bundles);
         Join<Bundle, Item> joinItem = joinBundle.join(Bundle_.items);
         Join<Item, Collection> joinCollection = joinItem.join(Item_.collections);
-        // Where "community" is a member of the list of Communities linked by the collection(s)
+        // Where "community" is a member of the list of Communities linked by the
+        // collection(s)
         criteriaQuery.where(criteriaBuilder.isMember(community, joinCollection.get(Collection_.COMMUNITIES)));
 
         // Transform into a query object to execute
@@ -105,7 +109,8 @@ public class BitstreamDAOImpl extends AbstractHibernateDSODAO<Bitstream> impleme
 
     @Override
     public Iterator<Bitstream> findByCollection(Context context, Collection collection) throws SQLException {
-        // Select UUID of all bitstreams, joining from Bitstream -> Bundle -> Item -> Collection
+        // Select UUID of all bitstreams, joining from Bitstream -> Bundle -> Item ->
+        // Collection
         // to find all that exist under the given collection.
         CriteriaBuilder criteriaBuilder = getCriteriaBuilder(context);
         CriteriaQuery<UUID> criteriaQuery = criteriaBuilder.createQuery(UUID.class);
@@ -114,7 +119,8 @@ public class BitstreamDAOImpl extends AbstractHibernateDSODAO<Bitstream> impleme
         // Joins from Bitstream -> Bundle -> Item
         Join<Bitstream, Bundle> joinBundle = bitstreamRoot.join(Bitstream_.bundles);
         Join<Bundle, Item> joinItem = joinBundle.join(Bundle_.items);
-        // Where "collection" is a member of the list of Collections linked by the item(s)
+        // Where "collection" is a member of the list of Collections linked by the
+        // item(s)
         criteriaQuery.where(criteriaBuilder.isMember(collection, joinItem.get(Item_.collections)));
 
         // Transform into a query object to execute
@@ -156,7 +162,6 @@ public class BitstreamDAOImpl extends AbstractHibernateDSODAO<Bitstream> impleme
     @Override
     public Long countByStoreNumber(Context context, Integer storeNumber) throws SQLException {
 
-
         CriteriaBuilder criteriaBuilder = getCriteriaBuilder(context);
         CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
 
@@ -178,9 +183,9 @@ public class BitstreamDAOImpl extends AbstractHibernateDSODAO<Bitstream> impleme
     @Override
     public int countWithNoPolicy(Context context) throws SQLException {
         Query query = createQuery(context,
-                                  "SELECT count(bit.id) from Bitstream bit where bit.deleted<>true and bit not in" +
-                                      " (select res.dSpaceObject from ResourcePolicy res where res.resourceTypeId = " +
-                                      ":typeId )");
+                "SELECT count(bit.id) from Bitstream bit where bit.deleted<>true and bit not in" +
+                        " (select res.dSpaceObject from ResourcePolicy res where res.resourceTypeId = " +
+                        ":typeId )");
         query.setParameter("typeId", Constants.BITSTREAM);
         return count(query);
     }
@@ -188,10 +193,10 @@ public class BitstreamDAOImpl extends AbstractHibernateDSODAO<Bitstream> impleme
     @Override
     public List<Bitstream> getNotReferencedBitstreams(Context context) throws SQLException {
         return list(createQuery(context, "select bit from Bitstream bit where bit.deleted != true" +
-            " and bit.id not in (select bit2.id from Bundle bun join bun.bitstreams bit2)" +
-            " and bit.id not in (select com.logo.id from Community com)" +
-            " and bit.id not in (select col.logo.id from Collection col)" +
-            " and bit.id not in (select bun.primaryBitstream.id from Bundle bun)"));
+                " and bit.id not in (select bit2.id from Bundle bun join bun.bitstreams bit2)" +
+                " and bit.id not in (select com.logo.id from Community com)" +
+                " and bit.id not in (select col.logo.id from Collection col)" +
+                " and bit.id not in (select bun.primaryBitstream.id from Bundle bun)"));
     }
 
     @Override
@@ -199,5 +204,47 @@ public class BitstreamDAOImpl extends AbstractHibernateDSODAO<Bitstream> impleme
         Map<String, Object> map = new HashMap<>();
         return findByX(context, Bitstream.class, map, true, limit, offset).iterator();
 
+    }
+
+    @Override
+    public Iterator<Bitstream> findAll(Context context, EPerson submitter, LocalDate accessionDate,
+            int limit, int offset) throws SQLException {
+
+        String jpql = "select distinct b.id from Bitstream b "
+                + "join b.bundles bundle "
+                + "join bundle.items item "
+                + "join b.bitstreamFormat bf "
+                + "where b.deleted = false "
+                + "  and (:submitter is null or item.submitter = :submitter) "
+                + (accessionDate != null
+                        ? "  and exists ("
+                                + "    select 1 from MetadataValue mv "
+                                + "    join mv.metadataField mf "
+                                + "    join mf.metadataSchema ms "
+                                + "    where mv.dSpaceObject = item "
+                                + "      and ms.namespace = 'dc' "
+                                + "      and mf.element = 'date' "
+                                + "      and mf.qualifier = 'accessioned' "
+                                + "      and mv.value like :accessionDatePrefix "
+                                + "  ) "
+                        : "")
+                + "  and (bf.mimetype like 'image/%' "
+                + "    or bf.mimetype in ('application/pdf', 'application/postscript'))"
+                + " order by b.id";
+
+        Query query = createQuery(context, jpql);
+        query.setParameter("submitter", submitter);
+        if (accessionDate != null) {
+            // matches "2026-06-11T..." regardless of time component
+            query.setParameter("accessionDatePrefix", accessionDate.toString() + "%");
+        }
+        if (limit > 0) {
+            query.setFirstResult(offset);
+            query.setMaxResults(limit);
+        }
+
+        @SuppressWarnings("unchecked")
+        List<UUID> uuids = query.getResultList();
+        return new UUIDIterator<>(context, uuids, Bitstream.class, this);
     }
 }

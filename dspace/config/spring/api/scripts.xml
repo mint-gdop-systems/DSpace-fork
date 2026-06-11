@@ -123,4 +123,11 @@
     <bean id="communityDeletionStrategy" class="org.dspace.deletion.process.strategies.CommunityDeletionStrategy" />
     <bean id="collectionDeletionStrategy" class="org.dspace.deletion.process.strategies.CollectionDeletionStrategy" />
 
+    <bean id="pdf-page-count" class="org.dspace.scripts.PdfPageCountScriptConfiguration" scope="prototype">
+        <property name="description" value="Batch process all PDF bitstreams to calculate and store page count."/>
+        <property name="dspaceRunnableClass" value="org.dspace.scripts.PdfPageCountScript"/>
+    </bean>
+
+    <bean class="org.dspace.scripts.PdfPageCountScript" scope="prototype"/>
+
 </beans>

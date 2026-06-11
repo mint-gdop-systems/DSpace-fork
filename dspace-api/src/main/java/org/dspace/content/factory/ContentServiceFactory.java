@@ -29,6 +29,7 @@ import org.dspace.content.service.ItemService;
 import org.dspace.content.service.MetadataFieldService;
 import org.dspace.content.service.MetadataSchemaService;
 import org.dspace.content.service.MetadataValueService;
+import org.dspace.content.service.PdfPageCountService;
 import org.dspace.content.service.RelationshipService;
 import org.dspace.content.service.RelationshipTypeService;
 import org.dspace.content.service.SiteService;
@@ -38,7 +39,8 @@ import org.dspace.services.factory.DSpaceServicesFactory;
 import org.dspace.workflow.factory.WorkflowServiceFactory;
 
 /**
- * Abstract factory to get services for the content package, use ContentServiceFactory.getInstance() to retrieve an
+ * Abstract factory to get services for the content package, use
+ * ContentServiceFactory.getInstance() to retrieve an
  * implementation
  *
  * @author kevinvandevelde at atmire.com
@@ -47,8 +49,7 @@ public abstract class ContentServiceFactory {
 
     public abstract List<DSpaceObjectService<? extends DSpaceObject>> getDSpaceObjectServices();
 
-    public abstract List<DSpaceObjectLegacySupportService<? extends DSpaceObject>>
-        getDSpaceObjectLegacySupportServices();
+    public abstract List<DSpaceObjectLegacySupportService<? extends DSpaceObject>> getDSpaceObjectLegacySupportServices();
 
     public abstract BitstreamFormatService getBitstreamFormatService();
 
@@ -75,6 +76,8 @@ public abstract class ContentServiceFactory {
     public abstract SiteService getSiteService();
 
     public abstract SubscribeService getSubscribeService();
+
+    public abstract PdfPageCountService getPdfPageCountService();
 
     /**
      * Return the implementation of the RelationshipTypeService interface
@@ -138,8 +141,7 @@ public abstract class ContentServiceFactory {
 
     public DSpaceObjectLegacySupportService<? extends DSpaceObject> getDSpaceLegacyObjectService(int type) {
         for (int i = 0; i < getDSpaceObjectLegacySupportServices().size(); i++) {
-            DSpaceObjectLegacySupportService<? extends DSpaceObject> objectLegacySupportService =
-                getDSpaceObjectLegacySupportServices()
+            DSpaceObjectLegacySupportService<? extends DSpaceObject> objectLegacySupportService = getDSpaceObjectLegacySupportServices()
                     .get(i);
             if (objectLegacySupportService.getSupportsTypeConstant() == type) {
                 return objectLegacySupportService;
@@ -151,7 +153,7 @@ public abstract class ContentServiceFactory {
 
     public static ContentServiceFactory getInstance() {
         return DSpaceServicesFactory.getInstance().getServiceManager()
-                                    .getServiceByName("contentServiceFactory", ContentServiceFactory.class);
+                .getServiceByName("contentServiceFactory", ContentServiceFactory.class);
     }
 
 }

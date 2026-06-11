@@ -85,4 +85,11 @@
         <property name="isVisibleFromUI" value="false"/>
     </bean>
 
+    <bean id="pdf-page-count" class="org.dspace.scripts.PdfPageCountScriptConfiguration" scope="prototype">
+        <property name="description" value="Batch process all PDF bitstreams to calculate and store page count."/>
+        <property name="dspaceRunnableClass" value="org.dspace.scripts.PdfPageCountScript"/>
+    </bean>
+
+    <bean class="org.dspace.scripts.PdfPageCountScript" scope="prototype"/>
+
 </beans>

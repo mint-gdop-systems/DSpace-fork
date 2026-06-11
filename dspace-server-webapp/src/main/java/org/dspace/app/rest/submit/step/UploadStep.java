@@ -34,8 +34,10 @@ import org.dspace.content.BitstreamFormat;
 import org.dspace.content.Bundle;
 import org.dspace.content.InProgressSubmission;
 import org.dspace.content.Item;
+import org.dspace.content.service.PdfPageCountService;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
+import org.dspace.utils.DSpace;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -49,16 +51,15 @@ public class UploadStep extends AbstractProcessingStep
 
     private static final Logger log = org.apache.logging.log4j.LogManager.getLogger(UploadStep.class);
 
-    private static final Pattern UPDATE_METADATA_PATTERN =
-        Pattern.compile("^/sections/[^/]+/files/[^/]+/metadata/[^/]+(/[^/]+)?$");
-    private static final Pattern PRIMARY_FLAG_PATTERN =
-        Pattern.compile("^/sections/[^/]+/primary$");
-    private static final Pattern ACCESS_CONDITION_PATTERN =
-        Pattern.compile("^/sections/[^/]+/files/[^/]+/accessConditions(/[^/]+)?$");
+    private static final Pattern UPDATE_METADATA_PATTERN = Pattern
+            .compile("^/sections/[^/]+/files/[^/]+/metadata/[^/]+(/[^/]+)?$");
+    private static final Pattern PRIMARY_FLAG_PATTERN = Pattern.compile("^/sections/[^/]+/primary$");
+    private static final Pattern ACCESS_CONDITION_PATTERN = Pattern
+            .compile("^/sections/[^/]+/files/[^/]+/accessConditions(/[^/]+)?$");
 
     @Override
     public DataUpload getData(SubmissionService submissionService, InProgressSubmission obj,
-                              SubmissionStepConfig config) throws Exception {
+            SubmissionStepConfig config) throws Exception {
 
         DataUpload result = new DataUpload();
         List<Bundle> bundles = itemService.getBundles(obj.getItem(), Constants.CONTENT_BUNDLE_NAME);
@@ -107,15 +108,16 @@ public class UploadStep extends AbstractProcessingStep
         }
         if (StringUtils.isBlank(instance)) {
             throw new UnprocessableEntityException("The path " + op.getPath() + " is not supported by the operation "
-                                                                              + op.getOp());
+                    + op.getOp());
         }
         PatchOperation<?> patchOperation = new PatchOperationFactory().instanceOf(instance, op.getOp());
         patchOperation.perform(context, currentRequest, source, op);
     }
 
     @Override
-    public ErrorRest upload(Context context, SubmissionService submissionService, SubmissionStepConfig stepConfig,
-                            InProgressSubmission wsi, MultipartFile file) {
+    public ErrorRest upload(Context context, SubmissionService submissionService,
+            PdfPageCountService pdfPageCountService, SubmissionStepConfig stepConfig,
+            InProgressSubmission wsi, MultipartFile file) {
 
         Bitstream source = null;
         BitstreamFormat bf = null;
@@ -142,6 +144,17 @@ public class UploadStep extends AbstractProcessingStep
             bf = bitstreamFormatService.guessFormat(context, source);
             source.setFormat(context, bf);
 
+            // Calculate page count for PDF files
+            if (bf != null && "application/pdf".equals(bf.getMIMEType())) {
+                try {
+                    long pageCount = pdfPageCountService.getNumberOfPdfPages(context, source);
+                    bitstreamService.setMetadataSingleValue(context, source, "crvs", "document", "pages", null,
+                            String.format("%d", pageCount));
+                } catch (Exception e) {
+                    log.error("Failed to calculate page count for bitstream {}: {}", source.getID(), e.getMessage(), e);
+                }
+            }
+
             // Update to DB
             bitstreamService.update(context, source);
             itemService.update(context, item);
@@ -152,11 +165,12 @@ public class UploadStep extends AbstractProcessingStep
             result.setMessage(e.getMessage());
             if (bundles != null && bundles.size() > 0) {
                 result.getPaths().add(
-                    "/" + WorkspaceItemRestRepository.OPERATION_PATH_SECTIONS + "/" + stepConfig.getId() + "/files/" +
-                    bundles.get(0).getBitstreams().size());
+                        "/" + WorkspaceItemRestRepository.OPERATION_PATH_SECTIONS + "/" + stepConfig.getId() + "/files/"
+                                +
+                                bundles.get(0).getBitstreams().size());
             } else {
                 result.getPaths()
-                    .add("/" + WorkspaceItemRestRepository.OPERATION_PATH_SECTIONS + "/" + stepConfig.getId());
+                        .add("/" + WorkspaceItemRestRepository.OPERATION_PATH_SECTIONS + "/" + stepConfig.getId());
             }
             return result;
         }

@@ -10,6 +10,7 @@ package org.dspace.content.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -23,10 +24,12 @@ import org.dspace.content.Collection;
 import org.dspace.content.Community;
 import org.dspace.content.Item;
 import org.dspace.core.Context;
+import org.dspace.eperson.EPerson;
 
 /**
  * Service interface class for the Bitstream object.
- * The implementation of this class is responsible for all business logic calls for the Bitstream object and is
+ * The implementation of this class is responsible for all business logic calls
+ * for the Bitstream object and is
  * autowired by spring
  *
  * @author kevinvandevelde at atmire.com
@@ -40,17 +43,21 @@ public interface BitstreamService extends DSpaceObjectService<Bitstream>, DSpace
 
     public Iterator<Bitstream> findAll(Context context, int limit, int offset) throws SQLException;
 
+    public Iterator<Bitstream> findAll(Context context, int limit, int offset,
+            EPerson submitter, LocalDate accessionDate) throws SQLException;
+
     /**
      * Clone the given bitstream by firstly creating a new bitstream, with a new ID.
      * Then set the internal identifier, file size, checksum, and
      * checksum algorithm as same as the given bitstream.
-     * This allows multiple bitstreams to share the same internal identifier of assets .
+     * This allows multiple bitstreams to share the same internal identifier of
+     * assets .
      * An example of such a use case scenario is versioning.
      *
      * @param context
-     *            DSpace context object
+     *                  DSpace context object
      * @param bitstream
-     *            Bitstream to be cloned
+     *                  Bitstream to be cloned
      * @return the clone
      * @throws SQLException if database error
      */
@@ -83,10 +90,10 @@ public interface BitstreamService extends DSpaceObjectService<Bitstream>, DSpace
      * @throws AuthorizeException if authorization error
      */
     public Bitstream create(Context context, Bundle bundle, InputStream is)
-        throws IOException, SQLException, AuthorizeException;
+            throws IOException, SQLException, AuthorizeException;
 
     /**
-     * Register a new bitstream, with a new ID.  The checksum and file size
+     * Register a new bitstream, with a new ID. The checksum and file size
      * are calculated. The newly created bitstream has the "unknown"
      * format.
      *
@@ -100,10 +107,10 @@ public interface BitstreamService extends DSpaceObjectService<Bitstream>, DSpace
      * @throws AuthorizeException if authorization error
      */
     public Bitstream register(Context context, Bundle bundle, int assetstore, String bitstreamPath)
-        throws IOException, SQLException, AuthorizeException;
+            throws IOException, SQLException, AuthorizeException;
 
     /**
-     * Register a new bitstream, with a new ID.  The checksum and file size
+     * Register a new bitstream, with a new ID. The checksum and file size
      * are calculated. The newly created bitstream has the "unknown"
      * format.
      *
@@ -116,7 +123,7 @@ public interface BitstreamService extends DSpaceObjectService<Bitstream>, DSpace
      * @throws AuthorizeException if authorization error
      */
     public Bitstream register(Context context, int assetstore, String bitstreamPath)
-        throws IOException, SQLException, AuthorizeException;
+            throws IOException, SQLException, AuthorizeException;
 
     /**
      * Set the user's format description. This implies that the format of the
@@ -164,7 +171,7 @@ public interface BitstreamService extends DSpaceObjectService<Bitstream>, DSpace
      * @throws AuthorizeException if authorization error
      */
     public InputStream retrieve(Context context, Bitstream bitstream)
-        throws IOException, SQLException, AuthorizeException;
+            throws IOException, SQLException, AuthorizeException;
 
     /**
      * Determine if this bitstream is registered (available elsewhere on
@@ -184,7 +191,6 @@ public interface BitstreamService extends DSpaceObjectService<Bitstream>, DSpace
      * @throws SQLException if database error
      */
     public List<Bitstream> findDeletedBitstreams(Context context, int limit, int offset) throws SQLException;
-
 
     /**
      * Remove a bitstream that has been set to "deleted" from the database
@@ -227,7 +233,8 @@ public interface BitstreamService extends DSpaceObjectService<Bitstream>, DSpace
     List<Bitstream> getNotReferencedBitstreams(Context context) throws SQLException;
 
     /**
-     * Gets the last modified timestamp of the the given bitstream's content, if known.
+     * Gets the last modified timestamp of the the given bitstream's content, if
+     * known.
      *
      * @param bitstream the bitstream.
      * @return the timestamp in milliseconds, or {@code null} if unknown.
@@ -239,7 +246,7 @@ public interface BitstreamService extends DSpaceObjectService<Bitstream>, DSpace
     /**
      * Checks if the given bitstream is inside one of the bundle
      *
-     * @param bitstream bitstream to verify
+     * @param bitstream   bitstream to verify
      * @param bundleNames names of the bundles to serch for
      * @return true if is in one of the bundles, false otherwise
      * @throws SQLException

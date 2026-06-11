@@ -34,6 +34,7 @@ import org.dspace.content.MetadataValue;
 import org.dspace.content.dto.MetadataValueDTO;
 import org.dspace.content.factory.ContentServiceFactory;
 import org.dspace.content.service.ItemService;
+import org.dspace.content.service.PdfPageCountService;
 import org.dspace.core.Context;
 import org.dspace.external.model.ExternalDataObject;
 import org.dspace.importer.external.datamodel.ImportRecord;
@@ -52,7 +53,8 @@ import org.springframework.web.multipart.MultipartFile;
  * format (i.e. a Grobid extractor to get data from a PDF file, an extractor to
  * get data from bibliographic file such as BibTeX, etc)
  *
- * Some metadata are monitored by listener (see {@link MetadataListener} and when
+ * Some metadata are monitored by listener (see {@link MetadataListener} and
+ * when
  * changed the are used to generate an identifier that is used to query the
  * External Data Provider associated with the specific listener
  * 
@@ -65,9 +67,9 @@ public class ExtractMetadataStep implements ListenerProcessingStep, UploadableSt
     private ImportService importService = new DSpace().getSingletonService(ImportService.class);
     private MetadataListener listener = new DSpace().getSingletonService(MetadataListener.class);
 
-    // we need to use thread local as we need to store the status of the item before that changes are performed
-    private ThreadLocal<Map<String, List<MetadataValue>>> metadataMap =
-            new ThreadLocal<Map<String, List<MetadataValue>>>();
+    // we need to use thread local as we need to store the status of the item before
+    // that changes are performed
+    private ThreadLocal<Map<String, List<MetadataValue>>> metadataMap = new ThreadLocal<Map<String, List<MetadataValue>>>();
 
     private static final Logger log = org.apache.logging.log4j.LogManager.getLogger(ExtractMetadataStep.class);
 
@@ -111,8 +113,8 @@ public class ExtractMetadataStep implements ListenerProcessingStep, UploadableSt
                         }
                         if (!alreadyFilledMetadata.contains(joiner.toString())) {
                             itemService.addMetadata(context, wsi.getItem(), metadataValue.getSchema(),
-                                metadataValue.getElement(), metadataValue.getQualifier(), null,
-                                metadataValue.getValue());
+                                    metadataValue.getElement(), metadataValue.getQualifier(), null,
+                                    metadataValue.getValue());
                         }
                     }
                 }
@@ -136,6 +138,7 @@ public class ExtractMetadataStep implements ListenerProcessingStep, UploadableSt
                             return Strings.CS.equals(o1.getValue(), o2.getValue())
                                     && Strings.CS.equals(o1.getAuthority(), o2.getAuthority());
                         }
+
                         @Override
                         public int hash(MetadataValue o) {
                             return o.getValue().hashCode()
@@ -158,9 +161,10 @@ public class ExtractMetadataStep implements ListenerProcessingStep, UploadableSt
     }
 
     @Override
-    public ErrorRest upload(Context context, SubmissionService submissionService, SubmissionStepConfig stepConfig,
+    public ErrorRest upload(Context context, SubmissionService submissionService,
+            PdfPageCountService pdfPageCountService, SubmissionStepConfig stepConfig,
             InProgressSubmission wsi, MultipartFile multipartFile)
-        throws IOException {
+            throws IOException {
 
         Item item = wsi.getItem();
         File file = Utils.getFile(multipartFile, "extract-metadata-step", stepConfig.getId());
@@ -181,8 +185,8 @@ public class ExtractMetadataStep implements ListenerProcessingStep, UploadableSt
                     }
                     if (!alreadyFilledMetadata.contains(joiner.toString())) {
                         itemService.addMetadata(context, item, metadataValue.getSchema(),
-                            metadataValue.getElement(), metadataValue.getQualifier(), null,
-                            metadataValue.getValue());
+                                metadataValue.getElement(), metadataValue.getQualifier(), null,
+                                metadataValue.getValue());
                     }
                 }
             }
