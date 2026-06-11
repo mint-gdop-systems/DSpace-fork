@@ -14,11 +14,14 @@ import org.apache.commons.cli.ParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.dspace.content.Bitstream;
+import org.dspace.content.MetadataValue;
 import org.dspace.content.factory.ContentServiceFactory;
 import org.dspace.content.service.BitstreamService;
 import org.dspace.content.service.PdfPageCountService;
 import org.dspace.core.Context;
 import org.dspace.utils.DSpace;
+import org.dspace.content.Item;
+import java.util.List;
 
 /**
  * Script to batch-process all PDF bitstreams, calculate page count,
@@ -27,7 +30,7 @@ import org.dspace.utils.DSpace;
 public class PdfPageCountScript extends DSpaceRunnable<PdfPageCountScriptConfiguration> {
 
     private static final Logger log = LogManager.getLogger(PdfPageCountScript.class);
-    private static final int BATCH_SIZE = 1000;
+    private static final int BATCH_SIZE = 100;
     private static final String METADATA_SCHEMA = "crvs";
     private static final String METADATA_ELEMENT = "document";
     private static final String METADATA_QUALIFIER = "pages";
@@ -71,7 +74,6 @@ public class PdfPageCountScript extends DSpaceRunnable<PdfPageCountScriptConfigu
 
             for (int offset = 0;; offset += BATCH_SIZE) {
 
-                // Reuse your existing DAO query, PDF-only (no submitter/date filter)
                 Iterator<Bitstream> batch = bitstreamService.findAll(
                         context, BATCH_SIZE, offset, null, null);
 
@@ -86,6 +88,13 @@ public class PdfPageCountScript extends DSpaceRunnable<PdfPageCountScriptConfigu
                         String mime = bitstream.getFormat(context).getMIMEType();
 
                         if (!"application/pdf".equalsIgnoreCase(mime)) {
+                            skipped++;
+                            continue;
+                        }
+
+                        List<MetadataValue> existing = bitstreamService.getMetadata(
+                                bitstream, METADATA_SCHEMA, METADATA_ELEMENT, METADATA_QUALIFIER, Item.ANY);
+                        if (!existing.isEmpty()) {
                             skipped++;
                             continue;
                         }
@@ -114,9 +123,12 @@ public class PdfPageCountScript extends DSpaceRunnable<PdfPageCountScriptConfigu
                     }
                 }
 
-                // Commit after each batch to avoid memory build-up
+                // Flush writes to DB, then clear Hibernate session cache
+                // This releases all loaded Bitstream/Item/Bundle objects from memory
                 context.commit();
-                log.info("Committed batch at offset {}. Processed so far: {}", offset, processed);
+                context.uncacheEntities();
+                log.info("Committed and cleared cache at offset {}. Processed so far: {}",
+                        offset, processed);
             }
 
         } catch (SQLException e) {
