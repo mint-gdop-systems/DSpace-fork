@@ -123,7 +123,8 @@ public class BitstreamStatisticsRestRepository extends DSpaceRestRepository<Bits
                         batchSize,
                         offset,
                         submitterPerson,
-                        filterDate);
+                        filterDate,
+                        true);
 
                 long dbQueryTime = System.currentTimeMillis() - dbQueryStart;
                 totalDbQueryTime += dbQueryTime;

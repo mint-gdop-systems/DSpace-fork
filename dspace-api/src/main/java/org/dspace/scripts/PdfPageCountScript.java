@@ -14,14 +14,11 @@ import org.apache.commons.cli.ParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.dspace.content.Bitstream;
-import org.dspace.content.MetadataValue;
 import org.dspace.content.factory.ContentServiceFactory;
 import org.dspace.content.service.BitstreamService;
 import org.dspace.content.service.PdfPageCountService;
 import org.dspace.core.Context;
 import org.dspace.utils.DSpace;
-import org.dspace.content.Item;
-import java.util.List;
 
 /**
  * Script to batch-process all PDF bitstreams, calculate page count,
@@ -30,7 +27,8 @@ import java.util.List;
 public class PdfPageCountScript extends DSpaceRunnable<PdfPageCountScriptConfiguration> {
 
     private static final Logger log = LogManager.getLogger(PdfPageCountScript.class);
-    private static final int BATCH_SIZE = 1000;
+    private static final int DEFAULT_BATCH_SIZE = 100;
+    private static final int CACHE_LIMIT = 100;
     private static final String METADATA_SCHEMA = "crvs";
     private static final String METADATA_ELEMENT = "document";
     private static final String METADATA_QUALIFIER = "pages";
@@ -38,6 +36,7 @@ public class PdfPageCountScript extends DSpaceRunnable<PdfPageCountScriptConfigu
     private BitstreamService bitstreamService;
     private PdfPageCountService pdfPageCountService;
     private boolean verbose;
+    private int batchSize;
 
     @Override
     public PdfPageCountScriptConfiguration getScriptConfiguration() {
@@ -60,6 +59,19 @@ public class PdfPageCountScript extends DSpaceRunnable<PdfPageCountScriptConfigu
             throw new IllegalStateException(
                     "PdfPageCountService could not be found. Check your Spring configuration.");
         }
+
+        batchSize = DEFAULT_BATCH_SIZE;
+        if (commandLine.hasOption('b')) {
+            String rawValue = commandLine.getOptionValue('b');
+            try {
+                batchSize = Integer.parseInt(rawValue.trim());
+            } catch (NumberFormatException e) {
+                throw new ParseException("Invalid batch size '" + rawValue + "': must be an integer");
+            }
+            if (batchSize <= 0) {
+                throw new ParseException("Invalid batch size '" + rawValue + "': must be greater than 0");
+            }
+        }
     }
 
     @Override
@@ -67,16 +79,14 @@ public class PdfPageCountScript extends DSpaceRunnable<PdfPageCountScriptConfigu
         Context context = new Context();
         int processed = 0;
         int errors = 0;
-        int skipped = 0;
 
         try {
             context.turnOffAuthorisationSystem();
 
-            for (int offset = 0;; offset += BATCH_SIZE) {
+            for (int offset = 0;; offset += batchSize) {
 
-                // Reuse your existing DAO query, PDF-only (no submitter/date filter)
                 Iterator<Bitstream> batch = bitstreamService.findAll(
-                        context, BATCH_SIZE, offset, null, null);
+                        context, batchSize, offset, null, null, false);
 
                 if (!batch.hasNext()) {
                     break;
@@ -86,20 +96,6 @@ public class PdfPageCountScript extends DSpaceRunnable<PdfPageCountScriptConfigu
                     Bitstream bitstream = batch.next();
 
                     try {
-                        String mime = bitstream.getFormat(context).getMIMEType();
-
-                        if (!"application/pdf".equalsIgnoreCase(mime)) {
-                            skipped++;
-                            continue;
-                        }
-
-                        List<MetadataValue> existing = bitstreamService.getMetadata(
-                                bitstream, METADATA_SCHEMA, METADATA_ELEMENT, METADATA_QUALIFIER, Item.ANY);
-                        if (!existing.isEmpty()) {
-                            skipped++;
-                            continue;
-                        }
-
                         long pages = pdfPageCountService.getNumberOfPdfPages(context, bitstream);
 
                         bitstreamService.setMetadataSingleValue(
@@ -110,6 +106,8 @@ public class PdfPageCountScript extends DSpaceRunnable<PdfPageCountScriptConfigu
                         bitstreamService.update(context, bitstream);
                         processed++;
 
+                        context.uncacheEntity(bitstream);
+
                         if (verbose) {
                             handler.logInfo("Bitstream " + bitstream.getID()
                                     + " -> " + pages + " pages");
@@ -117,6 +115,7 @@ public class PdfPageCountScript extends DSpaceRunnable<PdfPageCountScriptConfigu
 
                     } catch (Exception e) {
                         errors++;
+                        context.uncacheEntity(bitstream);
                         log.error("Error processing bitstream {}: {}",
                                 bitstream.getID(), e.getMessage());
                         handler.logError("Failed on bitstream " + bitstream.getID()
@@ -126,8 +125,14 @@ public class PdfPageCountScript extends DSpaceRunnable<PdfPageCountScriptConfigu
 
                 // Commit after each batch to avoid memory build-up
                 context.commit();
-                context.uncacheEntities();
-                log.info("Committed batch at offset {}. Processed so far: {}", offset, processed);
+
+                if (processed % CACHE_LIMIT == 0) {
+                    context.complete();
+                    context = new Context();
+                    context.turnOffAuthorisationSystem();
+                }
+
+                handler.logInfo("Committed batch at offset: " + offset + ". Processed so far: " + processed + "\n");
             }
 
         } catch (SQLException e) {
@@ -138,8 +143,6 @@ public class PdfPageCountScript extends DSpaceRunnable<PdfPageCountScriptConfigu
             context.complete();
         }
 
-        handler.logInfo("Done. Processed: " + processed
-                + ", Skipped (non-PDF): " + skipped
-                + ", Errors: " + errors);
+        handler.logInfo("Done. Processed: " + processed + ", Errors: " + errors);
     }
 }

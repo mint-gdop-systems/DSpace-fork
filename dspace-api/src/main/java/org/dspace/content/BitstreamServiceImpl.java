@@ -129,8 +129,8 @@ public class BitstreamServiceImpl extends DSpaceObjectServiceImpl<Bitstream> imp
 
     @Override
     public Iterator<Bitstream> findAll(Context context, int limit, int offset,
-            EPerson submitter, LocalDate accessionDate) throws SQLException {
-        return bitstreamDAO.findAll(context, submitter, accessionDate, limit, offset);
+            EPerson submitter, LocalDate accessionDate, boolean selectImages) throws SQLException {
+        return bitstreamDAO.findAll(context, limit, offset, submitter, accessionDate, selectImages);
     }
 
     @Override

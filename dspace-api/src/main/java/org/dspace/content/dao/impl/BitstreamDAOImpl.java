@@ -207,9 +207,8 @@ public class BitstreamDAOImpl extends AbstractHibernateDSODAO<Bitstream> impleme
     }
 
     @Override
-    public Iterator<Bitstream> findAll(Context context, EPerson submitter, LocalDate accessionDate,
-            int limit, int offset) throws SQLException {
-
+    public Iterator<Bitstream> findAll(Context context, int limit, int offset, EPerson submitter,
+            LocalDate accessionDate, boolean selectImages) throws SQLException {
         String jpql = "select distinct b.id from Bitstream b "
                 + "join b.bundles bundle "
                 + "join bundle.items item "
@@ -228,8 +227,10 @@ public class BitstreamDAOImpl extends AbstractHibernateDSODAO<Bitstream> impleme
                                 + "      and mv.value like :accessionDatePrefix "
                                 + "  ) "
                         : "")
-                + "  and (bf.mimetype like 'image/%' "
-                + "    or bf.mimetype in ('application/pdf', 'application/postscript'))"
+                + (selectImages
+                        ? "  and (bf.mimetype like 'image/%' "
+                                + "    or bf.mimetype in ('application/pdf', 'application/postscript'))"
+                        : "  and bf.mimetype in ('application/pdf', 'application/postscript') ")
                 + " order by b.id";
 
         Query query = createQuery(context, jpql);

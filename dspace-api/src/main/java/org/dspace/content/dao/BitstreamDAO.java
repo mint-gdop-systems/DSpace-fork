@@ -33,8 +33,8 @@ public interface BitstreamDAO extends DSpaceObjectLegacySupportDAO<Bitstream> {
 
     public Iterator<Bitstream> findAll(Context context, int limit, int offset) throws SQLException;
 
-    public Iterator<Bitstream> findAll(Context context, EPerson submitter, LocalDate accessionDate,
-            int limit, int offset) throws SQLException;
+    public Iterator<Bitstream> findAll(Context context, int limit, int offset, EPerson submitter,
+            LocalDate accessionDate, boolean selectImages) throws SQLException;
 
     public List<Bitstream> findDeletedBitstreams(Context context, int limit, int offset) throws SQLException;
 

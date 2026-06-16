@@ -33,6 +33,7 @@ public class PdfPageCountScriptConfiguration<T extends PdfPageCountScript>
         Options options = new Options();
         options.addOption("v", "verbose", false,
                 "Print each bitstream ID and its page count to the log");
+        options.addOption("b", "batch-size", true, "Number of bitstreams to process per batch (default: 1000)");
         return options;
     }
 }
