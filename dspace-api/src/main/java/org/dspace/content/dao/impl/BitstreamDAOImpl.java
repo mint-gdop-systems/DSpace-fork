@@ -248,4 +248,130 @@ public class BitstreamDAOImpl extends AbstractHibernateDSODAO<Bitstream> impleme
         List<UUID> uuids = query.getResultList();
         return new UUIDIterator<>(context, uuids, Bitstream.class, this);
     }
+
+    public List<Object[]> findCount(Context context, EPerson submitter) throws SQLException {
+        String submitterCondition = submitter != null
+                ? " AND i.submitter_id = :submitterId "
+                : "";
+
+        String complexSql = """
+                WITH bitstream_data AS (
+                    SELECT
+                        b.uuid AS bitstream_id,
+
+                        COALESCE(mv_entity.text_value, 'Other') AS entity_type,
+
+                        CASE
+                            WHEN wi.workspace_item_id IS NOT NULL THEN 'Draft'
+                            WHEN wfi.workflowitem_id IS NOT NULL THEN 'Pending'
+                            WHEN i.in_archive = TRUE THEN 'Approved'
+                            ELSE 'Other'
+                        END AS item_status,
+
+                        CASE
+                            WHEN bf.mimetype LIKE 'image/%' THEN 1
+                            WHEN bf.mimetype = 'application/pdf'
+                                THEN COALESCE(CAST(mv_pages.text_value AS INTEGER), 0)
+                            ELSE 0
+                        END AS page_count
+
+                    FROM bitstream b
+                    JOIN bitstreamformatregistry bf
+                        ON b.bitstream_format_id = bf.bitstream_format_id
+                    JOIN bundle2bitstream b2b
+                        ON b.uuid = b2b.bitstream_id
+                    JOIN item2bundle i2b
+                        ON b2b.bundle_id = i2b.bundle_id
+                    JOIN item i
+                        ON i2b.item_id = i.uuid
+
+                    LEFT JOIN workspaceitem wi
+                        ON i.uuid = wi.item_id
+                    LEFT JOIN cwf_workflowitem wfi
+                        ON i.uuid = wfi.item_id
+
+                    LEFT JOIN metadatavalue mv_pages
+                        ON b.uuid = mv_pages.dspace_object_id
+                        AND mv_pages.metadata_field_id = (
+                            SELECT metadata_field_id
+                            FROM metadatafieldregistry
+                            WHERE element = 'document'
+                              AND qualifier = 'pages'
+                              AND metadata_schema_id = (
+                                  SELECT metadata_schema_id
+                                  FROM metadataschemaregistry
+                                  WHERE short_id = 'crvs'
+                              )
+                        )
+
+                    LEFT JOIN metadatavalue mv_entity
+                        ON i.uuid = mv_entity.dspace_object_id
+                        AND mv_entity.metadata_field_id = (
+                            SELECT metadata_field_id
+                            FROM metadatafieldregistry
+                            WHERE element = 'entity'
+                              AND qualifier = 'type'
+                              AND metadata_schema_id = (
+                                  SELECT metadata_schema_id
+                                  FROM metadataschemaregistry
+                                  WHERE short_id = 'dspace'
+                              )
+                        )
+
+                    WHERE b.deleted = FALSE
+                      AND (
+                            bf.mimetype LIKE 'image/%'
+                            OR bf.mimetype IN (
+                                'application/pdf',
+                                'application/postscript'
+                            )
+                      )
+                            """ + submitterCondition + """
+                )
+
+                -- Total
+                SELECT
+                    'TOTAL' AS result_type,
+                    NULL AS breakdown_key,
+                    COUNT(DISTINCT bitstream_id) AS bitstream_count,
+                    COALESCE(SUM(page_count), 0) AS total_pages
+                FROM bitstream_data
+
+                UNION ALL
+
+                -- Entity type breakdown
+                SELECT
+                    'ENTITY_TYPE' AS result_type,
+                    entity_type AS breakdown_key,
+                    COUNT(DISTINCT bitstream_id) AS bitstream_count,
+                    COALESCE(SUM(page_count), 0) AS total_pages
+                FROM bitstream_data
+                GROUP BY entity_type
+
+                UNION ALL
+
+                -- Item status breakdown
+                SELECT
+                    'ITEM_STATUS' AS result_type,
+                    item_status AS breakdown_key,
+                    COUNT(DISTINCT bitstream_id) AS bitstream_count,
+                    COALESCE(SUM(page_count), 0) AS total_pages
+                FROM bitstream_data
+                GROUP BY item_status
+
+                ORDER BY result_type, breakdown_key;
+                                """;
+
+        // Use createNativeQuery for native SQL
+        Query query = getHibernateSession(context).createNativeQuery(complexSql);
+
+        if (submitter != null) {
+            query.setParameter("submitterId", submitter.getID());
+        }
+
+        @SuppressWarnings("unchecked")
+        List<Object[]> results = query.getResultList();
+
+        return results;
+    }
 }

@@ -59,4 +59,6 @@ public interface BitstreamDAO extends DSpaceObjectLegacySupportDAO<Bitstream> {
     int countWithNoPolicy(Context context) throws SQLException;
 
     List<Bitstream> getNotReferencedBitstreams(Context context) throws SQLException;
+
+    public List<Object[]> findCount(Context context, EPerson submitter) throws SQLException;
 }

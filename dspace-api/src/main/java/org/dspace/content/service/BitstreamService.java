@@ -46,6 +46,8 @@ public interface BitstreamService extends DSpaceObjectService<Bitstream>, DSpace
         public Iterator<Bitstream> findAll(Context context, int limit, int offset,
                         EPerson submitter, LocalDate accessionDate, boolean selectImages) throws SQLException;
 
+        public List<Object[]> findCount(Context context, EPerson submitter) throws SQLException;
+
         /**
          * Clone the given bitstream by firstly creating a new bitstream, with a new ID.
          * Then set the internal identifier, file size, checksum, and

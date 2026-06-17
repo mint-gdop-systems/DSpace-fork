@@ -134,6 +134,11 @@ public class BitstreamServiceImpl extends DSpaceObjectServiceImpl<Bitstream> imp
     }
 
     @Override
+    public List<Object[]> findCount(Context context, EPerson submitter) throws SQLException {
+        return bitstreamDAO.findCount(context, submitter);
+    }
+
+    @Override
     public Bitstream create(Context context, InputStream is) throws IOException, SQLException {
         // Store the bits
         UUID bitstreamID = bitstreamStorageService.store(context, bitstreamDAO.create(context, new Bitstream()), is);
