@@ -10,6 +10,7 @@ package org.dspace.app.rest.security;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,14 +29,19 @@ import org.dspace.authorize.service.AuthorizeService;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.eperson.EPerson;
+import org.dspace.eperson.Group;
+import org.dspace.eperson.service.GroupService;
 import org.dspace.services.RequestService;
 import org.dspace.services.model.Request;
+import org.dspace.xmlworkflow.storedcomponents.PoolTask;
+import org.dspace.xmlworkflow.storedcomponents.service.PoolTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 /**
- * An authenticated user is allowed to view, update or delete their own data. This {@link RestPermissionEvaluatorPlugin}
+ * An authenticated user is allowed to view, update or delete their own data.
+ * This {@link RestPermissionEvaluatorPlugin}
  * implements that requirement.
  */
 @Component
@@ -49,9 +55,15 @@ public class EPersonRestPermissionEvaluatorPlugin extends RestObjectPermissionEv
     @Autowired
     private RequestService requestService;
 
+    @Autowired
+    private GroupService groupService;
+
+    @Autowired
+    private PoolTaskService poolTaskService;
+
     @Override
     public boolean hasDSpacePermission(Authentication authentication, Serializable targetId,
-                                 String targetType, DSpaceRestPermission permission) {
+            String targetType, DSpaceRestPermission permission) {
 
         DSpaceRestPermission restPermission = DSpaceRestPermission.convert(permission);
         if (!DSpaceRestPermission.READ.equals(restPermission)
@@ -81,34 +93,63 @@ public class EPersonRestPermissionEvaluatorPlugin extends RestObjectPermissionEv
             } else if (dsoId.equals(ePerson.getID())) {
                 return true;
             } else if (authorizeService.isCommunityAdmin(context)
-                && AuthorizeUtil.canCommunityAdminManageAccounts()) {
+                    && AuthorizeUtil.canCommunityAdminManageAccounts()) {
                 return true;
             } else if (authorizeService.isCollectionAdmin(context)
-                && AuthorizeUtil.canCollectionAdminManageAccounts()) {
+                    && AuthorizeUtil.canCollectionAdminManageAccounts()) {
+                return true;
+            } else if (isWorkflowGroupMember(context, ePerson, dsoId)) {
                 return true;
             }
         } catch (SQLException e) {
             log.error(e::getMessage, e);
         }
 
+        return false;
+    }
+
+    private boolean isWorkflowGroupMember(Context context, EPerson currentUser, UUID targetEPersonId)
+            throws SQLException {
+        try {
+            // Get all groups the current user is a member of
+            Set<Group> userGroups = groupService.allMemberGroupsSet(context, currentUser);
+
+            // Check if user is in any workflow-related group
+            for (Group group : userGroups) {
+                // Check if this is a workflow group by name pattern
+                if (group.getName() != null && group.getName().contains("WORKFLOW")) {
+                    return true;
+                }
+            }
+
+            // Alternative: Check if user has any pool tasks (indicates workflow
+            // participation)
+            List<PoolTask> poolTasks = poolTaskService.findByEperson(context, currentUser);
+            if (!poolTasks.isEmpty()) {
+                return true;
+            }
+        } catch (Exception e) {
+            return false;
+        }
 
         return false;
     }
 
     @Override
     public boolean hasPatchPermission(Authentication authentication, Serializable targetId, String targetType,
-                                      Patch patch) {
+            Patch patch) {
 
         List<Operation> operations = patch.getOperations();
-        // If it's a password replace action, we can allow anon through provided that there's a token present
+        // If it's a password replace action, we can allow anon through provided that
+        // there's a token present
         Request currentRequest = requestService.getCurrentRequest();
         if (currentRequest != null) {
             HttpServletRequest httpServletRequest = currentRequest.getHttpServletRequest();
             if (!operations.isEmpty()
-                && Strings.CI.equals(operations.get(0).getOp(), PatchOperation.OPERATION_ADD)
-                && Strings.CI.equals(operations.get(0).getPath(),
-                EPersonPasswordAddOperation.OPERATION_PASSWORD_CHANGE)
-                && StringUtils.isNotBlank(httpServletRequest.getParameter("token"))) {
+                    && Strings.CI.equals(operations.get(0).getOp(), PatchOperation.OPERATION_ADD)
+                    && Strings.CI.equals(operations.get(0).getPath(),
+                            EPersonPasswordAddOperation.OPERATION_PASSWORD_CHANGE)
+                    && StringUtils.isNotBlank(httpServletRequest.getParameter("token"))) {
                 return true;
             }
         }
@@ -119,15 +160,15 @@ public class EPersonRestPermissionEvaluatorPlugin extends RestObjectPermissionEv
             return false;
         }
 
-
         /**
          * The entire Patch request should be denied if it contains operations that are
-         * restricted to Dspace administrators. The authenticated user is currently allowed to
+         * restricted to Dspace administrators. The authenticated user is currently
+         * allowed to
          * update their own password and their own metadata.
          */
-        for (Operation op: operations) {
+        for (Operation op : operations) {
             if (!(op.getPath().contentEquals(EPersonPasswordAddOperation.OPERATION_PASSWORD_CHANGE)
-                || (op.getPath().startsWith(DSpaceObjectMetadataPatchUtils.OPERATION_METADATA_PATH)))) {
+                    || (op.getPath().startsWith(DSpaceObjectMetadataPatchUtils.OPERATION_METADATA_PATH)))) {
                 return false;
             }
         }
