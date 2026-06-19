@@ -74,18 +74,37 @@ public class PdfPageCountScript extends DSpaceRunnable<PdfPageCountScriptConfigu
         }
     }
 
+    private void logMemory(String stage) {
+        Runtime runtime = Runtime.getRuntime();
+
+        long used = runtime.totalMemory() - runtime.freeMemory();
+        long max = runtime.maxMemory();
+
+        handler.logInfo(String.format(
+                "[MEM] %s | Used: %d MB | Free: %d MB | Max: %d MB",
+                stage,
+                used / (1024 * 1024),
+                runtime.freeMemory() / (1024 * 1024),
+                max / (1024 * 1024)));
+    }
+
     @Override
     public void internalRun() throws Exception {
         Context context = new Context();
         int processed = 0;
         int errors = 0;
 
+        logMemory("START SCRIPT");
         try {
             context.turnOffAuthorisationSystem();
 
             for (int offset = 0;; offset += batchSize) {
 
+                logMemory("BEFORE FETCH batch offset=" + offset);
+
                 Iterator<Bitstream> batch = bitstreamService.findAllPdf(context, batchSize, offset);
+
+                logMemory("AFTER FETCH batch offset=" + offset);
 
                 if (!batch.hasNext()) {
                     break;
@@ -94,8 +113,12 @@ public class PdfPageCountScript extends DSpaceRunnable<PdfPageCountScriptConfigu
                 while (batch.hasNext()) {
                     Bitstream bitstream = batch.next();
 
+                    logMemory("PROCESS START bitstream=" + bitstream.getID());
+
                     try {
                         long pages = pdfPageCountService.getNumberOfPdfPages(context, bitstream);
+
+                        logMemory("AFTER PDF PARSE bitstream=" + bitstream.getID());
 
                         bitstreamService.setMetadataSingleValue(
                                 context, bitstream,
@@ -106,6 +129,8 @@ public class PdfPageCountScript extends DSpaceRunnable<PdfPageCountScriptConfigu
                         processed++;
 
                         context.uncacheEntity(bitstream);
+
+                        logMemory("AFTER UPDATE bitstream=" + bitstream.getID());
 
                         if (verbose) {
                             handler.logInfo("Bitstream " + bitstream.getID()
@@ -125,10 +150,14 @@ public class PdfPageCountScript extends DSpaceRunnable<PdfPageCountScriptConfigu
                 // Commit after each batch to avoid memory build-up
                 context.commit();
 
+                logMemory("AFTER COMMIT offset=" + offset);
+
                 if (processed % CACHE_LIMIT == 0) {
                     context.complete();
                     context = new Context();
                     context.turnOffAuthorisationSystem();
+
+                    logMemory("AFTER CONTEXT RESET");
                 }
 
                 handler.logInfo("Committed batch at offset: " + offset + ". Processed so far: " + processed + "\n");
