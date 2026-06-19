@@ -43,8 +43,7 @@ public interface BitstreamService extends DSpaceObjectService<Bitstream>, DSpace
 
         public Iterator<Bitstream> findAll(Context context, int limit, int offset) throws SQLException;
 
-        public Iterator<Bitstream> findAll(Context context, int limit, int offset,
-                        EPerson submitter, LocalDate accessionDate, boolean selectImages) throws SQLException;
+        public Iterator<Bitstream> findAllPdf(Context context, int limit, int offset) throws SQLException;
 
         public List<Object[]> findCount(Context context, EPerson submitter) throws SQLException;
 

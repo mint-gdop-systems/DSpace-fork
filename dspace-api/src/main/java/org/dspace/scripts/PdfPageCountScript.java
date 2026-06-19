@@ -85,8 +85,7 @@ public class PdfPageCountScript extends DSpaceRunnable<PdfPageCountScriptConfigu
 
             for (int offset = 0;; offset += batchSize) {
 
-                Iterator<Bitstream> batch = bitstreamService.findAll(
-                        context, batchSize, offset, null, null, false);
+                Iterator<Bitstream> batch = bitstreamService.findAllPdf(context, batchSize, offset);
 
                 if (!batch.hasNext()) {
                     break;

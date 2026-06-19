@@ -8,7 +8,6 @@
 package org.dspace.content.dao.impl;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -207,38 +206,21 @@ public class BitstreamDAOImpl extends AbstractHibernateDSODAO<Bitstream> impleme
     }
 
     @Override
-    public Iterator<Bitstream> findAll(Context context, int limit, int offset, EPerson submitter,
-            LocalDate accessionDate, boolean selectImages) throws SQLException {
+    public Iterator<Bitstream> findAllPdf(Context context, int limit, int offset) throws SQLException {
         String jpql = "select distinct b.id from Bitstream b "
-                + "join b.bundles bundle "
-                + "join bundle.items item "
                 + "join b.bitstreamFormat bf "
                 + "where b.deleted = false "
-                + "  and (:submitter is null or item.submitter = :submitter) "
-                + (accessionDate != null
-                        ? "  and exists ("
-                                + "    select 1 from MetadataValue mv "
-                                + "    join mv.metadataField mf "
-                                + "    join mf.metadataSchema ms "
-                                + "    where mv.dSpaceObject = item "
-                                + "      and ms.namespace = 'dc' "
-                                + "      and mf.element = 'date' "
-                                + "      and mf.qualifier = 'accessioned' "
-                                + "      and mv.value like :accessionDatePrefix "
-                                + "  ) "
-                        : "")
-                + (selectImages
-                        ? "  and (bf.mimetype like 'image/%' "
-                                + "    or bf.mimetype in ('application/pdf', 'application/postscript'))"
-                        : "  and bf.mimetype in ('application/pdf', 'application/postscript') ")
+                + "  and bf.mimetype = 'application/pdf' "
+                + "  and not exists ("
+                + "    select mv from MetadataValue mv "
+                + "    where mv.dSpaceObject = b "
+                + "      and mv.metadataField.element = 'document' "
+                + "      and mv.metadataField.qualifier = 'pages' "
+                + "      and mv.metadataField.metadataSchema.name = 'crvs'"
+                + "  )"
                 + " order by b.id";
 
         Query query = createQuery(context, jpql);
-        query.setParameter("submitter", submitter);
-        if (accessionDate != null) {
-            // matches "2026-06-11T..." regardless of time component
-            query.setParameter("accessionDatePrefix", accessionDate.toString() + "%");
-        }
         if (limit > 0) {
             query.setFirstResult(offset);
             query.setMaxResults(limit);
