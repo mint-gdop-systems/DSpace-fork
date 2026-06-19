@@ -47,7 +47,7 @@
                     <required></required>
                 </field>
             </row>
-            <!-- <row>
+            <row>
                 <field>
                     <dc-schema>legal</dc-schema>
                     <dc-element>document</dc-element>
@@ -58,7 +58,7 @@
                     <hint>Page Count</hint>
                     <required></required>
                 </field>
-            </row> -->
+            </row>
             <row>
                 <field>
                     <dc-schema>dc</dc-schema>
