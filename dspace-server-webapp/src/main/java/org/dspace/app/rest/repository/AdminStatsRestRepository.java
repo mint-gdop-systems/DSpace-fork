@@ -29,14 +29,28 @@ public class AdminStatsRestRepository extends DSpaceRestRepository<AdminStatsRes
 
         try {
             int totalPageCount = AdminStatsHelper.getTotalPageCount(context);
-            stats.setTotalPageCount(totalPageCount);
+            int totalWorkflowPageCount = AdminStatsHelper.getTotalWorkflowPageCount(context);
+            stats.setTotalPageCount(totalPageCount + totalWorkflowPageCount);
+
+            int totalWorkflowCount = AdminStatsHelper.getTotalWorkflowCount(context);
+            stats.setTotalWorkflowCount(totalWorkflowCount);
 
             Map<String, Integer> collCounts = AdminStatsHelper.getCollectionPageCounts(context);
+            Map<String, Integer> workflowCounts = AdminStatsHelper.getCollectionWorkflowCounts(context);
+            Map<String, Integer> collWorkflowPageCounts = AdminStatsHelper.getCollectionWorkflowPageCounts(context);
+
+            java.util.Set<String> allCollIds = new java.util.HashSet<>();
+            allCollIds.addAll(collCounts.keySet());
+            allCollIds.addAll(workflowCounts.keySet());
+            allCollIds.addAll(collWorkflowPageCounts.keySet());
+
             List<Map<String, Object>> collectionsStats = new ArrayList<>();
-            for (Map.Entry<String, Integer> entry : collCounts.entrySet()) {
+            for (String collId : allCollIds) {
                 Map<String, Object> statMap = new HashMap<>();
-                statMap.put("collectionId", entry.getKey());
-                statMap.put("pageCount", entry.getValue());
+                statMap.put("collectionId", collId);
+                int combinedPageCount = collCounts.getOrDefault(collId, 0) + collWorkflowPageCounts.getOrDefault(collId, 0);
+                statMap.put("pageCount", combinedPageCount);
+                statMap.put("workflowCount", workflowCounts.getOrDefault(collId, 0));
                 collectionsStats.add(statMap);
             }
             stats.setCollectionsStats(collectionsStats);

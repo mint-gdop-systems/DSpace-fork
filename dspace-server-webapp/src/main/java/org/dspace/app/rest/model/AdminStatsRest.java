@@ -13,6 +13,7 @@ public class AdminStatsRest extends BaseObjectRest<String> {
     public static final String CATEGORY = RestModel.STATISTICS;
 
     private int totalPageCount;
+    private int totalWorkflowCount;
     private List<Map<String, Object>> collectionsStats;
 
     public AdminStatsRest() {
@@ -24,6 +25,14 @@ public class AdminStatsRest extends BaseObjectRest<String> {
 
     public void setTotalPageCount(int totalPageCount) {
         this.totalPageCount = totalPageCount;
+    }
+
+    public int getTotalWorkflowCount() {
+        return totalWorkflowCount;
+    }
+
+    public void setTotalWorkflowCount(int totalWorkflowCount) {
+        this.totalWorkflowCount = totalWorkflowCount;
     }
 
     public List<Map<String, Object>> getCollectionsStats() {
