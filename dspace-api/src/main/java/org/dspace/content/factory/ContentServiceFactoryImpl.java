@@ -26,6 +26,7 @@ import org.dspace.content.service.ItemService;
 import org.dspace.content.service.MetadataFieldService;
 import org.dspace.content.service.MetadataSchemaService;
 import org.dspace.content.service.MetadataValueService;
+import org.dspace.content.service.PdfPageCountService;
 import org.dspace.content.service.RelationshipService;
 import org.dspace.content.service.RelationshipTypeService;
 import org.dspace.content.service.SiteService;
@@ -84,6 +85,8 @@ public class ContentServiceFactoryImpl extends ContentServiceFactory {
     private EntityService entityService;
     @Autowired(required = true)
     private DuplicateDetectionService duplicateDetectionService;
+    @Autowired(required = true)
+    private PdfPageCountService pdfPageCountService;
 
     @Override
     public List<DSpaceObjectService<? extends DSpaceObject>> getDSpaceObjectServices() {
@@ -188,5 +191,10 @@ public class ContentServiceFactoryImpl extends ContentServiceFactory {
     @Override
     public DuplicateDetectionService getDuplicateDetectionService() {
         return duplicateDetectionService;
+    }
+
+    @Override
+    public PdfPageCountService getPdfPageCountService() {
+        return pdfPageCountService;
     }
 }

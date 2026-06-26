@@ -16,8 +16,8 @@ public class CollectionStatsRest extends BaseObjectRest<String> {
     private String collectionName;
     private String entityType;
 
-    private HouseStats houseStats;
-    private VitalEventStats vitalEventStats;
+    private CaseFileStats caseFileStats;
+    private CirculationEventStats circulationEventStats;
 
     public String getCollectionId() {
         return collectionId;
@@ -43,97 +43,70 @@ public class CollectionStatsRest extends BaseObjectRest<String> {
         this.entityType = entityType;
     }
 
-    public HouseStats getHouseStats() {
-        return houseStats;
+    public CaseFileStats getCaseFileStats() {
+        return caseFileStats;
     }
 
-    public void setHouseStats(HouseStats houseStats) {
-        this.houseStats = houseStats;
+    public void setCaseFileStats(CaseFileStats caseFileStats) {
+        this.caseFileStats = caseFileStats;
     }
 
-    public VitalEventStats getVitalEventStats() {
-        return vitalEventStats;
+    public CirculationEventStats getCirculationEventStats() {
+        return circulationEventStats;
     }
 
-    public void setVitalEventStats(VitalEventStats vitalEventStats) {
-        this.vitalEventStats = vitalEventStats;
+    public void setCirculationEventStats(CirculationEventStats circulationEventStats) {
+        this.circulationEventStats = circulationEventStats;
     }
 
-    public static class HouseStats {
-        private int totalRegisteredHouses;
-        private java.util.Map<String, Integer> distributionByHouseType = new HashMap<>();
-        private double averageFamilySizePerHouse;
-        private long totalRegisteredCitizens;
+    public static class CaseFileStats {
+        private int totalRegisteredCaseFiles;
+        private java.util.Map<String, Integer> distributionByCaseType = new HashMap<>();
+        private java.util.Map<String, Integer> distributionByCaseStatus = new HashMap<>();
 
-        public int getTotalRegisteredHouses() {
-            return totalRegisteredHouses;
+        public int getTotalRegisteredCaseFiles() {
+            return totalRegisteredCaseFiles;
         }
 
-        public void setTotalRegisteredHouses(int totalRegisteredHouses) {
-            this.totalRegisteredHouses = totalRegisteredHouses;
+        public void setTotalRegisteredCaseFiles(int totalRegisteredCaseFiles) {
+            this.totalRegisteredCaseFiles = totalRegisteredCaseFiles;
         }
 
-        public java.util.Map<String, Integer> getDistributionByHouseType() {
-            return distributionByHouseType;
+        public java.util.Map<String, Integer> getDistributionByCaseType() {
+            return distributionByCaseType;
         }
 
-        public void setDistributionByHouseType(java.util.Map<String, Integer> distributionByHouseType) {
-            this.distributionByHouseType = distributionByHouseType;
+        public void setDistributionByCaseType(java.util.Map<String, Integer> distributionByCaseType) {
+            this.distributionByCaseType = distributionByCaseType;
         }
 
-        public double getAverageFamilySizePerHouse() {
-            return averageFamilySizePerHouse;
+        public java.util.Map<String, Integer> getDistributionByCaseStatus() {
+            return distributionByCaseStatus;
         }
 
-        public void setAverageFamilySizePerHouse(double averageFamilySizePerHouse) {
-            this.averageFamilySizePerHouse = averageFamilySizePerHouse;
-        }
-
-        public long getTotalRegisteredCitizens() {
-            return totalRegisteredCitizens;
-        }
-
-        public void setTotalRegisteredCitizens(long totalRegisteredCitizens) {
-            this.totalRegisteredCitizens = totalRegisteredCitizens;
+        public void setDistributionByCaseStatus(java.util.Map<String, Integer> distributionByCaseStatus) {
+            this.distributionByCaseStatus = distributionByCaseStatus;
         }
     }
 
-    public static class VitalEventStats {
-        private int totalVitalEvents;
-        private int birthRecords;
-        private int deathRecords;
-        private int marriageRecords;
+    public static class CirculationEventStats {
+        private int totalCirculationEvents;
+        private java.util.Map<String, Integer> distributionByEventStatus = new HashMap<>();
 
-        public int getTotalVitalEvents() {
-            return totalVitalEvents;
+        public int getTotalCirculationEvents() {
+            return totalCirculationEvents;
         }
 
-        public void setTotalVitalEvents(int totalVitalEvents) {
-            this.totalVitalEvents = totalVitalEvents;
+        public void setTotalCirculationEvents(int totalCirculationEvents) {
+            this.totalCirculationEvents = totalCirculationEvents;
         }
 
-        public int getBirthRecords() {
-            return birthRecords;
+        public java.util.Map<String, Integer> getDistributionByEventStatus() {
+            return distributionByEventStatus;
         }
 
-        public void setBirthRecords(int birthRecords) {
-            this.birthRecords = birthRecords;
-        }
-
-        public int getDeathRecords() {
-            return deathRecords;
-        }
-
-        public void setDeathRecords(int deathRecords) {
-            this.deathRecords = deathRecords;
-        }
-
-        public int getMarriageRecords() {
-            return marriageRecords;
-        }
-
-        public void setMarriageRecords(int marriageRecords) {
-            this.marriageRecords = marriageRecords;
+        public void setDistributionByEventStatus(java.util.Map<String, Integer> distributionByEventStatus) {
+            this.distributionByEventStatus = distributionByEventStatus;
         }
     }
 

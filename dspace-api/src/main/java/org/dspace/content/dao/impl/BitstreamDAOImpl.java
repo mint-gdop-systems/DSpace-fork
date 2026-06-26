@@ -33,6 +33,7 @@ import org.dspace.core.AbstractHibernateDSODAO;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.core.UUIDIterator;
+import org.dspace.eperson.EPerson;
 
 /**
  * Hibernate implementation of the Database Access Object interface class for the Bitstream object.
@@ -199,5 +200,206 @@ public class BitstreamDAOImpl extends AbstractHibernateDSODAO<Bitstream> impleme
         Map<String, Object> map = new HashMap<>();
         return findByX(context, Bitstream.class, map, true, limit, offset).iterator();
 
+    }
+
+    @Override
+    public Iterator<Bitstream> findAllPdf(Context context, int limit, int offset) throws SQLException {
+        String jpql = "select distinct b.id from Bitstream b "
+                + "join b.bitstreamFormat bf "
+                + "where b.deleted = false "
+                + "  and bf.mimetype = 'application/pdf' "
+                + "  and not exists ("
+                + "    select mv from MetadataValue mv "
+                + "    where mv.dSpaceObject = b "
+                + "      and mv.metadataField.element = 'document' "
+                + "      and mv.metadataField.qualifier = 'pageCount' "
+                + "      and mv.metadataField.metadataSchema.name = 'legal'"
+                + "  )"
+                + " order by b.id";
+
+        Query query = createQuery(context, jpql);
+        if (limit > 0) {
+            query.setFirstResult(offset);
+            query.setMaxResults(limit);
+        }
+
+        @SuppressWarnings("unchecked")
+        List<UUID> uuids = query.getResultList();
+        return new UUIDIterator<>(context, uuids, Bitstream.class, this);
+    }
+
+    public List<Object[]> findCount(Context context, EPerson submitter, java.time.LocalDate approvedDate) throws SQLException {
+        String submitterCondition = submitter != null
+                ? " AND i.submitter_id = :submitterId "
+                : "";
+
+        String dateCondition = approvedDate != null
+                ? " AND CAST(mv_accdate.text_value AS DATE) = CAST(:approvedDate AS DATE) "
+                : "";
+
+        String complexSql = """
+                WITH bitstream_data AS (
+                    SELECT
+                        b.uuid AS bitstream_id,
+
+                        COALESCE(mv_entity.text_value, 'Other') AS entity_type,
+
+                        CASE
+                            WHEN wi.workspace_item_id IS NOT NULL THEN 'Draft'
+                            WHEN wfi.workflowitem_id IS NOT NULL THEN 'Pending'
+                            WHEN i.in_archive = TRUE THEN 'Approved'
+                            ELSE 'Other'
+                        END AS item_status,
+
+                        CASE
+                            WHEN bf.mimetype LIKE 'image/%' THEN 1
+                            WHEN bf.mimetype = 'application/pdf'
+                                THEN COALESCE(CAST(mv_pages.text_value AS INTEGER), 0)
+                            ELSE 0
+                        END AS page_count,
+
+                        COALESCE(mv_doctype.text_value, 'Other') AS document_type
+
+                    FROM bitstream b
+                    JOIN bitstreamformatregistry bf
+                        ON b.bitstream_format_id = bf.bitstream_format_id
+                    JOIN bundle2bitstream b2b
+                        ON b.uuid = b2b.bitstream_id
+                    JOIN item2bundle i2b
+                        ON b2b.bundle_id = i2b.bundle_id
+                    JOIN item i
+                        ON i2b.item_id = i.uuid
+
+                    LEFT JOIN workspaceitem wi
+                        ON i.uuid = wi.item_id
+                    LEFT JOIN cwf_workflowitem wfi
+                        ON i.uuid = wfi.item_id
+
+                    LEFT JOIN metadatavalue mv_pages
+                        ON b.uuid = mv_pages.dspace_object_id
+                        AND mv_pages.metadata_field_id = (
+                            SELECT metadata_field_id
+                            FROM metadatafieldregistry
+                            WHERE element = 'document'
+                              AND qualifier = 'pageCount'
+                              AND metadata_schema_id = (
+                                  SELECT metadata_schema_id
+                                  FROM metadataschemaregistry
+                                  WHERE short_id = 'legal'
+                              )
+                        )
+
+                    LEFT JOIN metadatavalue mv_entity
+                        ON i.uuid = mv_entity.dspace_object_id
+                        AND mv_entity.metadata_field_id = (
+                            SELECT metadata_field_id
+                            FROM metadatafieldregistry
+                            WHERE element = 'entity'
+                              AND qualifier = 'type'
+                              AND metadata_schema_id = (
+                                  SELECT metadata_schema_id
+                                  FROM metadataschemaregistry
+                                  WHERE short_id = 'dspace'
+                              )
+                        )
+
+                    LEFT JOIN metadatavalue mv_accdate
+                        ON i.uuid = mv_accdate.dspace_object_id
+                        AND mv_accdate.metadata_field_id = (
+                            SELECT metadata_field_id
+                            FROM metadatafieldregistry
+                            WHERE element = 'date'
+                              AND qualifier = 'accessioned'
+                              AND metadata_schema_id = (
+                                  SELECT metadata_schema_id
+                                  FROM metadataschemaregistry
+                                  WHERE short_id = 'dc'
+                              )
+                        )
+
+                    LEFT JOIN metadatavalue mv_doctype
+                        ON b.uuid = mv_doctype.dspace_object_id
+                        AND mv_doctype.metadata_field_id = (
+                            SELECT metadata_field_id
+                            FROM metadatafieldregistry
+                            WHERE element = 'document'
+                              AND qualifier = 'type'
+                              AND metadata_schema_id = (
+                                  SELECT metadata_schema_id
+                                  FROM metadataschemaregistry
+                                  WHERE short_id = 'legal'
+                              )
+                        )
+
+                    WHERE b.deleted = FALSE
+                      AND (
+                            bf.mimetype LIKE 'image/%'
+                            OR bf.mimetype IN (
+                                'application/pdf',
+                                'application/postscript'
+                            )
+                      )
+                            """ + submitterCondition + dateCondition + """
+                )
+
+                -- Total
+                SELECT
+                    'TOTAL' AS result_type,
+                    NULL AS breakdown_key,
+                    COUNT(DISTINCT bitstream_id) AS bitstream_count,
+                    COALESCE(SUM(page_count), 0) AS total_pages
+                FROM bitstream_data
+
+                UNION ALL
+
+                -- Entity type breakdown
+                SELECT
+                    'ENTITY_TYPE' AS result_type,
+                    entity_type AS breakdown_key,
+                    COUNT(DISTINCT bitstream_id) AS bitstream_count,
+                    COALESCE(SUM(page_count), 0) AS total_pages
+                FROM bitstream_data
+                GROUP BY entity_type
+
+                UNION ALL
+
+                -- Item status breakdown
+                SELECT
+                    'ITEM_STATUS' AS result_type,
+                    item_status AS breakdown_key,
+                    COUNT(DISTINCT bitstream_id) AS bitstream_count,
+                    COALESCE(SUM(page_count), 0) AS total_pages
+                FROM bitstream_data
+                GROUP BY item_status
+
+                UNION ALL
+
+                -- Document type breakdown
+                SELECT
+                    'DOCUMENT_TYPE' AS result_type,
+                    document_type AS breakdown_key,
+                    COUNT(DISTINCT bitstream_id) AS bitstream_count,
+                    COALESCE(SUM(page_count), 0) AS total_pages
+                FROM bitstream_data
+                GROUP BY document_type
+
+                ORDER BY result_type, breakdown_key;
+                                """;
+
+        // Use createNativeQuery for native SQL
+        Query query = getHibernateSession(context).createNativeQuery(complexSql);
+
+        if (submitter != null) {
+            query.setParameter("submitterId", submitter.getID());
+        }
+
+        if (approvedDate != null) {
+            query.setParameter("approvedDate", approvedDate.toString());
+        }
+
+        @SuppressWarnings("unchecked")
+        List<Object[]> results = query.getResultList();
+
+        return results;
     }
 }

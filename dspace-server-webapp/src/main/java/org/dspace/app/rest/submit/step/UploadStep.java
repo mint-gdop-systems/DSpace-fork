@@ -34,8 +34,10 @@ import org.dspace.content.BitstreamFormat;
 import org.dspace.content.Bundle;
 import org.dspace.content.InProgressSubmission;
 import org.dspace.content.Item;
+import org.dspace.content.service.PdfPageCountService;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
+import org.dspace.utils.DSpace;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -117,6 +119,7 @@ public class UploadStep extends AbstractProcessingStep
     public ErrorRest upload(Context context, SubmissionService submissionService, SubmissionStepConfig stepConfig,
                             InProgressSubmission wsi, MultipartFile file) {
 
+        PdfPageCountService pdfPageCountService = org.dspace.content.factory.ContentServiceFactory.getInstance().getPdfPageCountService();
         Bitstream source = null;
         BitstreamFormat bf = null;
 
@@ -141,6 +144,17 @@ public class UploadStep extends AbstractProcessingStep
             // Identify the format
             bf = bitstreamFormatService.guessFormat(context, source);
             source.setFormat(context, bf);
+
+            // Calculate page count for PDF files
+            if (bf != null && "application/pdf".equals(bf.getMIMEType())) {
+                try {
+                    long pageCount = pdfPageCountService.getNumberOfPdfPages(context, source);
+                    bitstreamService.setMetadataSingleValue(context, source, "legal", "document", "pageCount", null,
+                            String.format("%d", pageCount));
+                } catch (Exception e) {
+                    log.error("Failed to calculate page count for bitstream {}: {}", source.getID(), e.getMessage(), e);
+                }
+            }
 
             // Update to DB
             bitstreamService.update(context, source);

@@ -10,6 +10,7 @@ package org.dspace.content;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -36,6 +37,7 @@ import org.dspace.content.service.ItemService;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.core.LogHelper;
+import org.dspace.eperson.EPerson;
 import org.dspace.event.DetailType;
 import org.dspace.event.Event;
 import org.dspace.event.EventDetail;
@@ -123,6 +125,16 @@ public class BitstreamServiceImpl extends DSpaceObjectServiceImpl<Bitstream> imp
     @Override
     public Iterator<Bitstream> findAll(Context context, int limit, int offset) throws SQLException {
         return bitstreamDAO.findAll(context, limit, offset);
+    }
+
+    @Override
+    public Iterator<Bitstream> findAllPdf(Context context, int limit, int offset) throws SQLException {
+        return bitstreamDAO.findAllPdf(context, limit, offset);
+    }
+
+    @Override
+    public List<Object[]> findCount(Context context, EPerson submitter, java.time.LocalDate approvedDate) throws SQLException {
+        return bitstreamDAO.findCount(context, submitter, approvedDate);
     }
 
     @Override

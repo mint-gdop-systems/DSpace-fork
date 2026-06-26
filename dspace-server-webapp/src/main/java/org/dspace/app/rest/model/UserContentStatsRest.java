@@ -1,3 +1,10 @@
+/**
+ * The contents of this file are subject to the license and copyright
+ * detailed in the LICENSE and NOTICE files at the root of the source
+ * tree and available online at
+ *
+ * http://www.dspace.org/license/
+ */
 package org.dspace.app.rest.model;
 
 import org.dspace.app.rest.RestResourceController;
@@ -56,14 +63,6 @@ public class UserContentStatsRest extends BaseObjectRest<String> {
             this.workflow = new WorkflowStats();
         }
 
-        public int getPageCount() {
-            return pageCount;
-        }
-
-        public void setPageCount(int pageCount) {
-            this.pageCount = pageCount;
-        }
-
         public WorkspaceStats getWorkspace() {
             return workspace;
         }
@@ -94,6 +93,14 @@ public class UserContentStatsRest extends BaseObjectRest<String> {
 
         public void setWithdrawn(int withdrawn) {
             this.withdrawn = withdrawn;
+        }
+
+        public int getPageCount() {
+            return pageCount;
+        }
+
+        public void setPageCount(int pageCount) {
+            this.pageCount = pageCount;
         }
     }
 

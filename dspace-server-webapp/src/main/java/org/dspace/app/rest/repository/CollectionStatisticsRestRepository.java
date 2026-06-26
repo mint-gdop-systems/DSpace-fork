@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.dspace.app.rest.model.CollectionStatsRest;
-import org.dspace.app.rest.model.CollectionStatsRest.HouseStats;
-import org.dspace.app.rest.model.CollectionStatsRest.VitalEventStats;
+import org.dspace.app.rest.model.CollectionStatsRest.CaseFileStats;
+import org.dspace.app.rest.model.CollectionStatsRest.CirculationEventStats;
 import org.dspace.content.Collection;
 import org.dspace.content.Item;
 import org.dspace.content.MetadataValue;
@@ -53,17 +53,14 @@ public class CollectionStatisticsRestRepository extends DSpaceRestRepository<Col
                 rest.setCollectionName(col.getName());
                 rest.setEntityType(collectionService.getMetadataFirstValue(col, "dspace", "entity", "type", Item.ANY));
 
-                // House aggregation helpers
-                int houseTotal = 0;
-                Map<String, Integer> houseTypeDistribution = new HashMap<>();
-                long familySum = 0L;
-                int familyCountEntries = 0;
+                // CaseFile aggregation helpers
+                int caseFileTotal = 0;
+                Map<String, Integer> caseTypeDistribution = new HashMap<>();
+                Map<String, Integer> caseStatusDistribution = new HashMap<>();
 
-                // VitalEvent aggregation helpers
-                int totalVitalEvents = 0;
-                int births = 0;
-                int deaths = 0;
-                int marriages = 0;
+                // CirculationEvent aggregation helpers
+                int circulationEventTotal = 0;
+                Map<String, Integer> eventStatusDistribution = new HashMap<>();
 
                 Iterator<Item> items = itemService.findAllByCollection(context, col);
                 while (items.hasNext()) {
@@ -76,81 +73,33 @@ public class CollectionStatisticsRestRepository extends DSpaceRestRepository<Col
                     }
 
                     String etLower = etLabel != null ? etLabel.toLowerCase() : "";
-                    if (etLower.contains("house")) {
-                        houseTotal++;
+                    if (etLower.contains("casefile") || etLower.contains("case")) {
+                        caseFileTotal++;
 
-                        // Distribution by House Type (crvs.identifier.houseType)
-                        List<MetadataValue> ht = itemService.getMetadata(item, "crvs", "identifier", "houseType",
+                        // Distribution by Case Type (legal.case.type)
+                        List<MetadataValue> ct = itemService.getMetadata(item, "legal", "case", "type",
                                 Item.ANY, true);
-                        if (ht != null && !ht.isEmpty() && ht.get(0).getValue() != null) {
-                            String htv = ht.get(0).getValue();
-                            houseTypeDistribution.put(htv, houseTypeDistribution.getOrDefault(htv, 0) + 1);
+                        if (ct != null && !ct.isEmpty() && ct.get(0).getValue() != null) {
+                            String ctv = ct.get(0).getValue();
+                            caseTypeDistribution.put(ctv, caseTypeDistribution.getOrDefault(ctv, 0) + 1);
                         }
 
-                        // Family size and total citizens (crvs.family.count)
-                        List<MetadataValue> fam = itemService.getMetadata(item, "crvs", "family", "count",
+                        // Distribution by Case Status (legal.case.status)
+                        List<MetadataValue> cs = itemService.getMetadata(item, "legal", "case", "status",
                                 Item.ANY, true);
-                        if (fam != null && !fam.isEmpty() && fam.get(0).getValue() != null) {
-                            String fv = fam.get(0).getValue();
-                            try {
-                                long val = Long.parseLong(fv.trim());
-                                familySum += val;
-                                familyCountEntries++;
-                            } catch (NumberFormatException e) {
-
-                                // ignore unparsable values
-                            }
+                        if (cs != null && !cs.isEmpty() && cs.get(0).getValue() != null) {
+                            String csv = cs.get(0).getValue();
+                            caseStatusDistribution.put(csv, caseStatusDistribution.getOrDefault(csv, 0) + 1);
                         }
-                    } else if (etLower.contains("vitalevent") || etLower.contains("vital")
-                            || etLower.contains("event")) {
+                    } else if (etLower.contains("circulationevent") || etLower.contains("circulation")) {
+                        circulationEventTotal++;
 
-                        totalVitalEvents++;
-
-                        // Determine sub-type by looking for specific CRVS metadata elements
-                        boolean foundType = false;
-                        if (!itemService.getMetadata(item, "crvs", "birth", Item.ANY, Item.ANY, true).isEmpty()) {
-                            births++;
-                            foundType = true;
-                        } else if (!itemService.getMetadata(item, "crvs", "death", Item.ANY, Item.ANY, true)
-                                .isEmpty()) {
-                            deaths++;
-                            foundType = true;
-                        } else if (!itemService.getMetadata(item, "crvs", "marriage", Item.ANY, Item.ANY, true)
-                                .isEmpty()
-                                || !itemService.getMetadata(item, "crvs", "divorce", Item.ANY, Item.ANY, true)
-                                        .isEmpty()) {
-                            marriages++;
-                            foundType = true;
-                        }
-
-                        if (!foundType) {
-                            // Fallback to searching type metadata if specific elements are missing
-                            String eventType = null;
-                            String[][] candidates = {
-                                    { "crvs", "event", "type" },
-                                    { "crvs", "type", null },
-                                    { "crvs", "identifier", "eventType" },
-                                    { "dc", "type", null }
-                            };
-
-                            for (String[] c : candidates) {
-                                List<MetadataValue> ev = itemService.getMetadata(item, c[0], c[1], c[2], Item.ANY,
-                                        true);
-                                if (ev != null && !ev.isEmpty() && ev.get(0).getValue() != null) {
-                                    eventType = ev.get(0).getValue().toLowerCase();
-                                    break;
-                                }
-                            }
-
-                            if (eventType != null) {
-                                if (eventType.contains("birth")) {
-                                    births++;
-                                } else if (eventType.contains("death") || eventType.contains("died")) {
-                                    deaths++;
-                                } else if (eventType.contains("marriage") || eventType.contains("married")) {
-                                    marriages++;
-                                }
-                            }
+                        // Distribution by Event Status (legal.event.status)
+                        List<MetadataValue> es = itemService.getMetadata(item, "legal", "event", "status",
+                                Item.ANY, true);
+                        if (es != null && !es.isEmpty() && es.get(0).getValue() != null) {
+                            String esv = es.get(0).getValue();
+                            eventStatusDistribution.put(esv, eventStatusDistribution.getOrDefault(esv, 0) + 1);
                         }
                     } else {
                         // Optional: Log labels that don't match for debugging
@@ -161,47 +110,30 @@ public class CollectionStatisticsRestRepository extends DSpaceRestRepository<Col
                 // Populate final DTOs based on entity type
                 String entityType = rest.getEntityType();
 
-                if (entityType != null && entityType.toLowerCase().contains("house")) {
-                    HouseStats hs = new HouseStats();
-                    hs.setTotalRegisteredHouses(houseTotal);
-                    hs.setDistributionByHouseType(houseTypeDistribution);
-                    hs.setTotalRegisteredCitizens(familySum);
-                    double avg = 0.0;
-                    if (familyCountEntries > 0) {
-                        // Using familyCountEntries as denominator for a more accurate average of known
-                        // data
-                        avg = (double) familySum / (double) familyCountEntries;
-                    }
-                    hs.setAverageFamilySizePerHouse(avg);
-                    rest.setHouseStats(hs);
-                } else if (entityType != null && (entityType.toLowerCase().contains("vitalevent")
-                        || entityType.toLowerCase().contains("vital") || entityType.toLowerCase().contains("event"))) {
-                    VitalEventStats ves = new VitalEventStats();
-                    ves.setTotalVitalEvents(totalVitalEvents);
-                    ves.setBirthRecords(births);
-                    ves.setDeathRecords(deaths);
-                    ves.setMarriageRecords(marriages);
-                    rest.setVitalEventStats(ves);
+                if (entityType != null && (entityType.toLowerCase().contains("casefile") || entityType.toLowerCase().contains("case"))) {
+                    CaseFileStats cfs = new CaseFileStats();
+                    cfs.setTotalRegisteredCaseFiles(caseFileTotal);
+                    cfs.setDistributionByCaseType(caseTypeDistribution);
+                    cfs.setDistributionByCaseStatus(caseStatusDistribution);
+                    rest.setCaseFileStats(cfs);
+                } else if (entityType != null && (entityType.toLowerCase().contains("circulationevent") || entityType.toLowerCase().contains("circulation"))) {
+                    CirculationEventStats ces = new CirculationEventStats();
+                    ces.setTotalCirculationEvents(circulationEventTotal);
+                    ces.setDistributionByEventStatus(eventStatusDistribution);
+                    rest.setCirculationEventStats(ces);
                 } else {
                     // If no matching entity type, we include both to maintain backwards
                     // compatibility or show zeros
-                    HouseStats hs = new HouseStats();
-                    hs.setTotalRegisteredHouses(houseTotal);
-                    hs.setDistributionByHouseType(houseTypeDistribution);
-                    hs.setTotalRegisteredCitizens(familySum);
-                    double avg = 0.0;
-                    if (familyCountEntries > 0) {
-                        avg = (double) familySum / (double) familyCountEntries;
-                    }
-                    hs.setAverageFamilySizePerHouse(avg);
-                    rest.setHouseStats(hs);
+                    CaseFileStats cfs = new CaseFileStats();
+                    cfs.setTotalRegisteredCaseFiles(caseFileTotal);
+                    cfs.setDistributionByCaseType(caseTypeDistribution);
+                    cfs.setDistributionByCaseStatus(caseStatusDistribution);
+                    rest.setCaseFileStats(cfs);
 
-                    VitalEventStats ves = new VitalEventStats();
-                    ves.setTotalVitalEvents(totalVitalEvents);
-                    ves.setBirthRecords(births);
-                    ves.setDeathRecords(deaths);
-                    ves.setMarriageRecords(marriages);
-                    rest.setVitalEventStats(ves);
+                    CirculationEventStats ces = new CirculationEventStats();
+                    ces.setTotalCirculationEvents(circulationEventTotal);
+                    ces.setDistributionByEventStatus(eventStatusDistribution);
+                    rest.setCirculationEventStats(ces);
                 }
 
                 results.add(rest);

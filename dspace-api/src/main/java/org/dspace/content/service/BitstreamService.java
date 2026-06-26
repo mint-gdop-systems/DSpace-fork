@@ -10,6 +10,7 @@ package org.dspace.content.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -23,6 +24,7 @@ import org.dspace.content.Collection;
 import org.dspace.content.Community;
 import org.dspace.content.Item;
 import org.dspace.core.Context;
+import org.dspace.eperson.EPerson;
 
 /**
  * Service interface class for the Bitstream object.
@@ -39,6 +41,10 @@ public interface BitstreamService extends DSpaceObjectService<Bitstream>, DSpace
     public List<Bitstream> findAll(Context context) throws SQLException;
 
     public Iterator<Bitstream> findAll(Context context, int limit, int offset) throws SQLException;
+
+    public Iterator<Bitstream> findAllPdf(Context context, int limit, int offset) throws SQLException;
+
+    public List<Object[]> findCount(Context context, EPerson submitter, java.time.LocalDate approvedDate) throws SQLException;
 
     /**
      * Clone the given bitstream by firstly creating a new bitstream, with a new ID.
