@@ -200,6 +200,9 @@ public class UserItemStatsController {
                 // Ignore parsing errors
             }
         }
+        if (itemDate == null && item.getLastModified() != null) {
+            itemDate = java.util.Date.from(item.getLastModified());
+        }
 
         if (start != null || end != null) {
             if (itemDate == null) {
