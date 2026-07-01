@@ -67,83 +67,7 @@ public class UserItemStatsController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) throws Exception {
 
-        Context context = ContextUtil.obtainContext(request);
-        EPerson eperson = null;
-        if (StringUtils.isNotBlank(userId)) {
-            eperson = ePersonService.find(context, UUID.fromString(userId));
-        }
-
-        boolean isSysAdmin = authorizeService.isAdmin(context);
-        List<Collection> adminCollections = new ArrayList<>();
-        if (!isSysAdmin) {
-            adminCollections = authorizeService.findAdminAuthorizedCollection(context, null, 0, Integer.MAX_VALUE);
-        }
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date start = null;
-        Date end = null;
-        if (StringUtils.isNotBlank(startDate)) {
-            start = sdf.parse(startDate);
-        }
-        if (StringUtils.isNotBlank(endDate)) {
-            end = sdf.parse(endDate);
-            // Include entire end date day
-            end = new Date(end.getTime() + (1000 * 60 * 60 * 24) - 1);
-        }
-
-        List<ItemStatRecord> allRecords = new ArrayList<>();
-
-        if (eperson != null) {
-            // Archived / Withdrawn items
-            Iterator<Item> itemIterator = itemService.findBySubmitter(context, eperson, true);
-            while (itemIterator.hasNext()) {
-                Item item = itemIterator.next();
-                if (item.isArchived() || item.isWithdrawn()) {
-                    boolean hasAccess = isSysAdmin;
-                    if (!hasAccess && item.getOwningCollection() != null) {
-                        hasAccess = adminCollections.contains(item.getOwningCollection());
-                    }
-                    if (hasAccess) {
-                        processItem(item, "Approved", start, end, allRecords);
-                    }
-                }
-            }
-
-            // Workflow items
-            List<XmlWorkflowItem> wfItems = xmlWorkflowItemService.findBySubmitter(context, eperson, 0, Integer.MAX_VALUE);
-            for (XmlWorkflowItem wfi : wfItems) {
-                boolean hasAccess = isSysAdmin;
-                if (!hasAccess && wfi.getCollection() != null) {
-                    hasAccess = adminCollections.contains(wfi.getCollection());
-                }
-                if (hasAccess) {
-                    processItem(wfi.getItem(), "Pending", start, end, allRecords);
-                }
-            }
-        } else {
-            // Total system items for the given date?
-            // User requested if neither selected it should display total.
-            // Getting all items in the system can be extremely heavy. We will only aggregate if userId is null.
-            // If they want pagination of ALL items in the system, this will crash. 
-            // We should use discovery or limit it, but if it's admin they might want it.
-            // Wait, "if neither selected it should display total" means just the total cards, no table!
-            // We can return empty items array if userId is not provided.
-        }
-
-        // Apply status filter if provided
-        if (StringUtils.isNotBlank(filterStatus)) {
-            List<ItemStatRecord> filteredRecords = new ArrayList<>();
-            for (ItemStatRecord r : allRecords) {
-                if (filterStatus.equalsIgnoreCase(r.status)) {
-                    filteredRecords.add(r);
-                }
-            }
-            allRecords = filteredRecords;
-        }
-
-        // Sort descending by date
-        allRecords.sort(Comparator.comparing(ItemStatRecord::getSubmissionDate, Comparator.nullsLast(Comparator.reverseOrder())));
-
+        List<ItemStatRecord> allRecords = fetchAndFilterRecords(request, userId, startDate, endDate, filterStatus);
         // Calculate totals
         int totalItems = allRecords.size();
         int totalArchived = 0;
@@ -183,6 +107,145 @@ public class UserItemStatsController {
         response.put("totalPages", (int) Math.ceil((double) totalItems / size));
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/export")
+    public void exportUserItemStats(
+            HttpServletRequest request,
+            jakarta.servlet.http.HttpServletResponse response,
+            @RequestParam(required = false) String userId,
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate,
+            @RequestParam(required = false) String filterStatus) throws Exception {
+
+        List<ItemStatRecord> allRecords = fetchAndFilterRecords(request, userId, startDate, endDate, filterStatus);
+
+        org.apache.poi.xssf.usermodel.XSSFWorkbook workbook = new org.apache.poi.xssf.usermodel.XSSFWorkbook();
+        org.apache.poi.xssf.usermodel.XSSFSheet sheet = workbook.createSheet("User Item Stats");
+
+        String[] headers = {"No.", "የመዝገብ ቁጥር", "Item Status", "File Count", "በዳኛ የተሰራ", "ልዩ ልዩ", "Other", "Total Page Count"};
+        
+        org.apache.poi.xssf.usermodel.XSSFCellStyle headerStyle = workbook.createCellStyle();
+        org.apache.poi.xssf.usermodel.XSSFFont headerFont = workbook.createFont();
+        headerFont.setBold(true);
+        headerStyle.setFont(headerFont);
+
+        org.apache.poi.ss.usermodel.Row headerRow = sheet.createRow(0);
+        for (int i = 0; i < headers.length; i++) {
+            org.apache.poi.ss.usermodel.Cell cell = headerRow.createCell(i);
+            cell.setCellValue(headers[i]);
+            cell.setCellStyle(headerStyle);
+        }
+
+        int rowNum = 1;
+        for (ItemStatRecord record : allRecords) {
+            org.apache.poi.ss.usermodel.Row row = sheet.createRow(rowNum);
+            row.createCell(0).setCellValue(rowNum);
+            
+            org.apache.poi.ss.usermodel.Cell caseNumCell = row.createCell(1);
+            if (record.caseNumber != null) {
+                try {
+                    double numericCase = Double.parseDouble(record.caseNumber);
+                    caseNumCell.setCellValue(numericCase);
+                } catch (NumberFormatException e) {
+                    caseNumCell.setCellValue(record.caseNumber);
+                }
+            } else {
+                caseNumCell.setCellValue("N/A");
+            }
+            
+            row.createCell(2).setCellValue(record.status);
+            row.createCell(3).setCellValue(record.fileCount);
+            row.createCell(4).setCellValue(record.judgePageCount);
+            row.createCell(5).setCellValue(record.miscPageCount);
+            row.createCell(6).setCellValue(record.otherPageCount);
+            row.createCell(7).setCellValue(record.totalPageCount);
+            rowNum++;
+        }
+
+        // Set explicit column widths (units of 1/256th of a character width)
+        sheet.setColumnWidth(0, 2000); // No.
+        sheet.setColumnWidth(1, 6000); // የመዝገብ ቁጥር
+        sheet.setColumnWidth(2, 4000); // Item Status
+        sheet.setColumnWidth(3, 3500); // File Count
+        sheet.setColumnWidth(4, 5000); // በዳኛ የተሰራ
+        sheet.setColumnWidth(5, 4500); // ልዩ ልዩ
+        sheet.setColumnWidth(6, 3500); // Other
+        sheet.setColumnWidth(7, 5500); // Total Page Count
+
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=\"user_item_stats.xlsx\"");
+
+        workbook.write(response.getOutputStream());
+        workbook.close();
+    }
+
+    private List<ItemStatRecord> fetchAndFilterRecords(HttpServletRequest request, String userId, String startDate, String endDate, String filterStatus) throws Exception {
+        Context context = ContextUtil.obtainContext(request);
+        EPerson eperson = null;
+        if (StringUtils.isNotBlank(userId)) {
+            eperson = ePersonService.find(context, UUID.fromString(userId));
+        }
+
+        boolean isSysAdmin = authorizeService.isAdmin(context);
+        List<Collection> adminCollections = new ArrayList<>();
+        if (!isSysAdmin) {
+            adminCollections = authorizeService.findAdminAuthorizedCollection(context, null, 0, Integer.MAX_VALUE);
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date start = null;
+        Date end = null;
+        if (StringUtils.isNotBlank(startDate)) {
+            start = sdf.parse(startDate);
+        }
+        if (StringUtils.isNotBlank(endDate)) {
+            end = sdf.parse(endDate);
+            // Include entire end date day
+            end = new Date(end.getTime() + (1000 * 60 * 60 * 24) - 1);
+        }
+
+        List<ItemStatRecord> allRecords = new ArrayList<>();
+
+        if (eperson != null) {
+            Iterator<Item> itemIterator = itemService.findBySubmitter(context, eperson, true);
+            while (itemIterator.hasNext()) {
+                Item item = itemIterator.next();
+                if (item.isArchived() || item.isWithdrawn()) {
+                    boolean hasAccess = isSysAdmin;
+                    if (!hasAccess && item.getOwningCollection() != null) {
+                        hasAccess = adminCollections.contains(item.getOwningCollection());
+                    }
+                    if (hasAccess) {
+                        processItem(item, "Approved", start, end, allRecords);
+                    }
+                }
+            }
+
+            List<XmlWorkflowItem> wfItems = xmlWorkflowItemService.findBySubmitter(context, eperson, 0, Integer.MAX_VALUE);
+            for (XmlWorkflowItem wfi : wfItems) {
+                boolean hasAccess = isSysAdmin;
+                if (!hasAccess && wfi.getCollection() != null) {
+                    hasAccess = adminCollections.contains(wfi.getCollection());
+                }
+                if (hasAccess) {
+                    processItem(wfi.getItem(), "Pending", start, end, allRecords);
+                }
+            }
+        }
+
+        if (StringUtils.isNotBlank(filterStatus)) {
+            List<ItemStatRecord> filteredRecords = new ArrayList<>();
+            for (ItemStatRecord r : allRecords) {
+                if (filterStatus.equalsIgnoreCase(r.status)) {
+                    filteredRecords.add(r);
+                }
+            }
+            allRecords = filteredRecords;
+        }
+
+        allRecords.sort(Comparator.comparing(ItemStatRecord::getSubmissionDate, Comparator.nullsLast(Comparator.reverseOrder())));
+        return allRecords;
     }
 
     private void processItem(Item item, String status, Date start, Date end, List<ItemStatRecord> records) {
