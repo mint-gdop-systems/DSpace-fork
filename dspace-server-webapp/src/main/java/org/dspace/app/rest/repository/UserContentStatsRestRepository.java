@@ -77,16 +77,14 @@ public class UserContentStatsRestRepository extends DSpaceRestRepository<UserCon
         try {
             List<Bundle> bundles = item.getBundles();
             for (Bundle bundle : bundles) {
+                if (!"ORIGINAL".equals(bundle.getName())) continue;
+
                 for (Bitstream bitstream : bundle.getBitstreams()) {
-                    List<MetadataValue> pageCountMvs = bitstreamService.getMetadata(bitstream, "legal", "document", "pageCount", Item.ANY);
-                    for (MetadataValue mv : pageCountMvs) {
+                    String pagesStr = bitstreamService.getMetadataFirstValue(bitstream, "legal", "document", "pageCount", Item.ANY);
+                    if (pagesStr != null) {
                         try {
-                            if (mv.getValue() != null) {
-                                total += Integer.parseInt(mv.getValue().trim());
-                            }
-                        } catch (NumberFormatException e) {
-                            // ignore invalid numbers
-                        }
+                            total += Integer.parseInt(pagesStr.trim());
+                        } catch (NumberFormatException ignored) {}
                     }
                 }
             }
