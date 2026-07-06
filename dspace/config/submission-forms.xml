@@ -44,7 +44,7 @@
                     <repeatable>false</repeatable>
                     <label>የሰነዱ ዓይነት (Document Type)</label>
                     <input-type value-pairs-name="document_types">dropdown</input-type>
-                    <required></required>
+                    <required>Specific document Type is mandatory. (e.g., በዳኛ የተሰራ፣ ልዩ ልዩ ). (የሰነዱ ዓይነት) [cite: 30, 34, 35]</required>
                 </field>
             </row>
             <!-- <row>
@@ -93,7 +93,7 @@
                     <repeatable>false</repeatable>
                     <label>የጉዳዩ አይነት (Case Type)</label>
                     <input-type value-pairs-name="case_types">dropdown</input-type>
-                    <required></required>
+                    <required>Specific case type is mandatory. [cite: 30, 34, 35]</required>
                 </field>
             </row>
             <row>
@@ -176,6 +176,7 @@
                     <repeatable>false</repeatable>
                     <label>ችሎት (Bench)</label>
                     <input-type value-pairs-name="court_adjured_locations">dropdown</input-type>
+                    <required>Assigned bench name or courtroom number. (የችሎት ስም ወይም ቁጥር) [cite: 34, 67]</required>
                 </field>
             </row>
             <row>
