@@ -2639,10 +2639,10 @@
         <value-pairs value-pairs-name="document_types" dc-term="document.type">
             <pair><displayed-value>በዳኛ የተሰራ</displayed-value><stored-value>በዳኛ የተሰራ</stored-value></pair>
             <pair><displayed-value>ልዩ ልዩ</displayed-value><stored-value>ልዩ ልዩ</stored-value></pair>
-            <pair><displayed-value>የመልስ መልስ</displayed-value><stored-value>የመልስ መልስ</stored-value></pair>
+            <!-- <pair><displayed-value>የመልስ መልስ</displayed-value><stored-value>የመልስ መልስ</stored-value></pair>
             <pair><displayed-value>ሰበር መልስ እና ማስረጃ</displayed-value><stored-value>ሰበር መልስ እና ማስረጃ</stored-value></pair>
             <pair><displayed-value>ሰበር ማመልከቻ እና ማስረጃ</displayed-value><stored-value>ሰበር ማመልከቻ እና ማስረጃ</stored-value></pair>
-            <pair><displayed-value>የስር ፍርድ ቤት ውሳኔ</displayed-value><stored-value>የስር ፍርድ ቤት ውሳኔ</stored-value></pair>
+            <pair><displayed-value>የስር ፍርድ ቤት ውሳኔ</displayed-value><stored-value>የስር ፍርድ ቤት ውሳኔ</stored-value></pair> -->
         </value-pairs>
 
         <value-pairs value-pairs-name="court_locations">
