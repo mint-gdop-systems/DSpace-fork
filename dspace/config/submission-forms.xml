@@ -134,6 +134,7 @@
                     <repeatable>false</repeatable>
                     <label>መዝገቡ የተከፈተበት ቀን (Ethiopian Date)</label>
                     <input-type>date</input-type>
+                    <required>Ethiopian Date the file was opened at the Registrar. (መዝገቡ የተከፈተበት ቀን እንድ ኢትዮጵያን አቆጣጠር) [cite: 19]</required>
                 </field>
                 <field>
                     <dc-schema>legal</dc-schema>
