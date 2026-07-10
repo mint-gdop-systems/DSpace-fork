@@ -102,18 +102,18 @@
                     <dc-element>case</dc-element>
                     <dc-qualifier>plaintiff</dc-qualifier>
                     <repeatable>true</repeatable>
-                    <label>ከሳሽ/አመልካች (Plaintiff/Applicant)</label>
+                    <label>ከሳሽ/አመልካች/የፍርድ ባለመብት (Plaintiff/Applicant)</label>
                     <input-type>onebox</input-type>
-                    <required>The party initiating the legal action. (ከሳሽ ወይም አመልካች) [cite: 57, 73]</required>
+                    <required>The party initiating the legal action. (ከሳሽ፣ የፍርድ ባለመብት ወይም አመልካች) [cite: 57, 73]</required>
                 </field>
                 <field>
                     <dc-schema>legal</dc-schema>
                     <dc-element>case</dc-element>
                     <dc-qualifier>defendant</dc-qualifier>
                     <repeatable>true</repeatable>
-                    <label>ተከሳሽ/መልስ ሰጪ (Defendant/Respondent)</label>
+                    <label>ተከሳሽ/መልስ ሰጪ/የፍርድ ባለዕዳ (Defendant/Respondent)</label>
                     <input-type>onebox</input-type>
-                    <required>The party against whom the action is brought. (ተከሳሽ ወይም መልስ ሰጪ) [cite: 57, 74]</required>
+                    <required>The party against whom the action is brought. (ተከሳሽ፣ የፍርድ ባለዕዳ ወይም መልስ ሰጪ) [cite: 57, 74]</required>
                 </field>
             </row>
             <row>
@@ -2630,6 +2630,7 @@
             <pair><displayed-value>ፍትሐብሔር</displayed-value><stored-value>ፍትሐብሔር</stored-value></pair>
             <pair><displayed-value>ወንጀል</displayed-value><stored-value>ወንጀል</stored-value></pair>
             <pair><displayed-value>ስራ ክርክር</displayed-value><stored-value>ስራ ክርክር</stored-value></pair>
+            <pair><displayed-value>አፈፃፀም</displayed-value><stored-value>አፈፃፀም</stored-value></pair>
         </value-pairs>
 
         <value-pairs value-pairs-name="case_status_types" dc-term="case.status">
@@ -2640,6 +2641,7 @@
         <value-pairs value-pairs-name="document_types" dc-term="document.type">
             <pair><displayed-value>በዳኛ የተሰራ</displayed-value><stored-value>በዳኛ የተሰራ</stored-value></pair>
             <pair><displayed-value>ልዩ ልዩ</displayed-value><stored-value>ልዩ ልዩ</stored-value></pair>
+            <pair><displayed-value>በጽ/ቤቱ የተሰራ</displayed-value><stored-value>በጽ/ቤቱ የተሰራ</stored-value></pair>
             <!-- <pair><displayed-value>የመልስ መልስ</displayed-value><stored-value>የመልስ መልስ</stored-value></pair>
             <pair><displayed-value>ሰበር መልስ እና ማስረጃ</displayed-value><stored-value>ሰበር መልስ እና ማስረጃ</stored-value></pair>
             <pair><displayed-value>ሰበር ማመልከቻ እና ማስረጃ</displayed-value><stored-value>ሰበር ማመልከቻ እና ማስረጃ</stored-value></pair>
@@ -2656,7 +2658,7 @@
                 <stored-value>4 ኪሎ</stored-value>
             </pair>
             <pair>
-                <displayed-value>ፍርድ አፈፃፀም ያሬድ ት/ት ቤት ፊት ለፊት</displayed-value>
+                <displayed-value>ፍርድ አፈፃፀም ጽ/ቤት ልደታ</displayed-value>
                 <stored-value>ፍርድ አፈፃፀም</stored-value>
             </pair>
         </value-pairs>
@@ -2725,6 +2727,10 @@
             <pair>
                 <displayed-value>ወንጀል ችሎት 2ኛ</displayed-value>
                 <stored-value>ወንጀል ችሎት 2ኛ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>አፈፃፀም</displayed-value>
+                <stored-value>አፈፃፀም</stored-value>
             </pair>
         </value-pairs>
 
