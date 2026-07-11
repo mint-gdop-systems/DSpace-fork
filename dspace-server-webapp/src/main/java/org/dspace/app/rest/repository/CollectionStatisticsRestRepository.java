@@ -1,7 +1,6 @@
 /**
- * The contents of this file are subject to the license and copyright
- * detailed in the LICENSE and NOTICE files at the root of the source
- * tree and available online at
+ * The contents of this file are subject to the license and copyright detailed in the LICENSE and
+ * NOTICE files at the root of the source tree and available online at
  *
  * http://www.dspace.org/license/
  */
@@ -9,20 +8,11 @@ package org.dspace.app.rest.repository;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.dspace.app.rest.model.CollectionStatsRest;
-import org.dspace.app.rest.model.CollectionStatsRest.HouseStats;
-import org.dspace.app.rest.model.CollectionStatsRest.VitalEventStats;
 import org.dspace.content.Collection;
-import org.dspace.content.Item;
-import org.dspace.content.MetadataValue;
-import org.dspace.content.EntityType;
 import org.dspace.content.service.CollectionService;
-import org.dspace.content.service.ItemService;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,167 +23,40 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 /**
- * Repository exposing collection-level CRVS statistics for collections the
- * current
- * user has READ access to.
+ * Repository exposing collection-level CRVS statistics for collections the current user has READ
+ * access to.
  */
 @Component(CollectionStatsRest.CATEGORY + "." + CollectionStatsRest.PLURAL_NAME)
-public class CollectionStatisticsRestRepository extends DSpaceRestRepository<CollectionStatsRest, String> {
+public class CollectionStatisticsRestRepository
+        extends DSpaceRestRepository<CollectionStatsRest, String> {
 
     @Autowired
     private CollectionService collectionService;
 
     @Autowired
-    private ItemService itemService;
+    private CollectionStatisticsCacheService cacheService;
 
     @PreAuthorize("isAuthenticated()")
     @Override
     public Page<CollectionStatsRest> findAll(Context context, Pageable pageable) {
         try {
-            List<Collection> collections = collectionService.findAuthorizedOptimized(context, Constants.READ);
+            List<Collection> collections =
+                    collectionService.findAuthorizedOptimized(context, Constants.READ);
 
-            List<CollectionStatsRest> results = new ArrayList<>();
-
-            for (Collection col : collections) {
-                CollectionStatsRest rest = new CollectionStatsRest();
-                rest.setCollectionId(col.getID().toString());
-                rest.setCollectionName(col.getName());
-                rest.setEntityType(collectionService.getMetadataFirstValue(col, "dspace", "entity", "type", Item.ANY));
-
-                // House aggregation helpers
-                int houseTotal = 0;
-                Map<String, Integer> houseTypeDistribution = new HashMap<>();
-                long familySum = 0L;
-                int familyCountEntries = 0;
-
-                // VitalEvent aggregation helpers
-                int totalVitalEvents = 0;
-                int births = 0;
-                int deaths = 0;
-                int marriages = 0;
-
-                Iterator<Item> items = itemService.findAllByCollection(context, col);
-                while (items.hasNext()) {
-                    Item item = items.next();
-
-                    String etLabel = itemService.getEntityTypeLabel(item);
-                    if (etLabel == null) {
-                        EntityType et = itemService.getEntityType(context, item);
-                        etLabel = et != null ? et.getLabel() : "";
-                    }
-
-                    String etLower = etLabel != null ? etLabel.toLowerCase() : "";
-                    if (etLower.contains("house")) {
-                        houseTotal++;
-
-                        // Distribution by House Type (crvs.identifier.houseType)
-                        List<MetadataValue> ht = itemService.getMetadata(item, "crvs", "identifier", "houseType",
-                                Item.ANY, true);
-                        if (ht != null && !ht.isEmpty() && ht.get(0).getValue() != null) {
-                            String htv = ht.get(0).getValue();
-                            houseTypeDistribution.put(htv, houseTypeDistribution.getOrDefault(htv, 0) + 1);
-                        }
-
-                        // Family size and total citizens (crvs.family.count)
-                        List<MetadataValue> fam = itemService.getMetadata(item, "crvs", "family", "count",
-                                Item.ANY, true);
-                        if (fam != null && !fam.isEmpty() && fam.get(0).getValue() != null) {
-                            String fv = fam.get(0).getValue();
-                            try {
-                                long val = Long.parseLong(fv.trim());
-                                familySum += val;
-                                familyCountEntries++;
-                            } catch (NumberFormatException e) {
-
-                                // ignore unparsable values
-                            }
-                        }
-                    } else if (etLower.contains("vitalevent") || etLower.contains("vital")
-                            || etLower.contains("event")) {
-
-                        totalVitalEvents++;
-
-                        List<MetadataValue> vitalType = itemService.getMetadata(
-                                item, "crvs", "vital", "eventType", Item.ANY, true);
-                        String eventType = (vitalType != null && !vitalType.isEmpty()
-                                && vitalType.get(0).getValue() != null)
-                                        ? vitalType.get(0).getValue().toLowerCase()
-                                        : null;
-
-                        if (eventType != null) {
-                            if (eventType.contains("birth")) {
-                                births++;
-                            } else if (eventType.contains("death")) {
-                                deaths++;
-                            } else if (eventType.contains("marriage") || eventType.contains("divorce")) {
-                                marriages++;
-                            }
-                        }
-                    } else {
-                        // Optional: Log labels that don't match for debugging
-                        // item: " + item.getID());
-                    }
-                }
-
-                // Populate final DTOs based on entity type
-                String entityType = rest.getEntityType();
-
-                if (entityType != null && entityType.toLowerCase().contains("house")) {
-                    HouseStats hs = new HouseStats();
-                    hs.setTotalRegisteredHouses(houseTotal);
-                    hs.setDistributionByHouseType(houseTypeDistribution);
-                    hs.setTotalRegisteredCitizens(familySum);
-                    double avg = 0.0;
-                    if (familyCountEntries > 0) {
-                        // Using familyCountEntries as denominator for a more accurate average of known
-                        // data
-                        avg = (double) familySum / (double) familyCountEntries;
-                    }
-                    hs.setAverageFamilySizePerHouse(avg);
-                    rest.setHouseStats(hs);
-                } else if (entityType != null && (entityType.toLowerCase().contains("vitalevent")
-                        || entityType.toLowerCase().contains("vital") || entityType.toLowerCase().contains("event"))) {
-                    VitalEventStats ves = new VitalEventStats();
-                    ves.setTotalVitalEvents(totalVitalEvents);
-                    ves.setBirthRecords(births);
-                    ves.setDeathRecords(deaths);
-                    ves.setMarriageRecords(marriages);
-                    rest.setVitalEventStats(ves);
-                } else {
-                    // If no matching entity type, we include both to maintain backwards
-                    // compatibility or show zeros
-                    HouseStats hs = new HouseStats();
-                    hs.setTotalRegisteredHouses(houseTotal);
-                    hs.setDistributionByHouseType(houseTypeDistribution);
-                    hs.setTotalRegisteredCitizens(familySum);
-                    double avg = 0.0;
-                    if (familyCountEntries > 0) {
-                        avg = (double) familySum / (double) familyCountEntries;
-                    }
-                    hs.setAverageFamilySizePerHouse(avg);
-                    rest.setHouseStats(hs);
-
-                    VitalEventStats ves = new VitalEventStats();
-                    ves.setTotalVitalEvents(totalVitalEvents);
-                    ves.setBirthRecords(births);
-                    ves.setDeathRecords(deaths);
-                    ves.setMarriageRecords(marriages);
-                    rest.setVitalEventStats(ves);
-                }
-
-                results.add(rest);
-            }
-
-            int total = results.size();
+            int total = collections.size();
             int offset = Math.toIntExact(pageable.getOffset());
             int pageSize = pageable.getPageSize();
 
-            // Simple pagination in-memory
             int fromIndex = Math.min(offset, total);
             int toIndex = Math.min(offset + pageSize, total);
-            List<CollectionStatsRest> pageList = results.subList(fromIndex, toIndex);
+            List<Collection> pagedCollections = collections.subList(fromIndex, toIndex);
 
-            return new PageImpl<>(pageList, pageable, total);
+            List<CollectionStatsRest> results = new ArrayList<>();
+            for (Collection col : pagedCollections) {
+                results.add(cacheService.getCollectionStats(context, col));
+            }
+
+            return new PageImpl<>(results, pageable, total);
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage(), e);
         }

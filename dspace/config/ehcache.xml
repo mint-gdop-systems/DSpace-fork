@@ -62,8 +62,16 @@
         </resources>
     </cache-template>
 
+    <cache-template name="stats-default">
+        <resources>
+            <heap>500</heap>
+            <offheap unit="MB">10</offheap>
+        </resources>
+    </cache-template>
+
     <cache alias="manifests" uses-template="iiif-default"/>
     <cache alias="canvasdimensions" uses-template="iiif-canvas"/>
     <cache alias="sherpa.searchByJournalISSN" uses-template="sherpa-default"/>
+    <cache alias="collectionStats" uses-template="stats-default"/>
 
 </config>
