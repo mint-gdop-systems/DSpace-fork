@@ -48,6 +48,18 @@ public interface BitstreamService extends DSpaceObjectService<Bitstream>, DSpace
         public List<Object[]> findCount(Context context, EPerson submitter) throws SQLException;
 
         /**
+         * Get bitstream and page counts grouped by collection and item status
+         * for all collections within a community.
+         *
+         * @param context     context
+         * @param communityId UUID of the community
+         * @return list of Object[] rows: [collectionId(UUID), collectionName(String),
+         *         itemStatus(String), bitstreamCount(Long), pageCount(Long)]
+         * @throws SQLException if database error
+         */
+        public List<Object[]> findCommunityBitstreamStats(Context context, UUID communityId) throws SQLException;
+
+        /**
          * Clone the given bitstream by firstly creating a new bitstream, with a new ID.
          * Then set the internal identifier, file size, checksum, and
          * checksum algorithm as same as the given bitstream.

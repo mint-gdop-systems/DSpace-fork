@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import org.dspace.content.Bitstream;
 import org.dspace.content.Collection;
@@ -60,4 +61,16 @@ public interface BitstreamDAO extends DSpaceObjectLegacySupportDAO<Bitstream> {
     List<Bitstream> getNotReferencedBitstreams(Context context) throws SQLException;
 
     public List<Object[]> findCount(Context context, EPerson submitter) throws SQLException;
+
+    /**
+     * Get bitstream and page counts grouped by collection and item status
+     * (Approved/Draft/Pending) for all collections within a community.
+     *
+     * @param context     context
+     * @param communityId UUID of the community
+     * @return list of Object[] rows: [collectionId(UUID), collectionName(String),
+     *         itemStatus(String), bitstreamCount(Long), pageCount(Long)]
+     * @throws SQLException if database error
+     */
+    public List<Object[]> findCommunityBitstreamStats(Context context, UUID communityId) throws SQLException;
 }

@@ -356,4 +356,90 @@ public class BitstreamDAOImpl extends AbstractHibernateDSODAO<Bitstream> impleme
 
         return results;
     }
+
+    @Override
+    public List<Object[]> findCommunityBitstreamStats(Context context, UUID communityId) throws SQLException {
+        String sql = """
+                WITH collection_names AS (
+                    SELECT
+                        mv.dspace_object_id AS collection_id,
+                        mv.text_value AS collection_name
+                    FROM metadatavalue mv
+                    WHERE mv.metadata_field_id = (
+                        SELECT metadata_field_id FROM metadatafieldregistry
+                        WHERE element = 'title' AND qualifier IS NULL
+                        AND metadata_schema_id = (
+                            SELECT metadata_schema_id FROM metadataschemaregistry
+                            WHERE short_id = 'dc'
+                        )
+                    )
+                ),
+                collection_items AS (
+                    SELECT collection_id, item_id FROM collection2item
+                    UNION ALL
+                    SELECT collection_id, item_id FROM workspaceitem
+                    UNION ALL
+                    SELECT collection_id, item_id FROM cwf_workflowitem
+                ),
+                collection_bitstream_data AS (
+                    SELECT
+                        c.uuid AS collection_id,
+                        COALESCE(cn.collection_name, '') AS collection_name,
+                        b.uuid AS bitstream_id,
+                        CASE
+                            WHEN wi.workspace_item_id IS NOT NULL THEN 'Draft'
+                            WHEN wfi.workflowitem_id IS NOT NULL THEN 'Pending'
+                            WHEN i.in_archive = TRUE THEN 'Approved'
+                            ELSE 'Other'
+                        END AS item_status,
+                        CASE
+                            WHEN bf.mimetype LIKE 'image/%%' THEN 1
+                            WHEN bf.mimetype = 'application/pdf'
+                                THEN COALESCE(CAST(mv_pages.text_value AS INTEGER), 0)
+                            ELSE 0
+                        END AS page_count
+                    FROM community2collection c2c
+                    JOIN collection c ON c2c.collection_id = c.uuid
+                    LEFT JOIN collection_names cn ON c.uuid = cn.collection_id
+                    JOIN collection_items ci ON c.uuid = ci.collection_id
+                    JOIN item i ON ci.item_id = i.uuid
+                    JOIN item2bundle i2b ON i.uuid = i2b.item_id
+                    JOIN bundle2bitstream b2b ON i2b.bundle_id = b2b.bundle_id
+                    JOIN bitstream b ON b2b.bitstream_id = b.uuid
+                    JOIN bitstreamformatregistry bf ON b.bitstream_format_id = bf.bitstream_format_id
+                    LEFT JOIN workspaceitem wi ON i.uuid = wi.item_id
+                    LEFT JOIN cwf_workflowitem wfi ON i.uuid = wfi.item_id
+                    LEFT JOIN metadatavalue mv_pages
+                        ON b.uuid = mv_pages.dspace_object_id
+                        AND mv_pages.metadata_field_id = (
+                            SELECT metadata_field_id FROM metadatafieldregistry
+                            WHERE element = 'document' AND qualifier = 'pages'
+                            AND metadata_schema_id = (
+                                SELECT metadata_schema_id FROM metadataschemaregistry
+                                WHERE short_id = 'crvs'
+                            )
+                        )
+                    WHERE c2c.community_id = :communityId
+                      AND b.deleted = FALSE
+                      AND (bf.mimetype LIKE 'image/%%' OR bf.mimetype IN ('application/pdf', 'application/postscript'))
+                )
+                SELECT
+                    collection_id,
+                    collection_name,
+                    item_status,
+                    COUNT(DISTINCT bitstream_id) AS bitstream_count,
+                    COALESCE(SUM(page_count), 0) AS total_pages
+                FROM collection_bitstream_data
+                GROUP BY collection_id, collection_name, item_status
+                ORDER BY collection_name, item_status
+                """;
+
+        Query query = getHibernateSession(context).createNativeQuery(sql);
+        query.setParameter("communityId", communityId);
+
+        @SuppressWarnings("unchecked")
+        List<Object[]> results = query.getResultList();
+
+        return results;
+    }
 }

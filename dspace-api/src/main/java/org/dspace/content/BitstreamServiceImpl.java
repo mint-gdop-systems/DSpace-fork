@@ -138,6 +138,11 @@ public class BitstreamServiceImpl extends DSpaceObjectServiceImpl<Bitstream> imp
     }
 
     @Override
+    public List<Object[]> findCommunityBitstreamStats(Context context, UUID communityId) throws SQLException {
+        return bitstreamDAO.findCommunityBitstreamStats(context, communityId);
+    }
+
+    @Override
     public Bitstream create(Context context, InputStream is) throws IOException, SQLException {
         // Store the bits
         UUID bitstreamID = bitstreamStorageService.store(context, bitstreamDAO.create(context, new Bitstream()), is);
