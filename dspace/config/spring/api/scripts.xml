@@ -130,4 +130,9 @@
 
     <bean class="org.dspace.scripts.PdfPageCountScript" scope="prototype"/>
 
+    <bean id="replace-add-with-write" class="org.dspace.app.bulkaccesscontrol.ReplaceAddWithWriteForWorkflowGroupsScriptConfiguration">  
+        <property name="description" value="Replace ADD permissions with WRITE permissions for workflow groups"/>  
+        <property name="dspaceRunnableClass" value="org.dspace.app.bulkaccesscontrol.ReplaceAddWithWriteForWorkflowGroups"/>  
+    </bean>
+
 </beans>
