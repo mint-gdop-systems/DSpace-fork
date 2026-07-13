@@ -20,7 +20,8 @@ public class AdminStatsHelper {
 
     public static int getTotalPageCount(Context context) throws SQLException {
         Session session = (Session) context.getDBConnection().getSession();
-        String sql = "SELECT sum(cast(mv.text_value as integer)) " +
+        String sql = "SELECT sum(page_count) FROM (" +
+                     "SELECT max(cast(mv.text_value as integer)) as page_count " +
                      "FROM metadatavalue mv " +
                      "JOIN metadatafieldregistry mfr ON mv.metadata_field_id = mfr.metadata_field_id " +
                      "JOIN metadataschemaregistry msr ON mfr.metadata_schema_id = msr.metadata_schema_id " +
@@ -29,7 +30,10 @@ public class AdminStatsHelper {
                      "JOIN item2bundle i2b ON b2b.bundle_id = i2b.bundle_id " +
                      "JOIN item i ON i2b.item_id = i.uuid " +
                      "WHERE msr.short_id = 'legal' AND mfr.element = 'document' AND mfr.qualifier = 'pageCount' " +
-                     "AND i.in_archive = true";
+                     "AND b2b.bundle_id IN (SELECT b_mv.dspace_object_id FROM metadatavalue b_mv JOIN metadatafieldregistry b_mfr ON b_mv.metadata_field_id = b_mfr.metadata_field_id JOIN metadataschemaregistry b_msr ON b_mfr.metadata_schema_id = b_msr.metadata_schema_id WHERE b_msr.short_id = 'dc' AND b_mfr.element = 'title' AND b_mfr.qualifier IS NULL AND b_mv.text_value = 'ORIGINAL') " +
+                     "AND i.in_archive = true " +
+                     "GROUP BY b.uuid" +
+                     ") subquery";
 
         try {
             Object result = session.createNativeQuery(sql).getSingleResult();
@@ -44,7 +48,8 @@ public class AdminStatsHelper {
 
     public static Map<String, Integer> getCollectionPageCounts(Context context) throws SQLException {
         Session session = (Session) context.getDBConnection().getSession();
-        String sql = "SELECT cast(c.uuid as varchar) as collection_id, sum(cast(mv.text_value as integer)) as page_count " +
+        String sql = "SELECT collection_id, sum(page_count) as page_count FROM (" +
+                     "SELECT cast(c.uuid as varchar) as collection_id, max(cast(mv.text_value as integer)) as page_count " +
                      "FROM metadatavalue mv " +
                      "JOIN metadatafieldregistry mfr ON mv.metadata_field_id = mfr.metadata_field_id " +
                      "JOIN metadataschemaregistry msr ON mfr.metadata_schema_id = msr.metadata_schema_id " +
@@ -55,8 +60,10 @@ public class AdminStatsHelper {
                      "JOIN collection2item c2i ON i.uuid = c2i.item_id " +
                      "JOIN collection c ON c2i.collection_id = c.uuid " +
                      "WHERE msr.short_id = 'legal' AND mfr.element = 'document' AND mfr.qualifier = 'pageCount' " +
+                     "AND b2b.bundle_id IN (SELECT b_mv.dspace_object_id FROM metadatavalue b_mv JOIN metadatafieldregistry b_mfr ON b_mv.metadata_field_id = b_mfr.metadata_field_id JOIN metadataschemaregistry b_msr ON b_mfr.metadata_schema_id = b_msr.metadata_schema_id WHERE b_msr.short_id = 'dc' AND b_mfr.element = 'title' AND b_mfr.qualifier IS NULL AND b_mv.text_value = 'ORIGINAL') " +
                      "AND i.in_archive = true " +
-                     "GROUP BY c.uuid";
+                     "GROUP BY c.uuid, b.uuid" +
+                     ") subquery GROUP BY collection_id";
 
         Map<String, Integer> result = new HashMap<>();
         try {
@@ -113,7 +120,8 @@ public class AdminStatsHelper {
 
     public static int getTotalWorkflowPageCount(Context context) throws SQLException {
         Session session = (Session) context.getDBConnection().getSession();
-        String sql = "SELECT sum(cast(mv.text_value as integer)) " +
+        String sql = "SELECT sum(page_count) FROM (" +
+                     "SELECT max(cast(mv.text_value as integer)) as page_count " +
                      "FROM metadatavalue mv " +
                      "JOIN metadatafieldregistry mfr ON mv.metadata_field_id = mfr.metadata_field_id " +
                      "JOIN metadataschemaregistry msr ON mfr.metadata_schema_id = msr.metadata_schema_id " +
@@ -122,7 +130,10 @@ public class AdminStatsHelper {
                      "JOIN item2bundle i2b ON b2b.bundle_id = i2b.bundle_id " +
                      "JOIN item i ON i2b.item_id = i.uuid " +
                      "JOIN cwf_workflowitem wi ON i.uuid = wi.item_id " +
-                     "WHERE msr.short_id = 'legal' AND mfr.element = 'document' AND mfr.qualifier = 'pageCount'";
+                     "WHERE msr.short_id = 'legal' AND mfr.element = 'document' AND mfr.qualifier = 'pageCount' " +
+                     "AND b2b.bundle_id IN (SELECT b_mv.dspace_object_id FROM metadatavalue b_mv JOIN metadatafieldregistry b_mfr ON b_mv.metadata_field_id = b_mfr.metadata_field_id JOIN metadataschemaregistry b_msr ON b_mfr.metadata_schema_id = b_msr.metadata_schema_id WHERE b_msr.short_id = 'dc' AND b_mfr.element = 'title' AND b_mfr.qualifier IS NULL AND b_mv.text_value = 'ORIGINAL') " +
+                     "GROUP BY b.uuid" +
+                     ") subquery";
 
         try {
             Object result = session.createNativeQuery(sql).getSingleResult();
@@ -137,7 +148,8 @@ public class AdminStatsHelper {
 
     public static Map<String, Integer> getCollectionWorkflowPageCounts(Context context) throws SQLException {
         Session session = (Session) context.getDBConnection().getSession();
-        String sql = "SELECT cast(wi.collection_id as varchar) as collection_id, sum(cast(mv.text_value as integer)) as page_count " +
+        String sql = "SELECT collection_id, sum(page_count) as page_count FROM (" +
+                     "SELECT cast(wi.collection_id as varchar) as collection_id, max(cast(mv.text_value as integer)) as page_count " +
                      "FROM metadatavalue mv " +
                      "JOIN metadatafieldregistry mfr ON mv.metadata_field_id = mfr.metadata_field_id " +
                      "JOIN metadataschemaregistry msr ON mfr.metadata_schema_id = msr.metadata_schema_id " +
@@ -147,7 +159,9 @@ public class AdminStatsHelper {
                      "JOIN item i ON i2b.item_id = i.uuid " +
                      "JOIN cwf_workflowitem wi ON i.uuid = wi.item_id " +
                      "WHERE msr.short_id = 'legal' AND mfr.element = 'document' AND mfr.qualifier = 'pageCount' " +
-                     "GROUP BY wi.collection_id";
+                     "AND b2b.bundle_id IN (SELECT b_mv.dspace_object_id FROM metadatavalue b_mv JOIN metadatafieldregistry b_mfr ON b_mv.metadata_field_id = b_mfr.metadata_field_id JOIN metadataschemaregistry b_msr ON b_mfr.metadata_schema_id = b_msr.metadata_schema_id WHERE b_msr.short_id = 'dc' AND b_mfr.element = 'title' AND b_mfr.qualifier IS NULL AND b_mv.text_value = 'ORIGINAL') " +
+                     "GROUP BY wi.collection_id, b.uuid" +
+                     ") subquery GROUP BY collection_id";
 
         Map<String, Integer> result = new HashMap<>();
         try {
