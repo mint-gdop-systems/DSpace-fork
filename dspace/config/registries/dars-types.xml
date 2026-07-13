@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dspace-dc-types>
+    <dc-schema>
+        <name>dars</name>
+        <namespace>http://dspace.org/dars/</namespace>
+    </dc-schema>
+
+    <!-- Document Info -->
+    <dc-type>
+        <schema>dars</schema>
+        <element>document</element>
+        <qualifier>number</qualifier>
+        <scope_note>Document Number</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>document</element>
+        <qualifier>date</qualifier>
+        <scope_note>Contract/Registration Date</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>document</element>
+        <qualifier>attachments</qualifier>
+        <scope_note>Attachment Count</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>document</element>
+        <qualifier>revokedNumber</qualifier>
+        <scope_note>Revoked Document Number</scope_note>
+    </dc-type>
+
+    <!-- Demographics -->
+    <dc-type>
+        <schema>dars</schema>
+        <element>demographics</element>
+        <qualifier>femaleCount</qualifier>
+        <scope_note>Female Count</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>demographics</element>
+        <qualifier>maleCount</qualifier>
+        <scope_note>Male Count</scope_note>
+    </dc-type>
+
+    <!-- Parties -->
+    <dc-type>
+        <schema>dars</schema>
+        <element>giver</element>
+        <qualifier>name</qualifier>
+        <scope_note>Giver/Testator Full Name</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>receiver</element>
+        <qualifier>name</qualifier>
+        <scope_note>Receiver/Beneficiary Full Name</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>officer</element>
+        <qualifier>name</qualifier>
+        <scope_note>Officer Name</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>customer</element>
+        <qualifier>type</qualifier>
+        <scope_note>Individual or Organization</scope_note>
+    </dc-type>
+
+    <!-- Classifications -->
+    <dc-type>
+        <schema>dars</schema>
+        <element>service</element>
+        <qualifier>type</qualifier>
+        <scope_note>Main Service Type</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>case</element>
+        <qualifier>type</qualifier>
+        <scope_note>Sub Case Type</scope_note>
+    </dc-type>
+
+    <!-- Vehicle Asset -->
+    <dc-type>
+        <schema>dars</schema>
+        <element>vehicle</element>
+        <qualifier>libre</qualifier>
+        <scope_note>Vehicle Libre</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>vehicle</element>
+        <qualifier>plate</qualifier>
+        <scope_note>Vehicle Plate Number</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>vehicle</element>
+        <qualifier>chassis</qualifier>
+        <scope_note>Chassis Number</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>vehicle</element>
+        <qualifier>motor</qualifier>
+        <scope_note>Motor Number</scope_note>
+    </dc-type>
+
+    <!-- Property Asset -->
+    <dc-type>
+        <schema>dars</schema>
+        <element>property</element>
+        <qualifier>carta</qualifier>
+        <scope_note>Carta Number</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>property</element>
+        <qualifier>cartaDate</qualifier>
+        <scope_note>Carta Issue Date</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>property</element>
+        <qualifier>houseNumber</scope_note>
+        <scope_note>House Number</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>property</element>
+        <qualifier>area</qualifier>
+        <scope_note>Area in Sqm</scope_note>
+    </dc-type>
+
+    <!-- Spatial/Location -->
+    <dc-type>
+        <schema>dars</schema>
+        <element>spatial</element>
+        <qualifier>region</qualifier>
+        <scope_note>Region</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>spatial</element>
+        <qualifier>city</qualifier>
+        <scope_note>City</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>spatial</element>
+        <qualifier>subcity</qualifier>
+        <scope_note>Subcity</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>spatial</element>
+        <qualifier>woreda</qualifier>
+        <scope_note>Woreda</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>spatial</element>
+        <qualifier>kebele</qualifier>
+        <scope_note>Kebele</scope_note>
+    </dc-type>
+
+    <!-- Financial / Loan -->
+    <dc-type>
+        <schema>dars</schema>
+        <element>financial</element>
+        <qualifier>estimatedValue</qualifier>
+        <scope_note>Estimated Value</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>financial</element>
+        <qualifier>saleValue</qualifier>
+        <scope_note>Sale Value</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>financial</element>
+        <qualifier>capital</qualifier>
+        <scope_note>Capital Amount</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>financial</element>
+        <qualifier>totalContribution</qualifier>
+        <scope_note>Total Contribution</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>financial</element>
+        <qualifier>totalShares</qualifier>
+        <scope_note>Total Shares</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dars</schema>
+        <element>loan</element>
+        <qualifier>startDate</qualifier>
+        <scope_note>Loan Start Date</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>loan</element>
+        <qualifier>endDate</qualifier>
+        <scope_note>Loan End Date</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>loan</element>
+        <qualifier>amount</qualifier>
+        <scope_note>Loan Amount</scope_note>
+    </dc-type>
+
+    <!-- Corporate Specific -->
+    <dc-type>
+        <schema>dars</schema>
+        <element>organization</element>
+        <qualifier>name</qualifier>
+        <scope_note>Organization Name</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>organization</element>
+        <qualifier>type</qualifier>
+        <scope_note>Organization Type</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>organization</element>
+        <qualifier>tin</qualifier>
+        <scope_note>TIN Number</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>contact</element>
+        <qualifier>phone</qualifier>
+        <scope_note>Phone Number</scope_note>
+    </dc-type>
+
+    <!-- Meeting Specific -->
+    <dc-type>
+        <schema>dars</schema>
+        <element>meeting</element>
+        <qualifier>agenda</qualifier>
+        <scope_note>Meeting Agenda</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>meeting</element>
+        <qualifier>place</qualifier>
+        <scope_note>Meeting Place</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>meeting</element>
+        <qualifier>time</qualifier>
+        <scope_note>Meeting Time</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>meeting</element>
+        <qualifier>decision</qualifier>
+        <scope_note>Decision</scope_note>
+    </dc-type>
+</dspace-dc-types>
