@@ -35,10 +35,22 @@ public class ReplaceAddWithWriteForWorkflowGroups extends DSpaceRunnable {
                 for (int step = 1; step <= 3; step++) {
                     Group workflowGroup = collectionService.getWorkflowGroup(context, collection, step);
                     if (workflowGroup != null) {
-                        authorizeService.switchPoliciesAction(context, collection, Constants.ADD, Constants.WRITE);
+                        // Remove ALL policies for this workflow group on the collection
+                        authorizeService.removeGroupPolicies(context, collection, workflowGroup);
+                        // Add WRITE permission for this workflow group
+                        authorizeService.addPolicy(context, collection, Constants.WRITE, workflowGroup);
                         handler.logInfo("Replaced ADD with WRITE for workflow group " + step +
                                 " in collection: " + collection.getID());
                     }
+                }
+
+                Group submitters = collection.getSubmitters();
+                if (submitters != null) {
+                    // Remove ALL policies for submitters group on this collection
+                    authorizeService.removeGroupPolicies(context, collection, submitters);
+                    // Restore the correct ADD permission for submitters
+                    authorizeService.addPolicy(context, collection, Constants.ADD, submitters);
+                    handler.logInfo("Restored ADD permission for submitters in collection: " + collection.getID());
                 }
             }
             context.complete();
