@@ -191,6 +191,734 @@
             </row>
         </form>
 
+        <!-- DARIS Shared Common Form -->
+        <form name="darisCommonPageOne">
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>document</dc-element>
+                    <dc-qualifier>number</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የሰነድ ቁጥር (Doc No)</label>
+                    <input-type>onebox</input-type>
+                    <required>የሰነድ ቁጥር ግዴታ ነው።</required>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>branch</dc-element>
+                    <dc-qualifier>location</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የሰነዱ መገኛ ቅርንጫፍ (Branch Location)</label>
+                    <input-type value-pairs-name="dars_branch_locations">dropdown</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>document</dc-element>
+                    <dc-qualifier>attachments</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የአባሪ ብዛት (Attachments)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>document</dc-element>
+                    <dc-qualifier>date</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የተዋዋሉበት/የተመዘገበበት ቀን (Date)</label>
+                    <input-type>date</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>demographics</dc-element>
+                    <dc-qualifier>femaleCount</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ሴት ብዛት (Female Count)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>demographics</dc-element>
+                    <dc-qualifier>maleCount</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ወንድ ብዛት (Male Count)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+        </form>
+
+        <form name="darisCommonPageTwo">
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>giver</dc-element>
+                    <dc-qualifier>type</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የውል ሰጪ ደንበኛ አይነት (Giver Customer Type)</label>
+                    <input-type value-pairs-name="dars_customer_types">dropdown</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>giver</dc-element>
+                    <dc-qualifier>name</dc-qualifier>
+                    <repeatable>true</repeatable>
+                    <label>ውል ሰጪ / አድራጊ ስም (Giver/Applicant Name)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>receiver</dc-element>
+                    <dc-qualifier>type</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የውል ተቀባይ ደንበኛ አይነት (Receiver Customer Type)</label>
+                    <input-type value-pairs-name="dars_customer_types">dropdown</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>receiver</dc-element>
+                    <dc-qualifier>name</dc-qualifier>
+                    <repeatable>true</repeatable>
+                    <label>ውል ተቀባይ ስም (Receiver Name)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+        </form>
+
+        <form name="darisCommonPageThree">
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>dataEncoder</dc-element>
+                    <dc-qualifier>name</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የዳታ ኢንኮደር ስም (Data Encoder Name)</label>
+                    <input-type>onebox</input-type>
+                </field>   
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>officer</dc-element>
+                    <dc-qualifier>name</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የኦፊሰር ስም (Officer Name)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>investigator</dc-element>
+                    <dc-qualifier>name</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ያጣሪ ስም (Investigator Name)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>stampOfficer</dc-element>
+                    <dc-qualifier>name</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የማህተም እደላ (Stamp Duty Officer Name)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+        </form>
+        <!-- 1 & 3: Vehicle Sale & Gift (2ሀ, 7ሀ) -->
+        <form name="vehicleSaleForm">
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>case</dc-element>
+                    <dc-qualifier>type</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የጉዳይ አይነት (Case Type)</label>
+                    <input-type value-pairs-name="case_types_sales">dropdown</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>vehicle</dc-element>
+                    <dc-qualifier>libre</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ሊብሬ (Libre)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>vehicle</dc-element>
+                    <dc-qualifier>plate</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ታርጋ ቁጥር (Plate)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>vehicle</dc-element>
+                    <dc-qualifier>chassis</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ሻንሲ ቁጥር (Chassis)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>vehicle</dc-element>
+                    <dc-qualifier>motor</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ሞተር ቁጥር (Motor)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>financial</dc-element>
+                    <dc-qualifier>estimatedValue</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የግምት ዋጋ (Est. Value)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>financial</dc-element>
+                    <dc-qualifier>saleValue</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የተሸጠበት ዋጋ (Sale Value) [For Sales Only]</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+        </form>
+
+        <form name="vehicleGiftForm">
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>case</dc-element>
+                    <dc-qualifier>type</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የጉዳይ አይነት (Case Type)</label>
+                    <input-type value-pairs-name="case_types_gifts">dropdown</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>vehicle</dc-element>
+                    <dc-qualifier>libre</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ሊብሬ (Libre)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>vehicle</dc-element>
+                    <dc-qualifier>plate</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ታርጋ ቁጥር (Plate)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>vehicle</dc-element>
+                    <dc-qualifier>chassis</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ሻንሲ ቁጥር (Chassis)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>vehicle</dc-element>
+                    <dc-qualifier>motor</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ሞተር ቁጥር (Motor)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>financial</dc-element>
+                    <dc-qualifier>estimatedValue</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የግምት ዋጋ (Est. Value)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+        </form>
+
+        <!-- 2 & 4: Property Sale & Gift (2ለ) -->
+        <form name="propertySaleForm">
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>case</dc-element>
+                    <dc-qualifier>type</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የጉዳይ አይነት (Case Type)</label>
+                    <input-type value-pairs-name="case_types_sales">dropdown</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>property</dc-element>
+                    <dc-qualifier>carta</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ካርታ ቁጥር (Carta)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>property</dc-element>
+                    <dc-qualifier>cartaDate</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ካርታ የተሰጠበት (Carta Date)</label>
+                    <input-type>date</input-type>
+                </field>
+            </row>
+            <row>
+                <!-- UPDATED REGION DROPDOWN -->
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>spatial</dc-element>
+                    <dc-qualifier>region</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ክልል (Region)</label>
+                    <input-type value-pairs-name="regions_list">dropdown</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>spatial</dc-element>
+                    <dc-qualifier>city</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ከተማ (City)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>spatial</dc-element>
+                    <dc-qualifier>subcity</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ክፍለ ከተማ (Sub-city)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>spatial</dc-element>
+                    <dc-qualifier>woreda</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ወረዳ (Woreda)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>spatial</dc-element>
+                    <dc-qualifier>kebele</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ቀበሌ (Kebele)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>property</dc-element>
+                    <dc-qualifier>houseNumber</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የቤት ቁጥር (House No)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>property</dc-element>
+                    <dc-qualifier>area</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የቦታ ስፋት (Area sqm)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>financial</dc-element>
+                    <dc-qualifier>saleValue</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የተሸጠበት ዋጋ (Sale Value)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+        </form>
+
+        <form name="propertyGiftForm">
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>case</dc-element>
+                    <dc-qualifier>type</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የጉዳይ አይነት (Case Type)</label>
+                    <input-type value-pairs-name="case_types_gifts">dropdown</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>property</dc-element>
+                    <dc-qualifier>carta</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ካርታ ቁጥር (Carta)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>property</dc-element>
+                    <dc-qualifier>cartaDate</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ካርታ የተሰጠበት (Carta Date)</label>
+                    <input-type>date</input-type>
+                </field>
+            </row>
+            <row>
+                <!-- UPDATED REGION DROPDOWN -->
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>spatial</dc-element>
+                    <dc-qualifier>region</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ክልል (Region)</label>
+                    <input-type value-pairs-name="regions_list">dropdown</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>spatial</dc-element>
+                    <dc-qualifier>city</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ከተማ (City)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>spatial</dc-element>
+                    <dc-qualifier>subcity</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ክፍለ ከተማ (Sub-city)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>spatial</dc-element>
+                    <dc-qualifier>woreda</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ወረዳ (Woreda)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>spatial</dc-element>
+                    <dc-qualifier>kebele</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ቀበሌ (Kebele)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>property</dc-element>
+                    <dc-qualifier>houseNumber</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የቤት ቁጥር (House No)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>property</dc-element>
+                    <dc-qualifier>area</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የቦታ ስፋት (Area sqm)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+        </form>
+
+        <!-- 5: Loan -->
+        <form name="loanForm">
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>case</dc-element>
+                    <dc-qualifier>type</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የጉዳይ አይነት (Case Type)</label>
+                    <input-type value-pairs-name="case_types_loans">dropdown</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>loan</dc-element>
+                    <dc-qualifier>amount</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የብድር መጠን (Loan Amount)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>loan</dc-element>
+                    <dc-qualifier>startDate</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ብድር መጀመርያ ቀን (Start Date)</label>
+                    <input-type>date</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>loan</dc-element>
+                    <dc-qualifier>endDate</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ብድር ማብቂያ ቀን (End Date)</label>
+                    <input-type>date</input-type>
+                </field>
+            </row>
+        </form>
+
+        <form name="poaForm">
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>case</dc-element>
+                    <dc-qualifier>type</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የውክልና አይነት (POA Type)</label>
+                    <input-type value-pairs-name="case_types_poa">dropdown</input-type>
+                </field>
+            </row>
+        </form>
+
+        <!-- 6: Revocations (PoA or Will) -->
+        <form name="revocationForm">
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>case</dc-element>
+                    <dc-qualifier>type</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የጉዳይ አይነት (Case Type)</label>
+                    <input-type value-pairs-name="case_types_poa">dropdown</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>document</dc-element>
+                    <dc-qualifier>revokedNumber</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የተሻረው ውክልና/ኑዛዜ ቁጥር (Revoked Doc Number)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+        </form>
+
+        <!-- 7: Corporate Articles -->
+        <form name="corporateArticlesForm">
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>case</dc-element>
+                    <dc-qualifier>type</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የጉዳዩ አይነት (Case Type)</label>
+                    <input-type value-pairs-name="case_types_auth">dropdown</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>organization</dc-element>
+                    <dc-qualifier>name</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የድርጅት ስም (Organization Name)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>organization</dc-element>
+                    <dc-qualifier>type</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የማህበሩ አይነት (Assoc. Type)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>organization</dc-element>
+                    <dc-qualifier>tin</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ቲን (TIN)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+            <row>
+                <!-- UPDATED REGION DROPDOWN -->
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>spatial</dc-element>
+                    <dc-qualifier>region</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ክልል (Region)</label>
+                    <input-type value-pairs-name="regions_list">dropdown</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>spatial</dc-element>
+                    <dc-qualifier>city</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ከተማ (City)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>spatial</dc-element>
+                    <dc-qualifier>subcity</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ክፍለ ከተማ (Sub-city)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>spatial</dc-element>
+                    <dc-qualifier>woreda</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ወረዳ (Woreda)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>spatial</dc-element>
+                    <dc-qualifier>kebele</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ቀበሌ (Kebele)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>property</dc-element>
+                    <dc-qualifier>houseNumber</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የቤት ቁጥር (House No)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>contact</dc-element>
+                    <dc-qualifier>phone</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ስልክ ቁጥር (Phone No)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>financial</dc-element>
+                    <dc-qualifier>totalContribution</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ጠቅላላ መዋጮ (Total Contribution)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>financial</dc-element>
+                    <dc-qualifier>totalShares</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ጠቅላላ የአክሲዮን ብዛት (Total Shares)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>financial</dc-element>
+                    <dc-qualifier>capital</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ካፒታል (Capital)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+        </form>
+
+        <!-- 8: Corporate Minutes -->
+        <form name="corporateMinutesForm">
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>case</dc-element>
+                    <dc-qualifier>type</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የጉዳዩ አይነት (Case Type)</label>
+                    <input-type value-pairs-name="case_types_auth">dropdown</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>organization</dc-element>
+                    <dc-qualifier>name</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የማህበሩ ስም (Assoc. Name)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>meeting</dc-element>
+                    <dc-qualifier>agenda</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የስብሰባ አጀንዳ (Agenda)</label>
+                    <input-type>textarea</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>meeting</dc-element>
+                    <dc-qualifier>place</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ስብሰባ የተካሄደበት ቦታ (Place)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>meeting</dc-element>
+                    <dc-qualifier>time</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የስብሰባ ሰአት (Time)</label>
+                    <input-type>onebox</input-type>
+                </field>
+            </row>
+            <row>
+                <field>
+                    <dc-schema>dars</dc-schema>
+                    <dc-element>meeting</dc-element>
+                    <dc-qualifier>decision</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>ውሳኔ (Decision)</label>
+                    <input-type>textarea</input-type>
+                </field>
+            </row>
+        </form>
+
         <form name="physicalLocationForm">
             <row>
                 <field>
@@ -2627,21 +3355,48 @@
         </value-pairs> -->
 
         <value-pairs value-pairs-name="case_types" dc-term="case.type">
-            <pair><displayed-value>ፍትሐብሔር</displayed-value><stored-value>ፍትሐብሔር</stored-value></pair>
-            <pair><displayed-value>ወንጀል</displayed-value><stored-value>ወንጀል</stored-value></pair>
-            <pair><displayed-value>ስራ ክርክር</displayed-value><stored-value>ስራ ክርክር</stored-value></pair>
-            <pair><displayed-value>አፈፃፀም</displayed-value><stored-value>አፈፃፀም</stored-value></pair>
+            <pair>
+                <displayed-value>ፍትሐብሔር</displayed-value>
+                <stored-value>ፍትሐብሔር</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ወንጀል</displayed-value>
+                <stored-value>ወንጀል</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ስራ ክርክር</displayed-value>
+                <stored-value>ስራ ክርክር</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>አፈፃፀም</displayed-value>
+                <stored-value>አፈፃፀም</stored-value>
+            </pair>
         </value-pairs>
 
         <value-pairs value-pairs-name="case_status_types" dc-term="case.status">
-            <pair><displayed-value>በሂደት ላይ</displayed-value><stored-value>በሂደት ላይ</stored-value></pair>
-            <pair><displayed-value>የተዘጋ</displayed-value><stored-value>የተዘጋ</stored-value></pair>
+            <pair>
+                <displayed-value>በሂደት ላይ</displayed-value>
+                <stored-value>በሂደት ላይ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>የተዘጋ</displayed-value>
+                <stored-value>የተዘጋ</stored-value>
+            </pair>
         </value-pairs>
 
         <value-pairs value-pairs-name="document_types" dc-term="document.type">
-            <pair><displayed-value>በዳኛ የተሰራ</displayed-value><stored-value>በዳኛ የተሰራ</stored-value></pair>
-            <pair><displayed-value>ልዩ ልዩ</displayed-value><stored-value>ልዩ ልዩ</stored-value></pair>
-            <pair><displayed-value>በጽ/ቤቱ የተሰራ</displayed-value><stored-value>በጽ/ቤቱ የተሰራ</stored-value></pair>
+            <pair>
+                <displayed-value>በዳኛ የተሰራ</displayed-value>
+                <stored-value>በዳኛ የተሰራ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ልዩ ልዩ</displayed-value>
+                <stored-value>ልዩ ልዩ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>በጽ/ቤቱ የተሰራ</displayed-value>
+                <stored-value>በጽ/ቤቱ የተሰራ</stored-value>
+            </pair>
             <!-- <pair><displayed-value>የመልስ መልስ</displayed-value><stored-value>የመልስ መልስ</stored-value></pair>
             <pair><displayed-value>ሰበር መልስ እና ማስረጃ</displayed-value><stored-value>ሰበር መልስ እና ማስረጃ</stored-value></pair>
             <pair><displayed-value>ሰበር ማመልከቻ እና ማስረጃ</displayed-value><stored-value>ሰበር ማመልከቻ እና ማስረጃ</stored-value></pair>
@@ -2745,12 +3500,12 @@
 
         <value-pairs value-pairs-name="event_status_types" dc-term="status">
             <pair>
-            <displayed-value>Returned</displayed-value>
-            <stored-value>returned</stored-value>
+                <displayed-value>Returned</displayed-value>
+                <stored-value>returned</stored-value>
             </pair>
             <pair>
-            <displayed-value>Out</displayed-value>
-            <stored-value>out</stored-value>
+                <displayed-value>Out</displayed-value>
+                <stored-value>out</stored-value>
             </pair>
         </value-pairs>
 
@@ -2783,7 +3538,223 @@
                 <stored-value>Internal</stored-value>
             </pair>
         </value-pairs>
+        <!-- Branch Location -->
+                <value-pairs value-pairs-name="dars_branch_locations">
+            <pair>
+                <displayed-value>6 ኪሎ</displayed-value>
+                <stored-value>6 ኪሎ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>4 ኪሎ</displayed-value>
+                <stored-value>4 ኪሎ</stored-value>
+            </pair>
+        </value-pairs>
 
+        <!-- Regions -->
+        <value-pairs value-pairs-name="regions_list">
+            <pair>
+                <displayed-value>አዲስ አበባ</displayed-value>
+                <stored-value>አዲስ አበባ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ድሬዳዋ</displayed-value>
+                <stored-value>ድሬዳዋ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ኦሮሚያ</displayed-value>
+                <stored-value>ኦሮሚያ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>አማራ</displayed-value>
+                <stored-value>አማራ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ሶማሌ</displayed-value>
+                <stored-value>ሶማሌ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ትግራይ</displayed-value>
+                <stored-value>ትግራይ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>አፋር</displayed-value>
+                <stored-value>አፋር</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ሲዳማ</displayed-value>
+                <stored-value>ሲዳማ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ቤኒሻንጉል-ጉሙዝ</displayed-value>
+                <stored-value>ቤኒሻንጉል-ጉሙዝ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ጋምቤላ</displayed-value>
+                <stored-value>ጋምቤላ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ሐረሪ</displayed-value>
+                <stored-value>ሐረሪ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ደቡብ ምዕራብ ኢትዮጵያ ሕዝቦች</displayed-value>
+                <stored-value>ደቡብ ምዕራብ ኢትዮጵያ ሕዝቦች</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ደቡብ ኢትዮጵያ</displayed-value>
+                <stored-value>ደቡብ ኢትዮጵያ</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ማዕከላዊ ኢትዮጵያ</displayed-value>
+                <stored-value>ማዕከላዊ ኢትዮጵያ</stored-value>
+            </pair>
+        </value-pairs>
+
+        <!-- Common Classifications -->
+        <value-pairs value-pairs-name="dars_customer_types">
+            <pair>
+                <displayed-value>ግለሰብ (Individual)</displayed-value>
+                <stored-value>individual</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ድርጅት (Organization)</displayed-value>
+                <stored-value>organization</stored-value>
+            </pair>
+        </value-pairs>
+        <value-pairs value-pairs-name="dars_service_types">
+            <pair>
+                <displayed-value>የሽያጭ ውሎች (Sales Contracts)</displayed-value>
+                <stored-value>sales</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>የስጦታ ውሎች (Gift Contracts)</displayed-value>
+                <stored-value>gifts</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>የብድር ውሎች (Loan Contracts)</displayed-value>
+                <stored-value>loans</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>የውክልና ውሎች (Power of Attorney)</displayed-value>
+                <stored-value>poa</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>የኑዛዜና የውጭ ጉዳይ ሰነዶች (Wills &amp; Foreign Affairs)</displayed-value>
+                <stored-value>wills_foreign</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>የድርጅትና ማህበራት ሰነዶች (Corporate &amp; Assoc.)</displayed-value>
+                <stored-value>corporate</stored-value>
+            </pair>
+        </value-pairs>
+
+        <!-- Specific Case Types based on the Service -->
+        <value-pairs value-pairs-name="case_types_sales">
+            <pair>
+                <displayed-value>የመኪና ሽያጭ (Vehicle Sale)</displayed-value>
+                <stored-value>vehicle_sale</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>የቤት ሽያጭ (House Sale)</displayed-value>
+                <stored-value>house_sale</stored-value>
+            </pair>
+        </value-pairs>
+
+        <value-pairs value-pairs-name="case_types_gifts">
+            <pair>
+                <displayed-value>ተሽከርካሪ ስጦታ (Vehicle Gift)</displayed-value>
+                <stored-value>vehicle_gift</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>የማይንቀሳቀስ ንብረት ስጦታ (Property Gift)</displayed-value>
+                <stored-value>property_gift</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>መኖሪያ ቤት ስጦታ ውል (Residential House Gift)</displayed-value>
+                <stored-value>residential_gift</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ልዩ ልዩ የንብረት ስጦታ ውል (Misc. Property Gift)</displayed-value>
+                <stored-value>misc_property_gift</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ድርጅት ስጦታ ውል (Org. Gift)</displayed-value>
+                <stored-value>org_gift</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>የልጅ ልጅ የንብረት ስጦታ ውል (Grandchild Prop. Gift)</displayed-value>
+                <stored-value>grandchild_gift</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>የማይንቀሳቀስ ንብረት ስጦታ ጋብቻ (Property Gift Marriage)</displayed-value>
+                <stored-value>marriage_gift</stored-value>
+            </pair>
+        </value-pairs>
+
+        <value-pairs value-pairs-name="case_types_loans">
+            <pair>
+                <displayed-value>ብድር ያለመያዣ (Unsecured Loan)</displayed-value>
+                <stored-value>unsecured_loan</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ብድር በመያዣ (Secured Loan)</displayed-value>
+                <stored-value>secured_loan</stored-value>
+            </pair>
+        </value-pairs>
+
+        <value-pairs value-pairs-name="case_types_poa">
+            <pair>
+                <displayed-value>ጠቅላላ ውክልና (General PoA)</displayed-value>
+                <stored-value>general_poa</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>የማረሚያ ቤት ውክልና (Prison PoA)</displayed-value>
+                <stored-value>prison_poa</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>የቤተሰብ ውክልና (Family PoA)</displayed-value>
+                <stored-value>family_poa</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>የጠበቃ ውክልና (Lawyer PoA)</displayed-value>
+                <stored-value>lawyer_poa</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>የውክልና መሻሪያ (PoA Revocation)</displayed-value>
+                <stored-value>poa_revocation</stored-value>
+            </pair>
+        </value-pairs>
+
+        <value-pairs value-pairs-name="case_types_auth">
+            <pair>
+                <displayed-value>ቃለ ጉባኤ (ማናቸውም)</displayed-value>
+                <stored-value>minutes_any</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>መተዳደሪያ ደንብ (Bylaws)</displayed-value>
+                <stored-value>bylaws</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ትርጉም ማረጋገጫ (Translation Auth)</displayed-value>
+                <stored-value>translation_auth</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>ከሰነድ አረጋጋጭ ተቋማት የሚመነጩ ሰነዶች (Auth. Institution Docs)</displayed-value>
+                <stored-value>auth_institution_docs</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>የመመስረቻ ፅሁፍ (Memorandum of Assoc)</displayed-value>
+                <stored-value>memorandum_of_assoc</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>የሰዎች ስም (People Names)</displayed-value>
+                <stored-value>people_names</stored-value>
+            </pair>
+            <pair>
+                <displayed-value>የኑዛዜ ውሎች (Wills)</displayed-value>
+                <stored-value>wills</stored-value>
+            </pair>
+        </value-pairs>
 
     </form-value-pairs>
 

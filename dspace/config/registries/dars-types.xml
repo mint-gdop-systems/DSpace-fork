@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dspace-dc-types>
+
+    <dspace-header>
+        <title>Custom DARS Types Registry</title>
+    </dspace-header>
+
     <dc-schema>
         <name>dars</name>
         <namespace>http://dspace.org/dars/</namespace>
@@ -29,6 +34,13 @@
         <element>document</element>
         <qualifier>revokedNumber</qualifier>
         <scope_note>Revoked Document Number</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dars</schema>
+        <element>branch</element>
+        <qualifier>location</qualifier>
+        <scope_note>Branch Location</scope_note>
     </dc-type>
 
     <!-- Demographics -->
@@ -66,7 +78,31 @@
     </dc-type>
     <dc-type>
         <schema>dars</schema>
-        <element>customer</element>
+        <element>dataEncoder</element>
+        <qualifier>name</qualifier>
+        <scope_note>Data Encoder Name</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>investigator</element>
+        <qualifier>name</qualifier>
+        <scope_note>Investigator Name</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>stampOfficer</element>
+        <qualifier>name</qualifier>
+        <scope_note>Stamp Duty Officer Name</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>giver</element>
+        <qualifier>type</qualifier>
+        <scope_note>Individual or Organization</scope_note>
+    </dc-type>
+    <dc-type>
+        <schema>dars</schema>
+        <element>receiver</element>
         <qualifier>type</qualifier>
         <scope_note>Individual or Organization</scope_note>
     </dc-type>
@@ -127,7 +163,7 @@
     <dc-type>
         <schema>dars</schema>
         <element>property</element>
-        <qualifier>houseNumber</scope_note>
+        <qualifier>houseNumber</qualifier>
         <scope_note>House Number</scope_note>
     </dc-type>
     <dc-type>

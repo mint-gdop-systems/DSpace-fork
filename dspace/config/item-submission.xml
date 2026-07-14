@@ -18,7 +18,7 @@
     <!-- for handle "default". -->
     <submission-map>
         <!-- Default submission process -->
-        <name-map collection-handle="default" submission-name="traditional"/>
+        <!-- <name-map collection-handle="default" submission-name="traditional"/> -->
 
         <!-- Sample Entities Collection configuration based on the demo Entities dataset available at:
              https://github.com/DSpace-Labs/AIP-Files/releases/tag/demo-entities-data
@@ -56,6 +56,34 @@
             PLEASE NOTICE THAT YOU WILL HAVE TO RESTART DSPACE
             - - - - - -
         -->
+        <!-- The DARIS Default -->
+        <name-map collection-handle="default" submission-name="daris_default"/>
+
+        <!-- Entity Specific Mappings -->
+        <name-map collection-entity-type="VehicleSale" submission-name="VehicleSaleProcess" />
+        <name-map collection-entity-type="VehicleSaleAmendment" submission-name="VehicleSaleAmendmentProcess" />
+        <name-map collection-entity-type="HouseSale" submission-name="HouseSaleProcess" />
+        <name-map collection-entity-type="HouseSaleAmendment" submission-name="HouseSaleAmendmentProcess" />
+        <name-map collection-entity-type="VehicleGift" submission-name="VehicleGiftProcess" />
+        <name-map collection-entity-type="VehicleGiftAmendment" submission-name="VehicleGiftAmendmentProcess" />
+        <name-map collection-entity-type="HouseGift" submission-name="HouseGiftProcess" />
+        <name-map collection-entity-type="HouseGiftAmendment" submission-name="HouseGiftAmendmentProcess" />
+        <name-map collection-entity-type="LoanUnsecured" submission-name="LoanUnsecuredProcess" />
+        <name-map collection-entity-type="LoanSecured" submission-name="LoanSecuredProcess" />
+        <name-map collection-entity-type="LoanClearance" submission-name="LoanClearanceProcess" />
+        <name-map collection-entity-type="PowerOfAttorney" submission-name="POAProcess" />
+        <name-map collection-entity-type="POARevocation" submission-name="POARevocationProcess" />
+        <name-map collection-entity-type="Will" submission-name="POAProcess" />
+        <!-- Uses POA form for general case type layout -->
+        <name-map collection-entity-type="WillRevocation" submission-name="POARevocationProcess" />
+        <name-map collection-entity-type="ForeignAffairs" submission-name="CorporateMinutesProcess" />
+        <!-- Uses Minutes form to capture generic auth docs -->
+        <name-map collection-entity-type="ForeignAffairsUpdate" submission-name="CorporateMinutesProcess" />
+        <name-map collection-entity-type="CorporateArticles" submission-name="CorporateArticlesProcess" />
+        <name-map collection-entity-type="CorporateMinutes" submission-name="CorporateMinutesProcess" />
+
+
+        <!-- DSpace Default -->
         <name-map collection-entity-type="Publication" submission-name="Publication"/>
         <name-map collection-entity-type="Person" submission-name="Person"/>
         <name-map collection-entity-type="Project" submission-name="Project"/>
@@ -114,21 +142,93 @@
 
         <!-- The following set of DescribeStep <step-definition>s all point to forms (of the same name) which are
              defined in submission-forms.xml -->
+        <step-definition id="darisCommonPageOne" mandatory="true">
+            <heading>የሰነድ መረጃ (Document Info)</heading>
+            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+            <type>submission-form</type>
+        </step-definition>
+
+        <step-definition id="darisCommonPageTwo" mandatory="true">
+            <heading>የተዋዋዮች መረጃ (Parties Info)</heading>
+            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+            <type>submission-form</type>
+        </step-definition>
+
+        <step-definition id="darisCommonPageThree" mandatory="true">
+            <heading>የሰራተኛ መረጃ (Processing Info)</heading>
+            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+            <type>submission-form</type>
+        </step-definition>
+
+        <step-definition id="vehicleSaleForm" mandatory="true">
+            <heading>የመኪና ሽያጭ መረጃ (Vehicle Sale Info)</heading>
+            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+            <type>submission-form</type>
+        </step-definition>
+
+        <step-definition id="propertySaleForm" mandatory="true">
+            <heading>የቤት ሽያጭ መረጃ (Property Sale Info)</heading>
+            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+            <type>submission-form</type>
+        </step-definition>
+
+        <step-definition id="vehicleGiftForm" mandatory="true">
+            <heading>የመኪና ስጦታ መረጃ (Vehicle Gift Info)</heading>
+            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+            <type>submission-form</type>
+        </step-definition>
+
+        <step-definition id="propertyGiftForm" mandatory="true">
+            <heading>የቤት ስጦታ መረጃ (Property Gift Info)</heading>
+            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+            <type>submission-form</type>
+        </step-definition>
+
+        <step-definition id="loanForm" mandatory="true">
+            <heading>የብድር መረጃ (Loan Info)</heading>
+            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+            <type>submission-form</type>
+        </step-definition>
+
+        <step-definition id="poaForm" mandatory="true">
+            <heading>የውክልና መረጃ (PoA Info)</heading>
+            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+            <type>submission-form</type>
+        </step-definition>
+
+        <step-definition id="revocationForm" mandatory="true">
+            <heading>የመሻሪያ/ማረጋገጫ መረጃ (Revocation/Update Info)</heading>
+            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+            <type>submission-form</type>
+        </step-definition>
+
+        <step-definition id="corporateArticlesForm" mandatory="true">
+            <heading>የድርጅት መመስረቻ (Corporate Articles)</heading>
+            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+            <type>submission-form</type>
+        </step-definition>
+
+        <step-definition id="corporateMinutesForm" mandatory="true">
+            <heading>የስብሰባ ቃለ-ጉባዔ (Minutes/Auth)</heading>
+            <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
+            <type>submission-form</type>
+        </step-definition>
+
         <step-definition id="birth" mandatory="true">
             <heading>submit.progressbar.birth</heading>
             <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
             <type>submission-form</type>
-        </step-definition>  
+        </step-definition>
         <step-definition id="marriageAndDivorce" mandatory="true">
             <heading>submit.progressbar.marriage</heading>
             <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
             <type>submission-form</type>
-        </step-definition>  
+        </step-definition>
         <step-definition id="death" mandatory="true">
             <heading>submit.progressbar.death</heading>
             <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
             <type>submission-form</type>
-        </step-definition>   
+        </step-definition>
         <step-definition id="letter" mandatory="true">
             <heading>submit.progressbar.describe.stepone</heading>
             <processing-class>org.dspace.app.rest.submit.step.DescribeStep</processing-class>
@@ -206,7 +306,7 @@
         <step-definition id="cclicense" mandatory="false">
             <heading>submit.progressbar.CClicense</heading>
             <processing-class>org.dspace.app.rest.submit.step.CCLicenseStep</processing-class>
-	        <type>cclicense</type>
+            <type>cclicense</type>
         </step-definition>
         <step-definition id="custom-url">
             <heading>submit.progressbar.CustomUrlStep</heading>
@@ -214,7 +314,7 @@
             <type>custom-url</type>
         </step-definition>
 
-		<!-- This optional step may allow the user to select access conditions on the item -->
+        <!-- This optional step may allow the user to select access conditions on the item -->
         <step-definition id="itemAccessConditions">
             <heading>submit.progressbar.accessCondition</heading>
             <processing-class>org.dspace.app.rest.submit.step.AccessConditionStep</processing-class>
@@ -314,6 +414,168 @@
     <submission-definitions>
 
         <!--This "traditional" process defines the DEFAULT item submission process -->
+        <submission-process name="daris_default">
+            <step id="duplicates"/>
+            <step id="collection"/>
+            <step id="darisCommonPageOne"/>
+            <step id="darisCommonPageTwo"/>
+            <step id="darisCommonPageThree"/>
+            <step id="upload"/>
+        </submission-process>
+
+        <submission-process name="VehicleSaleProcess">
+            <step id="duplicates"/>
+            <step id="collection"/>
+            <step id="darisCommonPageOne"/>
+            <step id="darisCommonPageTwo"/>
+            <step id="vehicleSaleForm"/>
+            <step id="darisCommonPageThree"/>
+            <step id="upload"/>
+        </submission-process>
+
+        <submission-process name="VehicleSaleAmendmentProcess">
+            <step id="duplicates"/>
+            <step id="collection"/>
+            <step id="darisCommonPageOne"/>
+            <step id="darisCommonPageTwo"/>
+            <step id="vehicleSaleForm"/>
+            <step id="darisCommonPageThree"/>
+            <step id="upload"/>
+        </submission-process>
+
+        <submission-process name="HouseSaleProcess">
+            <step id="duplicates"/>
+            <step id="collection"/>
+            <step id="darisCommonPageOne"/>
+            <step id="darisCommonPageTwo"/>
+            <step id="propertySaleForm"/>
+            <step id="darisCommonPageThree"/>
+            <step id="upload"/>
+        </submission-process>
+
+        <submission-process name="HouseSaleAmendmentProcess">
+            <step id="duplicates"/>
+            <step id="collection"/>
+            <step id="darisCommonPageOne"/>
+            <step id="darisCommonPageTwo"/>
+            <step id="propertySaleForm"/>
+            <step id="darisCommonPageThree"/>
+            <step id="upload"/>
+        </submission-process>
+
+        <submission-process name="VehicleGiftProcess">
+            <step id="duplicates"/>
+            <step id="collection"/>
+            <step id="darisCommonPageOne"/>
+            <step id="darisCommonPageTwo"/>
+            <step id="vehicleGiftForm"/>
+            <step id="darisCommonPageThree"/>
+            <step id="upload"/>
+        </submission-process>
+
+        <submission-process name="VehicleGiftAmendmentProcess">
+            <step id="duplicates"/>
+            <step id="collection"/>
+            <step id="darisCommonPageOne"/>
+            <step id="darisCommonPageTwo"/>
+            <step id="vehicleGiftForm"/>
+            <step id="darisCommonPageThree"/>
+            <step id="upload"/>
+        </submission-process>
+
+        <submission-process name="HouseGiftProcess">
+            <step id="duplicates"/>
+            <step id="collection"/>
+            <step id="darisCommonPageOne"/>
+            <step id="darisCommonPageTwo"/>
+            <step id="propertyGiftForm"/>
+            <step id="darisCommonPageThree"/>
+            <step id="upload"/>
+        </submission-process>
+
+        <submission-process name="HouseGiftAmendmentProcess">
+            <step id="duplicates"/>
+            <step id="collection"/>
+            <step id="darisCommonPageOne"/>
+            <step id="darisCommonPageTwo"/>
+            <step id="propertyGiftForm"/>
+            <step id="darisCommonPageThree"/>
+            <step id="upload"/>
+        </submission-process>
+
+        <submission-process name="LoanUnsecuredProcess">
+            <step id="duplicates"/>
+            <step id="collection"/>
+            <step id="darisCommonPageOne"/>
+            <step id="darisCommonPageTwo"/>
+            <step id="loanForm"/>
+            <step id="darisCommonPageThree"/>
+            <step id="upload"/>
+        </submission-process>
+
+        <submission-process name="LoanSecuredProcess">
+            <step id="duplicates"/>
+            <step id="collection"/>
+            <step id="darisCommonPageOne"/>
+            <step id="darisCommonPageTwo"/>
+            <step id="loanForm"/>
+            <step id="vehicleSaleForm"/>
+            <step id="darisCommonPageThree"/>
+            <!-- Re-use vehicle fields as collateral -->
+            <step id="upload"/>
+        </submission-process>
+
+        <submission-process name="LoanClearanceProcess">
+            <step id="duplicates"/>
+            <step id="collection"/>
+            <step id="darisCommonPageOne"/>
+            <step id="darisCommonPageTwo"/>
+            <step id="revocationForm"/>
+            <step id="darisCommonPageThree"/>
+            <!-- Uses standard tracking form -->
+            <step id="upload"/>
+        </submission-process>
+
+        <submission-process name="POAProcess">
+            <step id="duplicates"/>
+            <step id="collection"/>
+            <step id="darisCommonPageOne"/>
+            <step id="darisCommonPageTwo"/>
+            <step id="poaForm"/>
+            <step id="darisCommonPageThree"/>
+            <step id="upload"/>
+        </submission-process>
+
+        <submission-process name="POARevocationProcess">
+            <step id="duplicates"/>
+            <step id="collection"/>
+            <step id="darisCommonPageOne"/>
+            <step id="darisCommonPageTwo"/>
+            <step id="revocationForm"/>
+            <step id="darisCommonPageThree"/>
+            <step id="upload"/>
+        </submission-process>
+
+        <submission-process name="CorporateArticlesProcess">
+            <step id="duplicates"/>
+            <step id="collection"/>
+            <step id="darisCommonPageOne"/>
+            <step id="darisCommonPageTwo"/>
+            <step id="corporateArticlesForm"/>
+            <step id="darisCommonPageThree"/>
+            <step id="upload"/>
+        </submission-process>
+
+        <submission-process name="CorporateMinutesProcess">
+            <step id="duplicates"/>
+            <step id="collection"/>
+            <step id="darisCommonPageOne"/>
+            <step id="darisCommonPageTwo"/>
+            <step id="corporateMinutesForm"/>
+            <step id="darisCommonPageThree"/>
+            <step id="upload"/>
+        </submission-process>
+
         <submission-process name="traditional">
             <!--Uncommment to display the SAMPLE step as your first step -->
             <!--<step id="sample"/> -->

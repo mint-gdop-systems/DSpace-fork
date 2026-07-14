@@ -3,18 +3,154 @@
 
 <relationships>
 
-	<!-- Sample relationship types setup used for the entities development
-	 This file can be imported using the initialize-entities launcher -->
+    <!-- Sub-Community 1: Sales -> Amendments -->
     <type>
-        <leftType>CaseFile</leftType>
-        <rightType>CirculationEvent</rightType>
-        <leftwardType>isCaseFileOf</leftwardType>
-        <rightwardType>hasCirculationEvent</rightwardType>
+        <leftType>VehicleSale</leftType>
+        <rightType>VehicleSaleAmendment</rightType>
+        <leftwardType>hasAmendment</leftwardType>
+        <rightwardType>amendsSale</rightwardType>
         <leftCardinality>
             <min>0</min>
+            <max>1</max>
         </leftCardinality>
         <rightCardinality>
-            <min>1</min>
+            <min>0</min>
         </rightCardinality>
     </type>
+
+    <type>
+        <leftType>HouseSale</leftType>
+        <rightType>HouseSaleAmendment</rightType>
+        <leftwardType>hasAmendment</leftwardType>
+        <rightwardType>amendsSale</rightwardType>
+        <leftCardinality>
+            <min>0</min>
+            <max>1</max>
+        </leftCardinality>
+        <rightCardinality>
+            <min>0</min>
+        </rightCardinality>
+    </type>
+
+    <!-- Sub-Community 2: Gifts -> Amendments -->
+    <type>
+        <leftType>VehicleGift</leftType>
+        <rightType>VehicleGiftAmendment</rightType>
+        <leftwardType>hasAmendment</leftwardType>
+        <rightwardType>amendsGift</rightwardType>
+        <leftCardinality>
+            <min>0</min>
+            <max>1</max>
+        </leftCardinality>
+        <rightCardinality>
+            <min>0</min>
+        </rightCardinality>
+    </type>
+
+    <type>
+        <leftType>HouseGift</leftType>
+        <rightType>HouseGiftAmendment</rightType>
+        <leftwardType>hasAmendment</leftwardType>
+        <rightwardType>amendsGift</rightwardType>
+        <leftCardinality>
+            <min>0</min>
+            <max>1</max>
+        </leftCardinality>
+        <rightCardinality>
+            <min>0</min>
+        </rightCardinality>
+    </type>
+
+    <!-- Sub-Community 3: Loans -> Clearances -->
+    <type>
+        <leftType>LoanUnsecured</leftType>
+        <rightType>LoanClearance</rightType>
+        <leftwardType>isClearedBy</leftwardType>
+        <rightwardType>clearsLoan</rightwardType>
+        <leftCardinality>
+            <min>0</min>
+            <max>1</max>
+        </leftCardinality>
+        <rightCardinality>
+            <min>0</min>
+            <max>1</max>
+        </rightCardinality>
+    </type>
+
+    <type>
+        <leftType>LoanSecured</leftType>
+        <rightType>LoanClearance</rightType>
+        <leftwardType>isClearedBy</leftwardType>
+        <rightwardType>clearsLoan</rightwardType>
+        <leftCardinality>
+            <min>0</min>
+            <max>1</max>
+        </leftCardinality>
+        <rightCardinality>
+            <min>0</min>
+            <max>1</max>
+        </rightCardinality>
+    </type>
+
+    <!-- Sub-Community 4: Power of Attorney -> Revocation -->
+    <type>
+        <leftType>PowerOfAttorney</leftType>
+        <rightType>POARevocation</rightType>
+        <leftwardType>isRevokedBy</leftwardType>
+        <rightwardType>revokesPoA</rightwardType>
+        <leftCardinality>
+            <min>0</min>
+            <max>1</max>
+        </leftCardinality>
+        <rightCardinality>
+            <min>0</min>
+            <max>1</max>
+        </rightCardinality>
+    </type>
+
+    <!-- Sub-Community 5: Wills & Foreign Affairs -> Updates -->
+    <type>
+        <leftType>Will</leftType>
+        <rightType>WillRevocation</rightType>
+        <leftwardType>isRevokedBy</leftwardType>
+        <rightwardType>revokesWill</rightwardType>
+        <leftCardinality>
+            <min>0</min>
+            <max>1</max>
+        </leftCardinality>
+        <rightCardinality>
+            <min>0</min>
+            <max>1</max>
+        </rightCardinality>
+    </type>
+
+    <type>
+        <leftType>ForeignAffairs</leftType>
+        <rightType>ForeignAffairsUpdate</rightType>
+        <leftwardType>hasUpdate</leftwardType>
+        <rightwardType>updatesForeignAffairs</rightwardType>
+        <leftCardinality>
+            <min>0</min>
+            <max>1</max>
+        </leftCardinality>
+        <rightCardinality>
+            <min>0</min>
+        </rightCardinality>
+    </type>
+
+    <!-- Sub-Community 6: Corporate Articles -> Minutes -->
+    <type>
+        <leftType>CorporateArticles</leftType>
+        <rightType>CorporateMinutes</rightType>
+        <leftwardType>hasMinutes</leftwardType>
+        <rightwardType>relatesToArticles</rightwardType>
+        <leftCardinality>
+            <min>0</min>
+            <max>1</max>
+        </leftCardinality>
+        <rightCardinality>
+            <min>0</min>
+        </rightCardinality>
+    </type>
+
 </relationships>
