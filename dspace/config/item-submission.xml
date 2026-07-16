@@ -519,7 +519,7 @@
             <step id="darisCommonPageOne"/>
             <step id="darisCommonPageTwo"/>
             <step id="loanForm"/>
-            <step id="vehicleSaleForm"/>
+            <!-- <step id="vehicleSaleForm"/> -->
             <step id="darisCommonPageThree"/>
             <!-- Re-use vehicle fields as collateral -->
             <step id="upload"/>

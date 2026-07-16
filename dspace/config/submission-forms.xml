@@ -329,6 +329,7 @@
                 </field>
             </row>
         </form>
+
         <!-- 1 & 3: Vehicle Sale & Gift (2ሀ, 7ሀ) -->
         <form name="vehicleSaleForm">
             <row>
@@ -664,8 +665,6 @@
                     <label>የጉዳይ አይነት (Case Type)</label>
                     <input-type value-pairs-name="case_types_loans">dropdown</input-type>
                 </field>
-            </row>
-            <row>
                 <field>
                     <dc-schema>dars</dc-schema>
                     <dc-element>loan</dc-element>
@@ -674,6 +673,8 @@
                     <label>የብድር መጠን (Loan Amount)</label>
                     <input-type>onebox</input-type>
                 </field>
+            </row>
+            <row>
                 <field>
                     <dc-schema>dars</dc-schema>
                     <dc-element>loan</dc-element>
@@ -735,6 +736,14 @@
             <row>
                 <field>
                     <dc-schema>dars</dc-schema>
+                    <dc-element>organization</dc-element>
+                    <dc-qualifier>name</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የድርጅት ስም (Organization Name)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
                     <dc-element>case</dc-element>
                     <dc-qualifier>type</dc-qualifier>
                     <repeatable>false</repeatable>
@@ -743,14 +752,6 @@
                 </field>
             </row>
             <row>
-                <field>
-                    <dc-schema>dars</dc-schema>
-                    <dc-element>organization</dc-element>
-                    <dc-qualifier>name</dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>የድርጅት ስም (Organization Name)</label>
-                    <input-type>onebox</input-type>
-                </field>
                 <field>
                     <dc-schema>dars</dc-schema>
                     <dc-element>organization</dc-element>
@@ -864,6 +865,14 @@
             <row>
                 <field>
                     <dc-schema>dars</dc-schema>
+                    <dc-element>organization</dc-element>
+                    <dc-qualifier>name</dc-qualifier>
+                    <repeatable>false</repeatable>
+                    <label>የማህበሩ ስም (Assoc. Name)</label>
+                    <input-type>onebox</input-type>
+                </field>
+                <field>
+                    <dc-schema>dars</dc-schema>
                     <dc-element>case</dc-element>
                     <dc-qualifier>type</dc-qualifier>
                     <repeatable>false</repeatable>
@@ -872,14 +881,6 @@
                 </field>
             </row>
             <row>
-                <field>
-                    <dc-schema>dars</dc-schema>
-                    <dc-element>organization</dc-element>
-                    <dc-qualifier>name</dc-qualifier>
-                    <repeatable>false</repeatable>
-                    <label>የማህበሩ ስም (Assoc. Name)</label>
-                    <input-type>onebox</input-type>
-                </field>
                 <field>
                     <dc-schema>dars</dc-schema>
                     <dc-element>meeting</dc-element>
