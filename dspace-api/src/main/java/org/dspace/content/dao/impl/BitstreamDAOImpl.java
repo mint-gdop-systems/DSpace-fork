@@ -209,17 +209,25 @@ public class BitstreamDAOImpl extends AbstractHibernateDSODAO<Bitstream> impleme
     public Iterator<Bitstream> findAllPdf(Context context, int limit, int offset) throws SQLException {
         String jpql = "select distinct b.id from Bitstream b "
                 + "join b.bitstreamFormat bf "
+                + "join b.bundles bundle "
                 + "where b.deleted = false "
                 + "  and bf.mimetype = 'application/pdf' "
-                + "  and not exists ("
+                + "  and exists ("
                 + "    select mv from MetadataValue mv "
-                + "    where mv.dSpaceObject = b "
-                + "      and mv.metadataField.element = 'document' "
-                + "      and mv.metadataField.qualifier = 'pages' "
-                + "      and mv.metadataField.metadataSchema.name = 'crvs'"
+                + "    where mv.dSpaceObject = bundle "
+                + "      and mv.metadataField.element = 'title' "
+                + "      and mv.metadataField.qualifier is null "
+                + "      and mv.metadataField.metadataSchema.name = 'dc' "
+                + "      and mv.value = 'ORIGINAL'"
+                + "  )"
+                + "  and not exists ("
+                + "    select mv2 from MetadataValue mv2 "
+                + "    where mv2.dSpaceObject = b "
+                + "      and mv2.metadataField.element = 'document' "
+                + "      and mv2.metadataField.qualifier = 'pages' "
+                + "      and mv2.metadataField.metadataSchema.name = 'crvs'"
                 + "  )"
                 + " order by b.id";
-
         Query query = createQuery(context, jpql);
         if (limit > 0) {
             query.setFirstResult(offset);
@@ -300,6 +308,21 @@ public class BitstreamDAOImpl extends AbstractHibernateDSODAO<Bitstream> impleme
                               )
                         )
 
+                    -- Join to get bundle name (DC title metadata)
+                    JOIN metadatavalue mv_bundle_name
+                        ON b2b.bundle_id = mv_bundle_name.dspace_object_id
+                        AND mv_bundle_name.metadata_field_id = (
+                            SELECT metadata_field_id
+                            FROM metadatafieldregistry
+                            WHERE element = 'title'
+                              AND qualifier IS NULL
+                              AND metadata_schema_id = (
+                                  SELECT metadata_schema_id
+                                  FROM metadataschemaregistry
+                                  WHERE short_id = 'dc'
+                              )
+                        )
+
                     WHERE b.deleted = FALSE
                       AND (
                             bf.mimetype LIKE 'image/%'
@@ -308,6 +331,7 @@ public class BitstreamDAOImpl extends AbstractHibernateDSODAO<Bitstream> impleme
                                 'application/postscript'
                             )
                       )
+                      AND mv_bundle_name.text_value = 'ORIGINAL'
                             """ + submitterCondition + """
                 )
 
@@ -419,9 +443,21 @@ public class BitstreamDAOImpl extends AbstractHibernateDSODAO<Bitstream> impleme
                                 WHERE short_id = 'crvs'
                             )
                         )
+                    -- Join to get bundle name (DC title metadata)
+                    JOIN metadatavalue mv_bundle_name
+                        ON b2b.bundle_id = mv_bundle_name.dspace_object_id
+                        AND mv_bundle_name.metadata_field_id = (
+                            SELECT metadata_field_id FROM metadatafieldregistry
+                            WHERE element = 'title' AND qualifier IS NULL
+                            AND metadata_schema_id = (
+                                SELECT metadata_schema_id FROM metadataschemaregistry
+                                WHERE short_id = 'dc'
+                            )
+                        )
                     WHERE c2c.community_id = :communityId
                       AND b.deleted = FALSE
                       AND (bf.mimetype LIKE 'image/%%' OR bf.mimetype IN ('application/pdf', 'application/postscript'))
+                      AND mv_bundle_name.text_value = 'ORIGINAL'
                 )
                 SELECT
                     collection_id,
