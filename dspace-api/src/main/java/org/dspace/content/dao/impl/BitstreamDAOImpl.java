@@ -384,90 +384,108 @@ public class BitstreamDAOImpl extends AbstractHibernateDSODAO<Bitstream> impleme
     @Override
     public List<Object[]> findCommunityBitstreamStats(Context context, UUID communityId) throws SQLException {
         String sql = """
-                WITH collection_names AS (
-                    SELECT
-                        mv.dspace_object_id AS collection_id,
-                        mv.text_value AS collection_name
+                WITH title_field AS (
+                    SELECT mfr.metadata_field_id
+                    FROM metadatafieldregistry mfr
+                    JOIN metadataschemaregistry msr ON mfr.metadata_schema_id = msr.metadata_schema_id
+                    WHERE mfr.element = 'title' AND mfr.qualifier IS NULL AND msr.short_id = 'dc'
+                ),
+                pages_field AS (
+                    SELECT mfr.metadata_field_id
+                    FROM metadatafieldregistry mfr
+                    JOIN metadataschemaregistry msr ON mfr.metadata_schema_id = msr.metadata_schema_id
+                    WHERE mfr.element = 'document' AND mfr.qualifier = 'pages' AND msr.short_id = 'crvs'
+                ),
+                -- one lookup for both collection and community titles (was duplicated as
+                -- collection_names / community_names before)
+                object_names AS (
+                    SELECT mv.dspace_object_id AS object_id, mv.text_value AS object_name
                     FROM metadatavalue mv
-                    WHERE mv.metadata_field_id = (
-                        SELECT metadata_field_id FROM metadatafieldregistry
-                        WHERE element = 'title' AND qualifier IS NULL
-                        AND metadata_schema_id = (
-                            SELECT metadata_schema_id FROM metadataschemaregistry
-                            WHERE short_id = 'dc'
-                        )
-                    )
+                    WHERE mv.metadata_field_id = (SELECT metadata_field_id FROM title_field)
                 ),
+                -- every item tagged with its status at the source, instead of re-deriving
+                -- it later with extra LEFT JOINs to workspaceitem/cwf_workflowitem
                 collection_items AS (
-                    SELECT collection_id, item_id FROM collection2item
+                    SELECT collection_id, item_id, 'Draft' AS item_status FROM workspaceitem
                     UNION ALL
-                    SELECT collection_id, item_id FROM workspaceitem
+                    SELECT collection_id, item_id, 'Pending' AS item_status FROM cwf_workflowitem
                     UNION ALL
-                    SELECT collection_id, item_id FROM cwf_workflowitem
+                    SELECT ci.collection_id, ci.item_id,
+                           CASE WHEN i.in_archive THEN 'Approved' ELSE 'Other' END AS item_status
+                    FROM collection2item ci
+                    JOIN item i ON i.uuid = ci.item_id
                 ),
-                collection_bitstream_data AS (
+                -- bitstreams in the ORIGINAL bundle, one CTE reused by both branches below
+                -- instead of duplicating this ~40-line block twice
+                item_bitstreams AS (
                     SELECT
-                        c.uuid AS collection_id,
-                        COALESCE(cn.collection_name, '') AS collection_name,
+                        ci.collection_id,
+                        ci.item_status,
                         b.uuid AS bitstream_id,
-                        CASE
-                            WHEN wi.workspace_item_id IS NOT NULL THEN 'Draft'
-                            WHEN wfi.workflowitem_id IS NOT NULL THEN 'Pending'
-                            WHEN i.in_archive = TRUE THEN 'Approved'
-                            ELSE 'Other'
-                        END AS item_status,
                         CASE
                             WHEN bf.mimetype LIKE 'image/%%' THEN 1
                             WHEN bf.mimetype = 'application/pdf'
                                 THEN COALESCE(CAST(mv_pages.text_value AS INTEGER), 0)
                             ELSE 0
                         END AS page_count
-                    FROM community2collection c2c
-                    JOIN collection c ON c2c.collection_id = c.uuid
-                    LEFT JOIN collection_names cn ON c.uuid = cn.collection_id
-                    JOIN collection_items ci ON c.uuid = ci.collection_id
-                    JOIN item i ON ci.item_id = i.uuid
-                    JOIN item2bundle i2b ON i.uuid = i2b.item_id
-                    JOIN bundle2bitstream b2b ON i2b.bundle_id = b2b.bundle_id
-                    JOIN bitstream b ON b2b.bitstream_id = b.uuid
-                    JOIN bitstreamformatregistry bf ON b.bitstream_format_id = bf.bitstream_format_id
-                    LEFT JOIN workspaceitem wi ON i.uuid = wi.item_id
-                    LEFT JOIN cwf_workflowitem wfi ON i.uuid = wfi.item_id
+                    FROM collection_items ci
+                    JOIN item2bundle i2b ON i2b.item_id = ci.item_id
+                    JOIN bundle2bitstream b2b ON b2b.bundle_id = i2b.bundle_id
+                    JOIN bitstream b ON b.uuid = b2b.bitstream_id AND b.deleted = FALSE
+                    JOIN bitstreamformatregistry bf ON bf.bitstream_format_id = b.bitstream_format_id
+                    JOIN object_names bundle_name
+                        ON bundle_name.object_id = i2b.bundle_id AND bundle_name.object_name = 'ORIGINAL'
                     LEFT JOIN metadatavalue mv_pages
-                        ON b.uuid = mv_pages.dspace_object_id
-                        AND mv_pages.metadata_field_id = (
-                            SELECT metadata_field_id FROM metadatafieldregistry
-                            WHERE element = 'document' AND qualifier = 'pages'
-                            AND metadata_schema_id = (
-                                SELECT metadata_schema_id FROM metadataschemaregistry
-                                WHERE short_id = 'crvs'
-                            )
-                        )
-                    -- Join to get bundle name (DC title metadata)
-                    JOIN metadatavalue mv_bundle_name
-                        ON b2b.bundle_id = mv_bundle_name.dspace_object_id
-                        AND mv_bundle_name.metadata_field_id = (
-                            SELECT metadata_field_id FROM metadatafieldregistry
-                            WHERE element = 'title' AND qualifier IS NULL
-                            AND metadata_schema_id = (
-                                SELECT metadata_schema_id FROM metadataschemaregistry
-                                WHERE short_id = 'dc'
-                            )
-                        )
+                        ON mv_pages.dspace_object_id = b.uuid
+                        AND mv_pages.metadata_field_id = (SELECT metadata_field_id FROM pages_field)
+                    WHERE bf.mimetype LIKE 'image/%%' OR bf.mimetype IN ('application/pdf', 'application/postscript')
+                ),
+                -- direct child collections of :communityId ONLY -- no traversal into subcommunities here
+                direct_collections AS (
+                    SELECT c2c.collection_id AS node_id, COALESCE(n.object_name, '') AS node_name
+                    FROM community2collection c2c
+                    LEFT JOIN object_names n ON n.object_id = c2c.collection_id
                     WHERE c2c.community_id = :communityId
-                      AND b.deleted = FALSE
-                      AND (bf.mimetype LIKE 'image/%%' OR bf.mimetype IN ('application/pdf', 'application/postscript'))
-                      AND mv_bundle_name.text_value = 'ORIGINAL'
+                ),
+                -- direct child sub-communities of :communityId ONLY -- single hop, no recursion
+                direct_subcommunities AS (
+                    SELECT c2c.child_comm_id AS node_id, COALESCE(n.object_name, '') AS node_name
+                    FROM community2community c2c
+                    LEFT JOIN object_names n ON n.object_id = c2c.child_comm_id
+                    WHERE c2c.parent_comm_id = :communityId
+                ),
+                -- collections directly owned by each direct subcommunity -- again a single hop,
+                -- never chased further down into grandchild communities
+                subcommunity_collections AS (
+                    SELECT ds.node_id AS subcommunity_id, c2c.collection_id
+                    FROM direct_subcommunities ds
+                    JOIN community2collection c2c ON c2c.community_id = ds.node_id
+                ),
+                -- LEFT JOIN (not INNER JOIN) so a direct child with zero bitstreams still
+                -- produces a row (item_status NULL, counts 0) instead of vanishing
+                collection_stats AS (
+                    SELECT
+                        dc.node_id, dc.node_name, ib.item_status,
+                        COUNT(DISTINCT ib.bitstream_id) AS bitstream_count,
+                        COALESCE(SUM(ib.page_count), 0) AS total_pages
+                    FROM direct_collections dc
+                    LEFT JOIN item_bitstreams ib ON ib.collection_id = dc.node_id
+                    GROUP BY dc.node_id, dc.node_name, ib.item_status
+                ),
+                subcommunity_stats AS (
+                    SELECT
+                        ds.node_id, ds.node_name, ib.item_status,
+                        COUNT(DISTINCT ib.bitstream_id) AS bitstream_count,
+                        COALESCE(SUM(ib.page_count), 0) AS total_pages
+                    FROM direct_subcommunities ds
+                    LEFT JOIN subcommunity_collections sc ON sc.subcommunity_id = ds.node_id
+                    LEFT JOIN item_bitstreams ib ON ib.collection_id = sc.collection_id
+                    GROUP BY ds.node_id, ds.node_name, ib.item_status
                 )
-                SELECT
-                    collection_id,
-                    collection_name,
-                    item_status,
-                    COUNT(DISTINCT bitstream_id) AS bitstream_count,
-                    COALESCE(SUM(page_count), 0) AS total_pages
-                FROM collection_bitstream_data
-                GROUP BY collection_id, collection_name, item_status
-                ORDER BY collection_name, item_status
+                SELECT node_id, node_name, item_status, bitstream_count, total_pages FROM collection_stats
+                UNION ALL
+                SELECT node_id, node_name, item_status, bitstream_count, total_pages FROM subcommunity_stats
+                ORDER BY node_name, item_status
                 """;
 
         Query query = getHibernateSession(context).createNativeQuery(sql);
