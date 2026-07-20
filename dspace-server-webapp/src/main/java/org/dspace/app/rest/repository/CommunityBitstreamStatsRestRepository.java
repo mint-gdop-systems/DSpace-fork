@@ -7,7 +7,11 @@
  */
 package org.dspace.app.rest.repository;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -15,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,10 +34,11 @@ import org.dspace.content.Community;
 import org.dspace.content.service.BitstreamService;
 import org.dspace.content.service.CommunityService;
 import org.dspace.core.Context;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.dspace.statistics.service.RepositoryBitstreamStatsPdfExportService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
@@ -41,11 +47,18 @@ public class CommunityBitstreamStatsRestRepository extends DSpaceRestRepository<
 
     private static final Logger log = LogManager.getLogger(CommunityBitstreamStatsRestRepository.class);
 
-    @Autowired
-    private CommunityService communityService;
+    private final CommunityService communityService;
 
-    @Autowired
-    private BitstreamService bitstreamService;
+    private final BitstreamService bitstreamService;
+
+    private final RepositoryBitstreamStatsPdfExportService repositoryBitstreamStatsPdfExportService;
+
+    CommunityBitstreamStatsRestRepository(BitstreamService bitstreamService, CommunityService communityService,
+            RepositoryBitstreamStatsPdfExportService repositoryBitstreamStatsPdfExportService) {
+        this.bitstreamService = bitstreamService;
+        this.communityService = communityService;
+        this.repositoryBitstreamStatsPdfExportService = repositoryBitstreamStatsPdfExportService;
+    }
 
     @Override
     public CommunityBitstreamStatsRest findOne(Context context, String id) {
@@ -131,6 +144,53 @@ public class CommunityBitstreamStatsRestRepository extends DSpaceRestRepository<
             total.setBitstreams(total.getBitstreams() + increment.getBitstreams());
             total.setPages(total.getPages() + increment.getPages());
         }
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @SearchRestMethod(name = "exportAll")
+    public void exportAll(
+            @Parameter(value = "format", required = false) String format) throws IOException {
+
+        if (StringUtils.isBlank(format)) {
+            format = "pdf";
+        }
+
+        if (!"pdf".equalsIgnoreCase(format)) {
+            HttpServletResponse response = obtainServletResponse();
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                    "Unsupported export format: " + format + ". Only 'pdf' is supported.");
+            return;
+        }
+
+        Context context = obtainContext();
+        try {
+            List<RepositoryBitstreamStatsPdfExportService.CommunitySection> sections = repositoryBitstreamStatsPdfExportService
+                    .collectAllStats(context);
+
+            byte[] pdfBytes = repositoryBitstreamStatsPdfExportService.generatePdf(sections);
+
+            HttpServletResponse response = obtainServletResponse();
+            String filename = "repository-bitstream-stats-"
+                    + LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE) + ".pdf";
+            response.setContentType("application/pdf");
+            response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+                    "attachment; filename=\"" + filename + "\"");
+            response.setContentLength(pdfBytes.length);
+            response.getOutputStream().write(pdfBytes);
+            response.getOutputStream().flush();
+
+            try (OutputStream out = response.getOutputStream()) {
+                out.write(pdfBytes);
+                out.flush();
+            }
+        } catch (SQLException e) {
+            log.error("SQLException during repository bitstream stats export", e);
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    private HttpServletResponse obtainServletResponse() {
+        return requestService.getCurrentRequest().getHttpServletResponse();
     }
 
     @Override

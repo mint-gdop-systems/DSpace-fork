@@ -133,6 +133,9 @@
     <bean class="org.dspace.license.CCLicenseConnectorServiceImpl" />
 
     <bean id="spiderDetectorService" class="org.dspace.statistics.util.SpiderDetectorServiceImpl" />
+
+    <bean class="org.dspace.statistics.RepositoryBitstreamStatsPdfExportServiceImpl" />
+    
     <bean id="clientInfoService" class="org.dspace.service.impl.ClientInfoServiceImpl" />
 
     <bean class="org.dspace.versioning.VersionHistoryServiceImpl" />
