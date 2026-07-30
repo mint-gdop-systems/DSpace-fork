@@ -212,9 +212,14 @@
         <!--Which sidebar facets are to be displayed-->
         <property name="sidebarFacets">
             <list>
+                <!--  -->
                 <ref bean="searchFacetBranch" />
-                <ref bean="searchFacetServiceType" />
-                <ref bean="searchFacetDocumentDate" />
+                <ref bean="searchFacetServiceType"/>
+                <ref bean="searchFacetDocumentType"/>
+                <ref bean="searchFacetDocumentDate"/>
+                <ref bean="searchFilterGiver"/>
+                <ref bean="searchFilterReceiver"/>
+                <!--  -->
 
                 <ref bean="searchFilterLegalCaseType" />
                 <ref bean="searchFilterCaseStatus" />
@@ -238,14 +243,11 @@
         <!--The search filters which can be used on the discovery search page-->
         <property name="searchFilters">
             <list>
-                <ref bean="searchFilterLegalCaseType" />
-                <ref bean="searchFilterCaseStatus" />
-                <ref bean="searchFilterFileNumber" />
-                <!-- <ref bean="searchFilterPrimaryJudge" /> -->
-                <ref bean="searchFilterPlaintiff" />
+
                 <!--  -->
                 <ref bean="searchFacetBranch"/>
                 <ref bean="searchFacetServiceType"/>
+                <ref bean="searchFacetDocumentType"/>
                 <ref bean="searchFacetDocumentDate"/>
                 <ref bean="searchFilterDocNumber"/>
                 <ref bean="searchFilterRevokedNumber"/>
@@ -256,6 +258,12 @@
                 <ref bean="searchFilterReceiver"/>
                 <ref bean="searchFilterOrgName"/>
                 <!--  -->
+
+                <ref bean="searchFilterLegalCaseType" />
+                <ref bean="searchFilterCaseStatus" />
+                <ref bean="searchFilterFileNumber" />
+                <!-- <ref bean="searchFilterPrimaryJudge" /> -->
+                <ref bean="searchFilterPlaintiff" />
                 <ref bean="searchFilterDefendant" />
                 <ref bean="searchFilterLegalRegistrationDate" />
                 <ref bean="searchFilterTitle" />
@@ -597,14 +605,10 @@
         <!--The search filters which can be used on the discovery search page-->
         <property name="searchFilters">
             <list>
-                <ref bean="searchFilterLegalCaseType" />
-                <ref bean="searchFilterCaseStatus" />
-                <ref bean="searchFilterFileNumber" />
-                <!-- <ref bean="searchFilterPrimaryJudge" /> -->
-
                 <!--  -->
                 <ref bean="searchFacetBranch"/>
                 <ref bean="searchFacetServiceType"/>
+                <ref bean="searchFacetDocumentType"/>
                 <ref bean="searchFacetDocumentDate"/>
                 <ref bean="searchFilterDocNumber"/>
                 <ref bean="searchFilterRevokedNumber"/>
@@ -616,6 +620,10 @@
                 <ref bean="searchFilterOrgName"/>
                 <!--  -->
 
+                <ref bean="searchFilterLegalCaseType" />
+                <ref bean="searchFilterCaseStatus" />
+                <ref bean="searchFilterFileNumber" />
+                <!-- <ref bean="searchFilterPrimaryJudge" /> -->
                 <ref bean="searchFilterDefendant" />
                 <ref bean="searchFilterLegalRegistrationDate" />
                 <ref bean="searchFilterAuthor" />
@@ -890,7 +898,10 @@
                 <!--  -->
                 <ref bean="searchFacetBranch"/>
                 <ref bean="searchFacetServiceType"/>
+                <ref bean="searchFacetDocumentType"/>
                 <ref bean="searchFacetDocumentDate"/>
+                <ref bean="searchFilterGiver"/>
+                <ref bean="searchFilterReceiver"/>
                 <!--  -->
 
 
@@ -909,14 +920,10 @@
         <!--The search filters which can be used on the discovery search page -->
         <property name="searchFilters">
             <list>
-                <ref bean="searchFilterLegalCaseType" />
-                <ref bean="searchFilterCaseStatus" />
-                <ref bean="searchFilterFileNumber" />
-                <!-- <ref bean="searchFilterPrimaryJudge" /> -->
-
                 <!--  -->
                 <ref bean="searchFacetBranch"/>
                 <ref bean="searchFacetServiceType"/>
+                <ref bean="searchFacetDocumentType"/>
                 <ref bean="searchFacetDocumentDate"/>
                 <ref bean="searchFilterDocNumber"/>
                 <ref bean="searchFilterRevokedNumber"/>
@@ -928,6 +935,10 @@
                 <ref bean="searchFilterOrgName"/>
                 <!--  -->
 
+                <ref bean="searchFilterLegalCaseType" />
+                <ref bean="searchFilterCaseStatus" />
+                <ref bean="searchFilterFileNumber" />
+                <!-- <ref bean="searchFilterPrimaryJudge" /> -->
                 <ref bean="searchFilterPlaintiff" />
                 <ref bean="searchFilterDefendant" />
                 <ref bean="searchFilterLegalRegistrationDate" />
@@ -1092,7 +1103,10 @@
                 <!--  -->
                 <ref bean="searchFacetBranch"/>
                 <ref bean="searchFacetServiceType"/>
+                <ref bean="searchFacetDocumentType"/>
                 <ref bean="searchFacetDocumentDate"/>
+                <ref bean="searchFilterGiver"/>
+                <ref bean="searchFilterReceiver"/>
                 <!--  -->
 
                 <ref bean="searchFilterLegalCaseType" />
@@ -1110,13 +1124,10 @@
         <!--The search filters which can be used on the discovery search page -->
         <property name="searchFilters">
             <list>
-                <ref bean="searchFilterLegalCaseType" />
-                <ref bean="searchFilterCaseStatus" />
-                <ref bean="searchFilterFileNumber" />
-                <!-- <ref bean="searchFilterPrimaryJudge" /> -->
                 <!--  -->
                 <ref bean="searchFacetBranch"/>
                 <ref bean="searchFacetServiceType"/>
+                <ref bean="searchFacetDocumentType"/>
                 <ref bean="searchFacetDocumentDate"/>
                 <ref bean="searchFilterDocNumber"/>
                 <ref bean="searchFilterRevokedNumber"/>
@@ -1127,6 +1138,11 @@
                 <ref bean="searchFilterReceiver"/>
                 <ref bean="searchFilterOrgName"/>
                 <!--  -->
+
+                <ref bean="searchFilterLegalCaseType" />
+                <ref bean="searchFilterCaseStatus" />
+                <ref bean="searchFilterFileNumber" />
+                <!-- <ref bean="searchFilterPrimaryJudge" /> -->
                 <ref bean="searchFilterDefendant" />
                 <ref bean="searchFilterLegalRegistrationDate" />
                 <ref bean="searchFilterObjectNamedType" />
@@ -1501,7 +1517,11 @@
                 <!--  -->
                 <ref bean="searchFacetBranch"/>
                 <ref bean="searchFacetServiceType"/>
+                <ref bean="searchFacetDocumentType"/>
                 <ref bean="searchFacetDocumentDate"/>
+                <ref bean="searchFilterGiver"/>
+                <ref bean="searchFilterReceiver"/>
+                <ref bean="searchFacetCustomerType"/>
                 <!--  -->
                 <ref bean="searchFilterDefendant" />
 
@@ -1510,13 +1530,10 @@
         <!--The search filters which can be used on the discovery search page-->
         <property name="searchFilters">
             <list>
-                <ref bean="searchFilterJobtitle"/>
-                <ref bean="searchFilterKnowsLanguage"/>
-                <ref bean="searchFilterFileNumber" />
-                <!-- <ref bean="searchFilterPrimaryJudge" /> -->
                 <!--  -->
                 <ref bean="searchFacetBranch"/>
                 <ref bean="searchFacetServiceType"/>
+                <ref bean="searchFacetDocumentType"/>
                 <ref bean="searchFacetDocumentDate"/>
                 <ref bean="searchFilterDocNumber"/>
                 <ref bean="searchFilterRevokedNumber"/>
@@ -1525,8 +1542,13 @@
                 <ref bean="searchFilterMotorNumber"/>
                 <ref bean="searchFilterGiver"/>
                 <ref bean="searchFilterReceiver"/>
-                <ref bean="searchFilterOrgName"/>
+                <ref bean="searchFacetCustomerType"/>
                 <!--  -->
+
+                <ref bean="searchFilterJobtitle"/>
+                <ref bean="searchFilterKnowsLanguage"/>
+                <ref bean="searchFilterFileNumber" />
+                <!-- <ref bean="searchFilterPrimaryJudge" /> -->
                 <ref bean="searchFilterDefendant" />
                 <ref bean="searchFilterIsOrgUnitOfPersonRelation"/>
                 <ref bean="searchFilterIsProjectOfPersonRelation"/>
@@ -1603,14 +1625,6 @@
                         <ref bean="sortLegalFileNumberDesc" />
                         <ref bean="sortLegalDateRegistration" />
                         <ref bean="sortLegalDateRegistrationAsc" />
-                        <ref bean="sortDarsDocumentDate" />
-                        <ref bean="sortDarsDocumentDateAsc" />
-                        <ref bean="sortDarsDocumentNumber" />
-                        <ref bean="sortDarsGiver" />
-                        <ref bean="sortDarsReceiver" />
-                        <ref bean="sortDarsServiceType" />
-                        <ref bean="sortDarsTin" />
-                        <ref bean="sortDarsPlate" />
                         <ref bean="sortScore" />
                     </list>
                 </property>
@@ -1640,13 +1654,18 @@
             <list>
                 <ref bean="searchFacetBranch"/>
                 <ref bean="searchFacetServiceType"/>
+                <ref bean="searchFacetDocumentType"/>
                 <ref bean="searchFacetDocumentDate"/>
+                <ref bean="searchFilterGiver"/>
+                <ref bean="searchFilterReceiver"/>
+                <ref bean="searchFacetCustomerType"/>
             </list>
         </property>
         <property name="searchFilters">
             <list>
                 <ref bean="searchFacetBranch"/>
                 <ref bean="searchFacetServiceType"/>
+                <ref bean="searchFacetDocumentType"/>
                 <ref bean="searchFacetDocumentDate"/>
                 <ref bean="searchFilterDocNumber"/>
                 <ref bean="searchFilterRevokedNumber"/>
@@ -1654,6 +1673,7 @@
                 <ref bean="searchFilterChassis"/>
                 <ref bean="searchFilterMotorNumber"/>
                 <ref bean="searchFilterGiver"/>
+                <ref bean="searchFacetCustomerType"/>
                 <ref bean="searchFilterReceiver"/>
                 <ref bean="searchFilterOrgName"/>
             </list>
@@ -1667,6 +1687,9 @@
             <list>
                 <ref bean="searchFacetBranch"/>
                 <ref bean="searchFacetRegion"/>
+                <ref bean="searchFilterGiver"/>
+                <ref bean="searchFilterReceiver"/>
+                <ref bean="searchFacetCustomerType"/>
                 <!-- SPATIAL FACET ADDED -->
                 <ref bean="searchFacetDocumentDate"/>
             </list>
@@ -1682,6 +1705,7 @@
                 <ref bean="searchFilterHouseNumber"/>
                 <ref bean="searchFilterGiver"/>
                 <ref bean="searchFilterReceiver"/>
+                <ref bean="searchFacetCustomerType"/>
                 <ref bean="searchFilterOrgName"/>
             </list>
         </property>
@@ -1693,19 +1717,23 @@
         <property name="sidebarFacets">
             <list>
                 <ref bean="searchFacetBranch"/>
-                <ref bean="searchFacetCaseType"/>
+                <ref bean="searchFacetDocumentType"/>
                 <ref bean="searchFacetDocumentDate"/>
+                <ref bean="searchFilterGiver"/>
+                <ref bean="searchFilterReceiver"/>
+                <ref bean="searchFacetCustomerType"/>
             </list>
         </property>
         <property name="searchFilters">
             <list>
                 <ref bean="searchFacetBranch"/>
-                <ref bean="searchFacetCaseType"/>
+                <ref bean="searchFacetDocumentType"/>
                 <ref bean="searchFacetDocumentDate"/>
                 <ref bean="searchFilterDocNumber"/>
                 <ref bean="searchFilterRevokedNumber"/>
                 <ref bean="searchFilterGiver"/>
                 <ref bean="searchFilterReceiver"/>
+                <ref bean="searchFacetCustomerType"/>
                 <ref bean="searchFilterOrgName"/>
             </list>
         </property>
@@ -1719,6 +1747,9 @@
                 <ref bean="searchFacetBranch"/>
                 <ref bean="searchFacetCustomerType"/>
                 <ref bean="searchFacetDocumentDate"/>
+                <ref bean="searchFilterGiver"/>
+                <ref bean="searchFilterReceiver"/>
+                
             </list>
         </property>
         <property name="searchFilters">
@@ -1759,9 +1790,9 @@
                         <ref bean="sortDarsDocumentDate" />
                         <ref bean="sortDarsDocumentDateAsc" />
                         <ref bean="sortDarsDocumentNumber" />
+                        <ref bean="sortDarsServiceType" />
                         <ref bean="sortDarsGiver" />
                         <ref bean="sortDarsReceiver" />
-                        <ref bean="sortDarsServiceType" />
                         <ref bean="sortDarsTin" />
                         <ref bean="sortDarsPlate" />
                         <ref bean="sortDarsTin" />
@@ -1785,7 +1816,10 @@
                 <!--  -->
                 <ref bean="searchFacetBranch"/>
                 <ref bean="searchFacetServiceType"/>
+                <ref bean="searchFacetDocumentType"/>
                 <ref bean="searchFacetDocumentDate"/>
+                <ref bean="searchFilterGiver"/>
+                <ref bean="searchFilterReceiver"/>
                 <!--  -->
             </list>
         </property>
@@ -1797,6 +1831,7 @@
                 <ref bean="searchFilterFileNumber" />
                 <ref bean="searchFacetBranch"/>
                 <ref bean="searchFacetServiceType"/>
+                <ref bean="searchFacetDocumentType"/>
                 <ref bean="searchFacetDocumentDate"/>
                 <ref bean="searchFilterDocNumber" />
                 <ref bean="searchFilterGiver" />
@@ -2926,6 +2961,26 @@
     <!--Search filter configuration beans-->
 
     <!--  -->
+    <bean id="searchFilterGiver" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="giverName"/>
+        <property name="metadataFields">
+            <list>
+                <value>dars.giver.name</value>
+            </list>
+        </property>
+        <property name="sortOrderSidebar" value="VALUE"/>
+    </bean>
+
+    <bean id="searchFilterReceiver" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="receiverName"/>
+        <property name="metadataFields">
+            <list>
+                <value>dars.receiver.name</value>
+            </list>
+        </property>
+        <property name="sortOrderSidebar" value="VALUE"/>
+    </bean>
+
     <bean id="searchFacetBranch" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="branchLocation"/>
         <property name="metadataFields">
@@ -2935,6 +2990,7 @@
         </property>
         <property name="facetLimit" value="10"/>
     </bean>
+
     <bean id="searchFacetServiceType" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="serviceType"/>
         <property name="metadataFields">
@@ -2944,6 +3000,17 @@
         </property>
         <property name="facetLimit" value="10"/>
     </bean>
+
+    <bean id="searchFacetDocumentType" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+        <property name="indexFieldName" value="documentType"/>
+        <property name="metadataFields">
+            <list>
+                <value>dars.document.type</value>
+            </list>
+        </property>
+        <property name="facetLimit" value="10"/>
+    </bean>
+
     <bean id="searchFacetCustomerType" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="customerType"/>
         <property name="metadataFields">
@@ -2953,6 +3020,7 @@
             </list>
         </property>
     </bean>
+
     <bean id="searchFacetRegion" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="region"/>
         <property name="metadataFields">
@@ -2961,14 +3029,16 @@
             </list>
         </property>
     </bean>
-    <bean id="searchFacetCaseType" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+
+    <!-- <bean id="searchFacetCaseType" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="darsCaseType"/>
         <property name="metadataFields">
             <list>
                 <value>dars.case.type</value>
             </list>
         </property>
-    </bean>
+    </bean> -->
+
     <bean id="searchFacetDocumentDate" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="documentDate"/>
         <property name="metadataFields">
@@ -3206,24 +3276,6 @@
             </list>
         </property>
     </bean>
-    <!-- FIXED: These were previously facets, now properly declared as SearchFilters -->
-    <bean id="searchFilterGiver" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
-        <property name="indexFieldName" value="giverName"/>
-        <property name="metadataFields">
-            <list>
-                <value>dars.giver.name</value>
-            </list>
-        </property>
-    </bean>
-    <bean id="searchFilterReceiver" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
-        <property name="indexFieldName" value="receiverName"/>
-        <property name="metadataFields">
-            <list>
-                <value>dars.receiver.name</value>
-            </list>
-        </property>
-    </bean>
-    <!--   -->
 
     <bean id="searchFilterTitle" class="org.dspace.discovery.configuration.DiscoverySearchFilter">
         <property name="indexFieldName" value="title"/>

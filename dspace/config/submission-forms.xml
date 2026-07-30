@@ -44,7 +44,7 @@
                     <repeatable>false</repeatable>
                     <label>የሰነዱ ዓይነት (Document Type)</label>
                     <input-type value-pairs-name="document_types">dropdown</input-type>
-                    <required>Specific document Type is mandatory. (e.g., በዳኛ የተሰራ፣ ልዩ ልዩ ). (የሰነዱ ዓይነት) [cite: 30, 34, 35]</required>
+                    <!-- <required>Specific document Type is mandatory. (e.g., በዳኛ የተሰራ፣ ልዩ ልዩ ). (የሰነዱ ዓይነት) [cite: 30, 34, 35]</required> -->
                 </field>
             </row>
             <!-- <row>
@@ -335,7 +335,7 @@
             <row>
                 <field>
                     <dc-schema>dars</dc-schema>
-                    <dc-element>case</dc-element>
+                    <dc-element>document</dc-element>
                     <dc-qualifier>type</dc-qualifier>
                     <repeatable>false</repeatable>
                     <label>የጉዳይ አይነት (Case Type)</label>
@@ -402,7 +402,7 @@
             <row>
                 <field>
                     <dc-schema>dars</dc-schema>
-                    <dc-element>case</dc-element>
+                    <dc-element>document</dc-element>
                     <dc-qualifier>type</dc-qualifier>
                     <repeatable>false</repeatable>
                     <label>የጉዳይ አይነት (Case Type)</label>
@@ -462,7 +462,7 @@
             <row>
                 <field>
                     <dc-schema>dars</dc-schema>
-                    <dc-element>case</dc-element>
+                    <dc-element>document</dc-element>
                     <dc-qualifier>type</dc-qualifier>
                     <repeatable>false</repeatable>
                     <label>የጉዳይ አይነት (Case Type)</label>
@@ -564,7 +564,7 @@
             <row>
                 <field>
                     <dc-schema>dars</dc-schema>
-                    <dc-element>case</dc-element>
+                    <dc-element>document</dc-element>
                     <dc-qualifier>type</dc-qualifier>
                     <repeatable>false</repeatable>
                     <label>የጉዳይ አይነት (Case Type)</label>
@@ -659,7 +659,7 @@
             <row>
                 <field>
                     <dc-schema>dars</dc-schema>
-                    <dc-element>case</dc-element>
+                    <dc-element>document</dc-element>
                     <dc-qualifier>type</dc-qualifier>
                     <repeatable>false</repeatable>
                     <label>የጉዳይ አይነት (Case Type)</label>
@@ -698,7 +698,7 @@
             <row>
                 <field>
                     <dc-schema>dars</dc-schema>
-                    <dc-element>case</dc-element>
+                    <dc-element>document</dc-element>
                     <dc-qualifier>type</dc-qualifier>
                     <repeatable>false</repeatable>
                     <label>የውክልና አይነት (POA Type)</label>
@@ -712,7 +712,7 @@
             <row>
                 <field>
                     <dc-schema>dars</dc-schema>
-                    <dc-element>case</dc-element>
+                    <dc-element>document</dc-element>
                     <dc-qualifier>type</dc-qualifier>
                     <repeatable>false</repeatable>
                     <label>የጉዳይ አይነት (Case Type)</label>
@@ -744,7 +744,7 @@
                 </field>
                 <field>
                     <dc-schema>dars</dc-schema>
-                    <dc-element>case</dc-element>
+                    <dc-element>document</dc-element>
                     <dc-qualifier>type</dc-qualifier>
                     <repeatable>false</repeatable>
                     <label>የጉዳዩ አይነት (Case Type)</label>
@@ -873,7 +873,7 @@
                 </field>
                 <field>
                     <dc-schema>dars</dc-schema>
-                    <dc-element>case</dc-element>
+                    <dc-element>document</dc-element>
                     <dc-qualifier>type</dc-qualifier>
                     <repeatable>false</repeatable>
                     <label>የጉዳዩ አይነት (Case Type)</label>
@@ -3540,7 +3540,7 @@
             </pair>
         </value-pairs>
         <!-- Branch Location -->
-                <value-pairs value-pairs-name="dars_branch_locations">
+        <value-pairs value-pairs-name="dars_branch_locations">
             <pair>
                 <displayed-value>6 ኪሎ</displayed-value>
                 <stored-value>6 ኪሎ</stored-value>
@@ -3713,7 +3713,7 @@
                 <stored-value>prison_poa</stored-value>
             </pair>
             <pair>
-                <displayed-value>የቤተሰብ ውክልና (Family PoA)</displayed-value>
+                <displayed-value>   </displayed-value>
                 <stored-value>family_poa</stored-value>
             </pair>
             <pair>

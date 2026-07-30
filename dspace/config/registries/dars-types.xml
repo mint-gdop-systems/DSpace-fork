@@ -43,6 +43,22 @@
         <scope_note>Branch Location</scope_note>
     </dc-type>
 
+    <dc-type>
+        <schema>dars</schema>
+        <element>file</element>
+        <qualifier>pageCount</qualifier>
+        <scope_note>Number of pages in the File. (ፋይል የገጽ ቁጥር)</scope_note>
+    </dc-type>
+
+    <dc-type>
+        <schema>dars</schema>
+        <element>file</element>
+        <qualifier>type</qualifier>
+        <scope_note>Specific File Type. (የፋይል ዓይነት) </scope_note>
+    </dc-type>
+
+
+
     <!-- Demographics -->
     <dc-type>
         <schema>dars</schema>
@@ -116,9 +132,9 @@
     </dc-type>
     <dc-type>
         <schema>dars</schema>
-        <element>case</element>
+        <element>document</element>
         <qualifier>type</qualifier>
-        <scope_note>Sub Case Type</scope_note>
+        <scope_note>Sub Document Type</scope_note>
     </dc-type>
 
     <!-- Vehicle Asset -->
