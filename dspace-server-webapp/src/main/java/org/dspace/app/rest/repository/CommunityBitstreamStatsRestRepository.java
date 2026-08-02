@@ -151,14 +151,12 @@ public class CommunityBitstreamStatsRestRepository extends DSpaceRestRepository<
     public void exportAll(
             @Parameter(value = "format", required = false) String format) throws IOException {
 
-        if (StringUtils.isBlank(format)) {
-            format = "pdf";
-        }
+        String resolvedFormat = StringUtils.isBlank(format) ? "pdf" : format.toLowerCase();
 
-        if (!"pdf".equalsIgnoreCase(format)) {
+        if (!"pdf".equals(resolvedFormat) && !"xlsx".equals(resolvedFormat)) {
             HttpServletResponse response = obtainServletResponse();
             response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                    "Unsupported export format: " + format + ". Only 'pdf' is supported.");
+                    "Unsupported export format: " + format + ". Supported formats: pdf, xlsx.");
             return;
         }
 
@@ -167,21 +165,28 @@ public class CommunityBitstreamStatsRestRepository extends DSpaceRestRepository<
             List<RepositoryBitstreamStatsPdfExportService.CommunitySection> sections = repositoryBitstreamStatsPdfExportService
                     .collectAllStats(context);
 
-            byte[] pdfBytes = repositoryBitstreamStatsPdfExportService.generatePdf(sections);
-
             HttpServletResponse response = obtainServletResponse();
-            String filename = "repository-bitstream-stats-"
-                    + LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE) + ".pdf";
-            response.setContentType("application/pdf");
-            response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
-                    "attachment; filename=\"" + filename + "\"");
-            response.setContentLength(pdfBytes.length);
-            response.getOutputStream().write(pdfBytes);
-            response.getOutputStream().flush();
 
-            try (OutputStream out = response.getOutputStream()) {
-                out.write(pdfBytes);
-                out.flush();
+            String prefix = "repository-bitstream-stats-";
+            String datePart = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
+
+            if ("xlsx".equals(resolvedFormat)) {
+                byte[] xlsxBytes = repositoryBitstreamStatsPdfExportService.generateExcel(sections);
+                String filename = prefix + datePart + ".xlsx";
+                response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
+                response.setContentLength(xlsxBytes.length);
+                response.getOutputStream().write(xlsxBytes);
+                response.getOutputStream().flush();
+            } else {
+                byte[] pdfBytes = repositoryBitstreamStatsPdfExportService.generatePdf(sections);
+                String filename = prefix + datePart + ".pdf";
+                response.setContentType("application/pdf");
+                response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" + filename + "\"");
+                response.setContentLength(pdfBytes.length);
+                response.getOutputStream().write(pdfBytes);
+                response.getOutputStream().flush();
             }
         } catch (SQLException e) {
             log.error("SQLException during repository bitstream stats export", e);

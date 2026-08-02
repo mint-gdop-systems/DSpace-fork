@@ -12,11 +12,23 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+import java.util.Set;
+
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -25,6 +37,7 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -586,5 +599,195 @@ public class RepositoryBitstreamStatsPdfExportServiceImpl implements RepositoryB
             }
             return "...";
         }
+    }
+
+    @Override
+    public byte[] generateExcel(List<CommunitySection> sections) throws IOException {
+        try (XSSFWorkbook workbook = new XSSFWorkbook()) {
+            CellStyle titleStyle = createTitleStyle(workbook);
+            CellStyle groupHeaderStyle = createHeaderStyle(workbook, true);
+            CellStyle subHeaderStyle = createHeaderStyle(workbook, false);
+            CellStyle totalLabelStyle = createTotalStyle(workbook, false);
+            CellStyle totalNumberStyle = createTotalStyle(workbook, true);
+
+            Set<String> usedSheetNames = new HashSet<>();
+
+            for (CommunitySection section : sections) {
+                Sheet sheet = workbook.createSheet(uniqueSheetName(section.getCommunityName(), usedSheetNames));
+                writeSection(sheet, section, titleStyle, groupHeaderStyle, subHeaderStyle, totalLabelStyle,
+                        totalNumberStyle);
+            }
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            workbook.write(baos);
+
+            return baos.toByteArray();
+        }
+    }
+
+    /**
+     * Excel sheet names: max 31 chars, cannot contain \ / ? * [ ] : and must be
+     * unique
+     * within the workbook. Sanitize and de-duplicate.
+     */
+    private String uniqueSheetName(String rawName, Set<String> usedNames) {
+        String sanitized = rawName == null ? "Sheet" : rawName.replaceAll("[\\\\/?*\\[\\]:]", "-").trim();
+        if (sanitized.isEmpty()) {
+            sanitized = "Sheet";
+        }
+        if (sanitized.length() > 31) {
+            sanitized = sanitized.substring(0, 31);
+        }
+
+        String candidate = sanitized;
+        int suffix = 1;
+        while (!usedNames.add(candidate)) {
+            String suffixStr = "~" + suffix;
+            int keep = Math.max(0, 31 - suffixStr.length());
+            candidate = sanitized.substring(0, Math.min(sanitized.length(), keep)) + suffixStr;
+            suffix++;
+        }
+        return candidate;
+    }
+
+    private void writeSection(Sheet sheet, CommunitySection section, CellStyle titleStyle, CellStyle groupHeaderStyle,
+            CellStyle subHeaderStyle, CellStyle totalLabelStyle, CellStyle totalNumberStyle) {
+        int rowIdx = 0;
+
+        // Title row
+        Row titleRow = sheet.createRow(rowIdx++);
+        Cell titleCell = titleRow.createCell(0);
+        titleCell.setCellValue(section.getCommunityName());
+        titleCell.setCellStyle(titleStyle);
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 10));
+        rowIdx++; // blank spacer row
+
+        // Group header row (FILES spans cols 3-6, PAGES spans cols 7-10)
+        int groupHeaderRowIdx = rowIdx++;
+        Row groupHeaderRow = sheet.createRow(groupHeaderRowIdx);
+        setHeaderCell(groupHeaderRow, 0, "Name", groupHeaderStyle);
+        setHeaderCell(groupHeaderRow, 1, "Approved", groupHeaderStyle);
+        setHeaderCell(groupHeaderRow, 2, "Pending", groupHeaderStyle);
+        setHeaderCell(groupHeaderRow, 3, "FILES", groupHeaderStyle);
+        setHeaderCell(groupHeaderRow, 7, "PAGES", groupHeaderStyle);
+        sheet.addMergedRegion(new CellRangeAddress(groupHeaderRowIdx, groupHeaderRowIdx + 1, 0, 0));
+        sheet.addMergedRegion(new CellRangeAddress(groupHeaderRowIdx, groupHeaderRowIdx + 1, 1, 1));
+        sheet.addMergedRegion(new CellRangeAddress(groupHeaderRowIdx, groupHeaderRowIdx + 1, 2, 2));
+        sheet.addMergedRegion(new CellRangeAddress(groupHeaderRowIdx, groupHeaderRowIdx, 3, 6));
+        sheet.addMergedRegion(new CellRangeAddress(groupHeaderRowIdx, groupHeaderRowIdx, 7, 10));
+
+        // Sub-header row
+        Row subHeaderRow = sheet.createRow(rowIdx++);
+        String[] subLabels = { "Approved", "Draft", "Pending", "Total", "Approved", "Draft", "Pending", "Total" };
+        for (int i = 0; i < subLabels.length; i++) {
+            setHeaderCell(subHeaderRow, 3 + i, subLabels[i], subHeaderStyle);
+        }
+
+        // Data rows
+        for (StatsRow statsRow : section.getCollectionRows()) {
+            Row row = sheet.createRow(rowIdx++);
+            row.createCell(0).setCellValue(statsRow.getName());
+            setNumericCells(row, statsRow);
+        }
+
+        // Total row
+        long approvedItems = 0, pendingItems = 0;
+        long filesApproved = 0, filesDraft = 0, filesPending = 0, filesTotal = 0;
+        long pagesApproved = 0, pagesDraft = 0, pagesPending = 0, pagesTotal = 0;
+        for (StatsRow r : section.getCollectionRows()) {
+            approvedItems += r.getApprovedItemCount();
+            pendingItems += r.getPendingItemCount();
+            filesApproved += r.getFilesApproved();
+            filesDraft += r.getFilesDraft();
+            filesPending += r.getFilesPending();
+            filesTotal += r.getFilesTotal();
+            pagesApproved += r.getPagesApproved();
+            pagesDraft += r.getPagesDraft();
+            pagesPending += r.getPagesPending();
+            pagesTotal += r.getPagesTotal();
+        }
+        Row totalRow = sheet.createRow(rowIdx++);
+        Cell totalLabelCell = totalRow.createCell(0);
+        totalLabelCell.setCellValue("Total");
+        totalLabelCell.setCellStyle(totalLabelStyle);
+        long[] totals = { approvedItems, pendingItems, filesApproved, filesDraft, filesPending, filesTotal,
+                pagesApproved, pagesDraft, pagesPending, pagesTotal };
+        for (int i = 0; i < totals.length; i++) {
+            Cell cell = totalRow.createCell(1 + i);
+            cell.setCellValue(totals[i]);
+            cell.setCellStyle(totalNumberStyle);
+        }
+
+        for (int col = 0; col <= 10; col++) {
+            sheet.autoSizeColumn(col);
+        }
+        sheet.createFreezePane(1, subHeaderRow.getRowNum() + 1);
+    }
+
+    private void setHeaderCell(Row row, int col, String value, CellStyle style) {
+        Cell cell = row.createCell(col);
+        cell.setCellValue(value);
+        cell.setCellStyle(style);
+    }
+
+    private void setNumericCells(Row row, StatsRow statsRow) {
+        long[] values = {
+                statsRow.getApprovedItemCount(), statsRow.getPendingItemCount(),
+                statsRow.getFilesApproved(), statsRow.getFilesDraft(),
+                statsRow.getFilesPending(), statsRow.getFilesTotal(),
+                statsRow.getPagesApproved(), statsRow.getPagesDraft(),
+                statsRow.getPagesPending(), statsRow.getPagesTotal()
+        };
+        for (int i = 0; i < values.length; i++) {
+            row.createCell(1 + i).setCellValue(values[i]);
+        }
+    }
+
+    private CellStyle createTitleStyle(XSSFWorkbook workbook) {
+        XSSFFont font = workbook.createFont();
+        font.setBold(true);
+        font.setFontHeightInPoints((short) 14);
+
+        CellStyle style = workbook.createCellStyle();
+        style.setFont(font);
+        style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+        return style;
+    }
+
+    private CellStyle createHeaderStyle(XSSFWorkbook workbook, boolean groupHeader) {
+        XSSFFont font = workbook.createFont();
+        font.setBold(true);
+
+        CellStyle style = workbook.createCellStyle();
+        style.setFont(font);
+        style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        style.setAlignment(org.apache.poi.ss.usermodel.HorizontalAlignment.CENTER);
+        style.setBorderBottom(BorderStyle.THIN);
+
+        if (groupHeader) {
+            style.setBorderTop(BorderStyle.THIN);
+        }
+
+        return style;
+    }
+
+    private CellStyle createTotalStyle(XSSFWorkbook workbook, boolean numeric) {
+        XSSFFont font = workbook.createFont();
+        font.setBold(true);
+
+        CellStyle style = workbook.createCellStyle();
+        style.setFont(font);
+        style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        style.setBorderTop(BorderStyle.THIN);
+
+        if (numeric) {
+            style.setDataFormat(workbook.createDataFormat().getFormat("#,##0"));
+        }
+
+        return style;
     }
 }

@@ -182,4 +182,14 @@ public interface RepositoryBitstreamStatsPdfExportService {
      * @throws IOException if PDF generation fails
      */
     byte[] generatePdf(List<CommunitySection> sections) throws IOException;
+
+    /**
+     * Generate an Excel (.xlsx) workbook from the given community sections,
+     * one sheet per section.
+     *
+     * @param sections the community sections to include
+     * @return the XLSX bytes
+     * @throws IOException if workbook generation fails
+     */
+    byte[] generateExcel(List<CommunitySection> sections) throws IOException;
 }
