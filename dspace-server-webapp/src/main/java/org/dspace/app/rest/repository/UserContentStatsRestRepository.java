@@ -80,7 +80,7 @@ public class UserContentStatsRestRepository extends DSpaceRestRepository<UserCon
                 if (!"ORIGINAL".equals(bundle.getName())) continue;
 
                 for (Bitstream bitstream : bundle.getBitstreams()) {
-                    String pagesStr = bitstreamService.getMetadataFirstValue(bitstream, "legal", "document", "pageCount", Item.ANY);
+                    String pagesStr = bitstreamService.getMetadataFirstValue(bitstream, "dars", "file", "pageCount", Item.ANY);
                     if (pagesStr != null) {
                         try {
                             total += Integer.parseInt(pagesStr.trim());

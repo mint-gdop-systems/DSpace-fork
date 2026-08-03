@@ -149,7 +149,7 @@ public class UploadStep extends AbstractProcessingStep
             if (bf != null && "application/pdf".equals(bf.getMIMEType())) {
                 try {
                     long pageCount = pdfPageCountService.getNumberOfPdfPages(context, source);
-                    bitstreamService.setMetadataSingleValue(context, source, "legal", "document", "pageCount", null,
+                    bitstreamService.setMetadataSingleValue(context, source, "dars", "file", "pageCount", null,
                             String.format("%d", pageCount));
                 } catch (Exception e) {
                     log.error("Failed to calculate page count for bitstream {}: {}", source.getID(), e.getMessage(), e);

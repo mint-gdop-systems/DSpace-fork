@@ -277,7 +277,7 @@ public class UserItemStatsController {
 
         ItemStatRecord record = new ItemStatRecord();
         record.itemId = item.getID().toString();
-        record.caseNumber = itemService.getMetadataFirstValue(item, "legal", "case", "fileNumber", Item.ANY);
+        record.caseNumber = itemService.getMetadataFirstValue(item, "dars", "document", "number", Item.ANY);
         record.status = status;
         record.submissionDate = itemDate;
 
@@ -291,14 +291,14 @@ public class UserItemStatsController {
                     record.fileCount++;
 
                     int pages = 0;
-                    String pagesStr = bitstreamService.getMetadataFirstValue(bitstream, "legal", "document", "pageCount", Item.ANY);
+                    String pagesStr = bitstreamService.getMetadataFirstValue(bitstream, "dars", "file", "pageCount", Item.ANY);
                     if (pagesStr != null) {
                         try {
                             pages = Integer.parseInt(pagesStr.trim());
                         } catch (NumberFormatException ignored) {}
                     }
 
-                    String docType = bitstreamService.getMetadataFirstValue(bitstream, "legal", "document", "type", Item.ANY);
+                    String docType = bitstreamService.getMetadataFirstValue(bitstream, "dars", "file", "type", Item.ANY);
                     if ("በዳኛ የተሰራ".equals(docType)) {
                         record.judgePageCount += pages;
                     } else if ("ልዩ ልዩ".equals(docType)) {

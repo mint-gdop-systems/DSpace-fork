@@ -211,9 +211,9 @@ public class BitstreamDAOImpl extends AbstractHibernateDSODAO<Bitstream> impleme
                 + "  and not exists ("
                 + "    select mv from MetadataValue mv "
                 + "    where mv.dSpaceObject = b "
-                + "      and mv.metadataField.element = 'document' "
+                + "      and mv.metadataField.element = 'file' "
                 + "      and mv.metadataField.qualifier = 'pageCount' "
-                + "      and mv.metadataField.metadataSchema.name = 'legal'"
+                + "      and mv.metadataField.metadataSchema.name = 'dars'"
                 + "  )"
                 + " order by b.id";
 
@@ -280,12 +280,12 @@ public class BitstreamDAOImpl extends AbstractHibernateDSODAO<Bitstream> impleme
                         AND mv_pages.metadata_field_id = (
                             SELECT metadata_field_id
                             FROM metadatafieldregistry
-                            WHERE element = 'document'
+                            WHERE element = 'file'
                               AND qualifier = 'pageCount'
                               AND metadata_schema_id = (
                                   SELECT metadata_schema_id
                                   FROM metadataschemaregistry
-                                  WHERE short_id = 'legal'
+                                  WHERE short_id = 'dars'
                               )
                         )
 
@@ -322,12 +322,12 @@ public class BitstreamDAOImpl extends AbstractHibernateDSODAO<Bitstream> impleme
                         AND mv_doctype.metadata_field_id = (
                             SELECT metadata_field_id
                             FROM metadatafieldregistry
-                            WHERE element = 'document'
+                            WHERE element = 'file'
                               AND qualifier = 'type'
                               AND metadata_schema_id = (
                                   SELECT metadata_schema_id
                                   FROM metadataschemaregistry
-                                  WHERE short_id = 'legal'
+                                  WHERE short_id = 'dars'
                               )
                         )
 
