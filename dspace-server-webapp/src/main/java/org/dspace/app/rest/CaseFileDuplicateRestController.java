@@ -43,10 +43,10 @@ import org.springframework.web.bind.annotation.RestController;
  * Lightweight case-file duplicate checks for submission forms.
  */
 @RestController
-@RequestMapping("/api/legal/casefiles")
+@RequestMapping("/api/dars/document")
 public class CaseFileDuplicateRestController implements InitializingBean {
 
-    private static final String FILE_NUMBER_FIELD = "legal.case.fileNumber";
+    private static final String FILE_NUMBER_FIELD = "dars.document.number";
 
     @Autowired
     private DiscoverableEndpointsService discoverableEndpointsService;
@@ -69,7 +69,7 @@ public class CaseFileDuplicateRestController implements InitializingBean {
     @Override
     public void afterPropertiesSet() {
         discoverableEndpointsService.register(
-                this, Arrays.asList(Link.of("/api/legal/casefiles", "legal-casefiles")));
+                this, Arrays.asList(Link.of("/api/dars/document", "dars-document")));
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -102,7 +102,7 @@ public class CaseFileDuplicateRestController implements InitializingBean {
                 continue;
             }
 
-            Item item = itemService.find(context, dso.getID());
+            Item item = (Item) org.hibernate.Hibernate.unproxy(dso);
             if (item == null) {
                 continue;
             }
