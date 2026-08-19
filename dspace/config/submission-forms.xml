@@ -2665,6 +2665,10 @@
 
         <value-pairs value-pairs-name="court_adjured_locations">
             <pair>
+                <displayed-value>ሰበር ችሎት</displayed-value>
+                <stored-value>ሰበር ችሎት</stored-value>
+            </pair>
+            <pair>
                 <displayed-value>የውዝፍ መዛግብት ሰበር ችሎት</displayed-value>
                 <stored-value>የውዝፍ መዛግብት ሰበር ችሎት</stored-value>
             </pair>
