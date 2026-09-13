@@ -74,6 +74,7 @@ public class UserItemStatsController {
         int totalPending = 0;
         int sumJudgePages = 0;
         int sumMiscPages = 0;
+        int sumOfficePages = 0;
         int sumOtherPages = 0;
         int sumTotalPages = 0;
 
@@ -82,6 +83,7 @@ public class UserItemStatsController {
             if ("Pending".equals(r.status)) totalPending++;
             sumJudgePages += r.judgePageCount;
             sumMiscPages += r.miscPageCount;
+            sumOfficePages += r.officePageCount;
             sumOtherPages += r.otherPageCount;
             sumTotalPages += r.totalPageCount;
         }
@@ -97,6 +99,7 @@ public class UserItemStatsController {
         summary.put("pendingCount", totalPending);
         summary.put("judgePageCount", sumJudgePages);
         summary.put("miscPageCount", sumMiscPages);
+        summary.put("officePageCount", sumOfficePages);
         summary.put("otherPageCount", sumOtherPages);
         summary.put("totalPageCount", sumTotalPages);
 
@@ -123,7 +126,7 @@ public class UserItemStatsController {
         org.apache.poi.xssf.usermodel.XSSFWorkbook workbook = new org.apache.poi.xssf.usermodel.XSSFWorkbook();
         org.apache.poi.xssf.usermodel.XSSFSheet sheet = workbook.createSheet("User Item Stats");
 
-        String[] headers = {"No.", "የመዝገብ ቁጥር", "Item Status", "File Count", "በዳኛ የተሰራ", "ልዩ ልዩ", "Other", "Total Page Count"};
+        String[] headers = {"No.", "የመዝገብ ቁጥር", "Item Status", "File Count", "በዳኛ የተሰራ", "ልዩ ልዩ", "በጽ/ቤቱ የተሰራ", "Other", "Total Page Count"};
         
         org.apache.poi.xssf.usermodel.XSSFCellStyle headerStyle = workbook.createCellStyle();
         org.apache.poi.xssf.usermodel.XSSFFont headerFont = workbook.createFont();
@@ -158,8 +161,9 @@ public class UserItemStatsController {
             row.createCell(3).setCellValue(record.fileCount);
             row.createCell(4).setCellValue(record.judgePageCount);
             row.createCell(5).setCellValue(record.miscPageCount);
-            row.createCell(6).setCellValue(record.otherPageCount);
-            row.createCell(7).setCellValue(record.totalPageCount);
+            row.createCell(6).setCellValue(record.officePageCount);
+            row.createCell(7).setCellValue(record.otherPageCount);
+            row.createCell(8).setCellValue(record.totalPageCount);
             rowNum++;
         }
 
@@ -170,8 +174,9 @@ public class UserItemStatsController {
         sheet.setColumnWidth(3, 3500); // File Count
         sheet.setColumnWidth(4, 5000); // በዳኛ የተሰራ
         sheet.setColumnWidth(5, 4500); // ልዩ ልዩ
-        sheet.setColumnWidth(6, 3500); // Other
-        sheet.setColumnWidth(7, 5500); // Total Page Count
+        sheet.setColumnWidth(6, 5000); // በጽ/ቤቱ የተሰራ
+        sheet.setColumnWidth(7, 3500); // Other
+        sheet.setColumnWidth(8, 5500); // Total Page Count
 
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-Disposition", "attachment; filename=\"user_item_stats.xlsx\"");
@@ -303,6 +308,8 @@ public class UserItemStatsController {
                         record.judgePageCount += pages;
                     } else if ("ልዩ ልዩ".equals(docType)) {
                         record.miscPageCount += pages;
+                    } else if ("በጽ/ቤቱ የተሰራ".equals(docType)) {
+                        record.officePageCount += pages;
                     } else {
                         record.otherPageCount += pages;
                     }
@@ -324,6 +331,7 @@ public class UserItemStatsController {
         public int fileCount = 0;
         public int judgePageCount = 0;
         public int miscPageCount = 0;
+        public int officePageCount = 0;
         public int otherPageCount = 0;
         public int totalPageCount = 0;
 
