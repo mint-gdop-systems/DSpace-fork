@@ -39,8 +39,8 @@ import org.dspace.xmlworkflow.storedcomponents.XmlWorkflowItem;
  * @author Mark Diggory (markd at atmire dot com)
  */
 public class ClaimAction extends UserSelectionAction {
-    private final ConfigurationService configurationService
-            = DSpaceServicesFactory.getInstance().getConfigurationService();
+    private final ConfigurationService configurationService = DSpaceServicesFactory.getInstance()
+            .getConfigurationService();
 
     @Override
     public void activate(Context context, XmlWorkflowItem wfItem) throws SQLException, IOException, AuthorizeException {
@@ -49,16 +49,15 @@ public class ClaimAction extends UserSelectionAction {
         RoleMembers allroleMembers = getParent().getStep().getRole().getMembers(context, wfItem);
         // Create pooled tasks for each member of our group
         if (allroleMembers != null && (allroleMembers.getGroups().size() > 0 || allroleMembers.getEPersons()
-                                                                                              .size() > 0)) {
+                .size() > 0)) {
             XmlWorkflowServiceFactory.getInstance().getXmlWorkflowService()
-                                     .createPoolTasks(context, wfItem, allroleMembers, owningStep, getParent());
-            alertUsersOnActivation(context, wfItem, allroleMembers);
+                    .createPoolTasks(context, wfItem, allroleMembers, owningStep, getParent());
+            // alertUsersOnActivation(context, wfItem, allroleMembers);
         } else {
             log.info(LogHelper.getHeader(context, "warning while activating claim action",
-                                          "No group or person was found for the following roleid: " + getParent()
-                                              .getStep().getRole().getId()));
+                    "No group or person was found for the following roleid: " + getParent()
+                            .getStep().getRole().getId()));
         }
-
 
     }
 
@@ -78,7 +77,7 @@ public class ClaimAction extends UserSelectionAction {
 
     @Override
     public void alertUsersOnActivation(Context c, XmlWorkflowItem wfi, RoleMembers roleMembers)
-        throws IOException, SQLException {
+            throws IOException, SQLException {
         try {
             EPerson ep = wfi.getSubmitter();
             String submitterName = null;
@@ -87,14 +86,13 @@ public class ClaimAction extends UserSelectionAction {
             }
             XmlWorkflowService xmlWorkflowService = XmlWorkflowServiceFactory.getInstance().getXmlWorkflowService();
             xmlWorkflowService.alertUsersOnTaskActivation(c, wfi, "submit_task", roleMembers.getAllUniqueMembers(c),
-                    //The arguments
+                    // The arguments
                     wfi.getItem().getName(),
                     wfi.getCollection().getName(),
                     submitterName,
-                    //TODO: message
+                    // TODO: message
                     "New task available.",
-                    xmlWorkflowService.getMyDSpaceLink()
-            );
+                    xmlWorkflowService.getMyDSpaceLink());
         } catch (MessagingException e) {
             log.info(LogHelper.getHeader(c, "error emailing user(s) for claimed task",
                     "step: " + getParent().getStep().getId() + " workflowitem: " + wfi.getID()));
@@ -103,19 +101,20 @@ public class ClaimAction extends UserSelectionAction {
 
     @Override
     public void regenerateTasks(Context c, XmlWorkflowItem wfi, RoleMembers roleMembers)
-        throws SQLException, AuthorizeException, IOException {
+            throws SQLException, AuthorizeException, IOException {
         if (roleMembers != null && (roleMembers.getEPersons().size() > 0 || roleMembers.getGroups().size() > 0)) {
-            //Create task for the users left
+            // Create task for the users left
             XmlWorkflowServiceFactory.getInstance().getXmlWorkflowService()
-                                     .createPoolTasks(c, wfi, roleMembers, getParent().getStep(), getParent());
-            if (configurationService.getBooleanProperty("workflow.notify.returned.tasks", true)) {
-                alertUsersOnActivation(c, wfi, roleMembers);
-            }
+                    .createPoolTasks(c, wfi, roleMembers, getParent().getStep(), getParent());
+            // if (configurationService.getBooleanProperty("workflow.notify.returned.tasks",
+            // true)) {
+            // alertUsersOnActivation(c, wfi, roleMembers);
+            // }
 
         } else {
             log.info(LogHelper.getHeader(c, "warning while activating claim action",
-                                          "No group or person was found for the following roleid: " + getParent()
-                                              .getStep().getId()));
+                    "No group or person was found for the following roleid: " + getParent()
+                            .getStep().getId()));
         }
 
     }
@@ -127,26 +126,27 @@ public class ClaimAction extends UserSelectionAction {
 
     @Override
     public boolean isValidUserSelection(Context context, XmlWorkflowItem wfi, boolean hasUI)
-        throws WorkflowConfigurationException, SQLException {
-        //A user claim action always needs to have a UI, since somebody needs to be able to claim it
+            throws WorkflowConfigurationException, SQLException {
+        // A user claim action always needs to have a UI, since somebody needs to be
+        // able to claim it
         if (hasUI) {
             Step step = getParent().getStep();
-            //First of all check if our step has a role
+            // First of all check if our step has a role
             Role role = step.getRole();
             if (role != null) {
-                //We have a role, check if we have a group to with that role
+                // We have a role, check if we have a group to with that role
                 RoleMembers roleMembers = role.getMembers(context, wfi);
 
                 ArrayList<EPerson> epersons = roleMembers.getAllUniqueMembers(context);
                 if (epersons.isEmpty() || step.getRequiredUsers() > epersons.size()) {
                     log.warn(String.format("There must be at least %s ePerson(s) in the group",
-                                           step.getRequiredUsers()));
+                            step.getRequiredUsers()));
                 }
                 return !(epersons.isEmpty() || step.getRequiredUsers() > epersons.size());
             } else {
                 // We don't have a role and do have a UI so throw a workflow exception
                 throw new WorkflowConfigurationException(
-                    "The next step is invalid, since it doesn't have a valid role");
+                        "The next step is invalid, since it doesn't have a valid role");
             }
         } else {
             return true;
