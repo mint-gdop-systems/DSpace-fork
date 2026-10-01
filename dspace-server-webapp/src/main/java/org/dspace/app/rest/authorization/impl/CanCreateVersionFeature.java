@@ -15,8 +15,10 @@ import org.dspace.app.rest.authorization.AuthorizationFeatureDocumentation;
 import org.dspace.app.rest.model.BaseObjectRest;
 import org.dspace.app.rest.model.ItemRest;
 import org.dspace.authorize.service.AuthorizeService;
+import org.dspace.content.Collection;
 import org.dspace.content.Item;
 import org.dspace.content.service.ItemService;
+import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.eperson.EPerson;
 import org.dspace.services.ConfigurationService;
@@ -63,6 +65,10 @@ public class CanCreateVersionFeature implements AuthorizationFeature {
                 if (configurationService.getBooleanProperty("versioning.submitterCanCreateNewVersion")) {
                     EPerson submitter = item.getSubmitter();
                     return Objects.nonNull(submitter) && currentUser.getID().equals(submitter.getID());
+                }
+                Collection owningCollection = item.getOwningCollection();
+                if (currentUser != null && owningCollection != null) {
+                    return authorizeService.authorizeActionBoolean(context, owningCollection, Constants.ADD);
                 }
             }
         }

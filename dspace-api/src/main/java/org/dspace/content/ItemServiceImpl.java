@@ -1705,10 +1705,16 @@ public class ItemServiceImpl extends DSpaceObjectServiceImpl<Item> implements It
             return true;
         }
 
-        if (context.getCurrentUser() != null
-                && context.getCurrentUser().equals(item.getSubmitter())) {
-            return configurationService.getPropertyAsType("versioning.submitterCanCreateNewVersion",
-                    false);
+        EPerson currentUser = context.getCurrentUser();
+        if (currentUser != null && currentUser.equals(item.getSubmitter())) {
+            return configurationService.getPropertyAsType(
+                    "versioning.submitterCanCreateNewVersion", false);
+        }
+
+        // Allow any member of the collection's submitters group
+        Collection owningCollection = item.getOwningCollection();
+        if (currentUser != null && owningCollection != null) {
+            return authorizeService.authorizeActionBoolean(context, owningCollection, Constants.ADD);
         }
 
         return false;
