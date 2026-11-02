@@ -10,12 +10,17 @@
                 <entry key="0" value-ref="localStore"/>
                 <entry key="1" value-ref="s3Store"/>
                 <entry key="2" value-ref="jcloudStore"/>
+                <entry key="3" value-ref="localStore.1"/>
             </map>
         </property>
     </bean>
 
     <bean name="localStore" class="org.dspace.storage.bitstore.DSBitStoreService" scope="singleton">
         <property name="baseDir" value="${assetstore.dir}"/>
+    </bean>
+
+    <bean name="localStore.1" class="org.dspace.storage.bitstore.DSBitStoreService" scope="singleton">
+        <property name="baseDir" value="${assetstore.dir.1}"/>
     </bean>
 
     <bean name="s3Store" class="org.dspace.storage.bitstore.S3BitStoreService" scope="singleton" lazy-init="true">
